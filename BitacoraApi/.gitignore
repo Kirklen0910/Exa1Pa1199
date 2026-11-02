@@ -1,0 +1,28 @@
+# --- .NET build ---
+bin/
+obj/
+[Bb]in/
+[Oo]bj/
+out/
+publish/
+*.user
+*.suo
+*.userprefs
+*.rsuser
+
+# --- Base de datos SQLite local ---
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+
+# --- IDEs ---
+.vs/
+.vscode/
+.idea/
+*.swp
+
+# --- Logs y resultados de pruebas ---
+*.log
+TestResults/
+[Ll]ogs/
