@@ -1,0 +1,347 @@
+{
+  "info": {
+    "name": "Bitácora API",
+    "description": "Pruebas de la Bitácora API. Selecciona el entorno \"Bitácora - Local\" (archivo Bitacora.postman_environment.json), que define la variable baseUrl.\n\nEjecutar en orden con el Collection Runner: el POST exitoso guarda {{registroId}} para las siguientes peticiones.\n\nCampos del registro: titulo (obligatorio, 3-100), descripcion (obligatoria, máx. 500), fotoBase64 (opcional; Base64 válido, máx. 2 MB). fechaCreacion la asigna el servidor.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "registroId", "value": "" },
+    { "key": "fotoBase64", "value": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" }
+  ],
+  "item": [
+    {
+      "name": "POST /api/registros",
+      "item": [
+        {
+          "name": "Crear registro - 201 Created",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201 Created', () => pm.response.to.have.status(201));",
+                  "pm.test('Incluye cabecera Location', () => pm.response.to.have.header('Location'));",
+                  "const body = pm.response.json();",
+                  "pm.test('Devuelve id, fotoBase64 y fechaCreacion del servidor', () => {",
+                  "  pm.expect(body.id).to.be.a('number');",
+                  "  pm.expect(body.fotoBase64).to.be.a('string');",
+                  "  pm.expect(body.fechaCreacion).to.be.a('string');",
+                  "  pm.expect(body).to.not.have.property('latitud');",
+                  "  pm.expect(body).to.not.have.property('longitud');",
+                  "});",
+                  "pm.collectionVariables.set('registroId', body.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Visita de campo\",\n  \"descripcion\": \"Registro creado desde Postman\",\n  \"fotoBase64\": \"{{fotoBase64}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/registros", "host": ["{{baseUrl}}"], "path": ["api", "registros"] }
+          }
+        },
+        {
+          "name": "Crear registro sin foto - 201 Created",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201 Created', () => pm.response.to.have.status(201));",
+                  "const body = pm.response.json();",
+                  "pm.test('La foto es opcional (null)', () => pm.expect(body.fotoBase64).to.be.null);",
+                  "pm.collectionVariables.set('registroSinFotoId', body.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Registro sin foto\",\n  \"descripcion\": \"La foto es opcional\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/registros", "host": ["{{baseUrl}}"], "path": ["api", "registros"] }
+          }
+        },
+        {
+          "name": "Crear registro inválido - 400 Bad Request",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 400 Bad Request', () => pm.response.to.have.status(400));",
+                  "const body = pm.response.json();",
+                  "pm.test('Detalle de errores por campo', () => {",
+                  "  pm.expect(body.errors).to.have.property('Titulo');",
+                  "  pm.expect(body.errors).to.have.property('Descripcion');",
+                  "  pm.expect(body.errors).to.have.property('FotoBase64');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"\",\n  \"fotoBase64\": \"esto no es base64!!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/registros", "host": ["{{baseUrl}}"], "path": ["api", "registros"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "GET /api/registros",
+      "item": [
+        {
+          "name": "Listar registros - 200 OK",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('Devuelve un arreglo', () => pm.expect(body).to.be.an('array'));",
+                  "pm.test('La lista no incluye la foto completa', () => {",
+                  "  body.forEach(r => {",
+                  "    pm.expect(r).to.not.have.property('fotoBase64');",
+                  "    pm.expect(r.tieneFoto).to.be.a('boolean');",
+                  "  });",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/registros", "host": ["{{baseUrl}}"], "path": ["api", "registros"] }
+          }
+        },
+        {
+          "name": "Listar pidiendo XML - 406 Not Acceptable",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 406 Not Acceptable', () => pm.response.to.have.status(406));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/xml" }],
+            "url": { "raw": "{{baseUrl}}/api/registros", "host": ["{{baseUrl}}"], "path": ["api", "registros"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "GET /api/registros/{id}",
+      "item": [
+        {
+          "name": "Obtener registro - 200 OK",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('Es el registro creado e incluye la foto', () => {",
+                  "  pm.expect(body.id).to.eql(Number(pm.collectionVariables.get('registroId')));",
+                  "  pm.expect(body.fotoBase64).to.be.a('string').and.not.empty;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/registros/{{registroId}}", "host": ["{{baseUrl}}"], "path": ["api", "registros", "{{registroId}}"] }
+          }
+        },
+        {
+          "name": "Obtener registro inexistente - 404 Not Found",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 404 Not Found', () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/registros/999999", "host": ["{{baseUrl}}"], "path": ["api", "registros", "999999"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "PUT /api/registros/{id}",
+      "item": [
+        {
+          "name": "Actualizar registro - 204 No Content",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 204 No Content', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Visita de campo (editada)\",\n  \"descripcion\": \"Actualizado desde Postman\",\n  \"fotoBase64\": \"{{fotoBase64}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/registros/{{registroId}}", "host": ["{{baseUrl}}"], "path": ["api", "registros", "{{registroId}}"] }
+          }
+        },
+        {
+          "name": "Actualizar con datos inválidos - 400 Bad Request",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 400 Bad Request', () => pm.response.to.have.status(400));",
+                  "pm.test('Detalle de errores por campo', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.errors).to.have.property('Titulo');",
+                  "  pm.expect(body.errors).to.have.property('Descripcion');",
+                  "  pm.expect(body.errors).to.have.property('FotoBase64');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Ti\",\n  \"descripcion\": \"\",\n  \"fotoBase64\": \"@@@\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/registros/{{registroId}}", "host": ["{{baseUrl}}"], "path": ["api", "registros", "{{registroId}}"] }
+          }
+        },
+        {
+          "name": "Actualizar registro inexistente - 404 Not Found",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 404 Not Found', () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"No existe\",\n  \"descripcion\": \"Registro inexistente\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/registros/999999", "host": ["{{baseUrl}}"], "path": ["api", "registros", "999999"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "DELETE /api/registros/{id}",
+      "item": [
+        {
+          "name": "Eliminar registro - 204 No Content",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 204 No Content', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/registros/{{registroId}}", "host": ["{{baseUrl}}"], "path": ["api", "registros", "{{registroId}}"] }
+          }
+        },
+        {
+          "name": "Eliminar registro sin foto - 204 No Content",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 204 No Content', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/registros/{{registroSinFotoId}}", "host": ["{{baseUrl}}"], "path": ["api", "registros", "{{registroSinFotoId}}"] }
+          }
+        },
+        {
+          "name": "Eliminar registro ya eliminado - 404 Not Found",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 404 Not Found', () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/registros/{{registroId}}", "host": ["{{baseUrl}}"], "path": ["api", "registros", "{{registroId}}"] }
+          }
+        }
+      ]
+    }
+  ]
+}
