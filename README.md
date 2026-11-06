@@ -14,7 +14,7 @@ Proyecto grupal de Programación Móvil I.
 | Jennifer Mariela Márquez Chacón | 202330010411 |
 | José Fernando Orellana Reyes | 202210010352 |
 | Michael Abad Díaz Castro | 202310040165 |
-| Romel Márquez | [Número de cuenta] |
+| Romel Márquez | 202410010359 |
 | Fernando Abad Diaz Castro | 202410040257 |
 
 ## Requisitos
