@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Raíz vertical: barra de título arriba y el contenido debajo, así nada queda tapado por ella.
+     UiHelper.configurarPantalla aplica los WindowInsets (barra de estado, navegación y teclado). -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/view_toolbar" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerRegistros"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingTop="8dp"
+                android:paddingBottom="88dp" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <!-- Estado: lista vacía -->
+        <TextView
+            android:id="@+id/textVacio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="24dp"
+            android:text="@string/lista_vacia"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
+            android:visibility="gone" />
+
+        <!-- Estado: error (servidor / sin conexión / tiempo agotado) -->
+        <include
+            android:id="@+id/layoutError"
+            layout="@layout/view_estado_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <!-- Estado: falta el permiso de red local (Android 17+). Reutiliza la vista de error. -->
+        <include
+            android:id="@+id/layoutPermiso"
+            layout="@layout/view_estado_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <!-- Estado: cargando -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabNuevo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/nuevo_registro"
+            app:srcCompat="@android:drawable/ic_input_add" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>
