@@ -15,7 +15,7 @@ Proyecto grupal de Programación Móvil I.
 | José Fernando Orellana Reyes | 202210010352 |
 | Michael Abad Díaz Castro | 202310040165 |
 | Romel Márquez | [Número de cuenta] |
-| Fernando Abad | [Número de cuenta] |
+| Fernando Abad Diaz Castro | 202410040257 |
 
 ## Requisitos
 
