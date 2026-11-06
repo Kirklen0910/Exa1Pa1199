@@ -1,3 +1,43 @@
 <resources>
-    <string name="app_name">Exa1Pa1199</string>
+    <string name="app_name">Bitácora de campo</string>
+
+    <string name="titulo_lista">Bitácora de campo</string>
+    <string name="nuevo_registro">Nuevo registro</string>
+    <string name="lista_vacia">Aún no hay registros.\nToca + para crear el primero.</string>
+    <string name="con_foto">📷 Con foto</string>
+    <string name="sin_foto">Sin foto</string>
+
+    <string name="reintentar">Reintentar</string>
+    <string name="cargando">Cargando…</string>
+
+    <string name="permiso_red_local_titulo">Se necesita acceso a la red local</string>
+    <string name="permiso_red_local_mensaje">La app se conecta a la API que corre en la red local (tu PC, http://10.0.2.2:5080). Desde Android 17 el sistema bloquea esas conexiones si no concedes el permiso de acceso a la red local, y sin él no se pueden cargar ni guardar registros.</string>
+    <string name="permiso_red_local_mensaje_ajustes">El permiso de acceso a la red local fue denegado de forma permanente. Actívalo en Ajustes › Permisos (Dispositivos cercanos / Red local) para que la app pueda conectarse a la API.</string>
+    <string name="conceder_permiso">Conceder permiso</string>
+    <string name="abrir_ajustes">Abrir ajustes</string>
+
+    <string name="titulo_detalle">Detalle del registro</string>
+    <string name="editar">Editar</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="confirmar_eliminar_titulo">Eliminar registro</string>
+    <string name="confirmar_eliminar_mensaje">¿Seguro que deseas eliminar «%1$s»? Esta acción no se puede deshacer.</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="registro_eliminado">Registro eliminado</string>
+    <string name="fecha_creacion">Creado: %1$s</string>
+    <string name="foto_del_registro">Foto del registro</string>
+
+    <string name="titulo_crear">Nuevo registro</string>
+    <string name="titulo_editar">Editar registro</string>
+    <string name="hint_titulo">Título</string>
+    <string name="hint_descripcion">Descripción</string>
+    <string name="tomar_foto">Tomar foto</string>
+    <string name="dictar_descripcion">Dictar descripción</string>
+    <string name="guardar">Guardar</string>
+    <string name="registro_creado">Registro creado</string>
+    <string name="registro_actualizado">Registro actualizado</string>
+    <string name="prompt_voz">Describe el registro…</string>
+    <string name="permiso_camara_denegado">Se necesita el permiso de cámara para tomar la foto</string>
+    <string name="permiso_audio_denegado">Se necesita el permiso de micrófono para dictar</string>
+    <string name="voz_no_disponible">El reconocimiento de voz no está disponible en este dispositivo</string>
+    <string name="camara_no_disponible">No se pudo abrir la cámara</string>
 </resources>
