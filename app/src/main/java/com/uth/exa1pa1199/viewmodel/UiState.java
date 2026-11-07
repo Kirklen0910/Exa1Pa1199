@@ -6,13 +6,17 @@ import java.util.Collections;
 import java.util.Map;
 
 public final class UiState<T> {
-
     public enum Estado {
         CARGANDO,
+
         EXITO,
+
         VACIO,
+
         ERROR_SERVIDOR,
+
         SIN_CONEXION,
+
         TIEMPO_AGOTADO
     }
 

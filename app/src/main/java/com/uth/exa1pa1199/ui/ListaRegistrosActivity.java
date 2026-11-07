@@ -30,7 +30,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class ListaRegistrosActivity extends AppCompatActivity {
-
     static final String PERMISO_RED_LOCAL = "android.permission.ACCESS_LOCAL_NETWORK";
     private static final int API_RED_LOCAL = 37;
     private static final String KEY_SOLICITUD_EN_CURSO = "solicitudPermisoEnCurso";
@@ -47,6 +46,7 @@ public class ListaRegistrosActivity extends AppCompatActivity {
     private View layoutPermiso;
 
     private boolean solicitudEnCurso;
+
     private boolean permisoDenegado;
 
     private final ActivityResultLauncher<String> solicitarPermisoRedLocal =
@@ -97,6 +97,7 @@ public class ListaRegistrosActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
         cargarSiHayPermiso();
     }
 

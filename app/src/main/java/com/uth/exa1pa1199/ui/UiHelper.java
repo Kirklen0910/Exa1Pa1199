@@ -15,7 +15,6 @@ import com.uth.exa1pa1199.R;
 import com.uth.exa1pa1199.viewmodel.UiState;
 
 final class UiHelper {
-
     private UiHelper() { }
 
     static void activarEdgeToEdge(AppCompatActivity activity) {
@@ -34,12 +33,14 @@ final class UiHelper {
         ViewCompat.setOnApplyWindowInsetsListener(root, (v, insets) -> {
             Insets barras = insets.getInsets(WindowInsetsCompat.Type.systemBars()
                     | WindowInsetsCompat.Type.displayCutout());
+
             Insets abajo = insets.getInsets(WindowInsetsCompat.Type.systemBars()
                     | WindowInsetsCompat.Type.displayCutout()
                     | WindowInsetsCompat.Type.ime());
 
             appBar.setPadding(0, barras.top, 0, 0);
             v.setPadding(barras.left, 0, barras.right, abajo.bottom);
+
             return WindowInsetsCompat.CONSUMED;
         });
     }

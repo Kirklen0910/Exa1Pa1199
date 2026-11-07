@@ -16,7 +16,7 @@ public sealed class Base64ImagenAttribute : ValidationAttribute
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
         if (value is null)
-            return ValidationResult.Success; // la foto es opcional
+            return ValidationResult.Success;
 
         var miembro = validationContext.MemberName is null ? null : new[] { validationContext.MemberName };
 

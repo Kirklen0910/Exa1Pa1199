@@ -19,7 +19,8 @@ public class BitacoraDbContext : DbContext
             e.HasKey(r => r.Id);
             e.Property(r => r.Titulo).IsRequired().HasMaxLength(Registro.TituloLongitudMaxima);
             e.Property(r => r.Descripcion).IsRequired().HasMaxLength(Registro.DescripcionLongitudMaxima);
-            e.Property(r => r.FotoBase64); // TEXT opcional (NULL si no hay foto)
+            e.Property(r => r.FotoBase64);
+
             e.Property(r => r.FechaCreacion).IsRequired().HasConversion(
                 v => v.ToUniversalTime(),
                 v => DateTime.SpecifyKind(v, DateTimeKind.Utc));

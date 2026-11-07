@@ -24,7 +24,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RegistroRepository {
-
     private final RegistroApi api;
     private final Gson gson = new Gson();
 
@@ -69,7 +68,7 @@ public class RegistroRepository {
 
             @Override
             public void onFailure(@NonNull Call<T> c, @NonNull Throwable t) {
-                if (c.isCanceled()) return; // el ViewModel ya no espera la respuesta
+                if (c.isCanceled()) return;
                 callback.onError(errorDesdeExcepcion(t));
             }
         });
@@ -116,7 +115,7 @@ public class RegistroRepository {
             if (json.trim().isEmpty()) return null;
             return gson.fromJson(json, ProblemDetailsDto.class);
         } catch (IOException | RuntimeException e) {
-            return null; // cuerpo vacío o que no es ProblemDetails
+            return null;
         }
     }
 

@@ -21,7 +21,6 @@ import com.uth.exa1pa1199.viewmodel.DetalleRegistroViewModel;
 import com.uth.exa1pa1199.viewmodel.UiState;
 
 public class DetalleRegistroActivity extends AppCompatActivity {
-
     public static final String EXTRA_ID = "registro_id";
 
     private DetalleRegistroViewModel viewModel;
@@ -80,7 +79,7 @@ public class DetalleRegistroActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (viewModel != null) viewModel.cargar(); // también refresca al volver de editar
+        if (viewModel != null) viewModel.cargar();
     }
 
     @Override

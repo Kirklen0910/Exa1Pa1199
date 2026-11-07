@@ -13,9 +13,10 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public final class ImagenUtils {
-
     public static final int MAX_LADO_PX = 1024;
+
     public static final int CALIDAD_JPEG = 70;
+
     public static final int MAX_BASE64_BYTES = 2 * 1024 * 1024;
 
     private ImagenUtils() { }

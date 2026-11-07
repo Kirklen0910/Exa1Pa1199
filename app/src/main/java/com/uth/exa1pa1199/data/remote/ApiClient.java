@@ -10,7 +10,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public final class ApiClient {
-
     private static final long CONNECT_TIMEOUT_SEGUNDOS = 10;
     private static final long READ_TIMEOUT_SEGUNDOS = 20;
     private static final long WRITE_TIMEOUT_SEGUNDOS = 20;
