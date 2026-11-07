@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Barra de título compartida. UiHelper.configurarPantalla le añade como padding superior el alto de la
+     barra de estado (edge-to-edge obligatorio con targetSdk 35+), así el fondo llega hasta arriba
+     pero el título queda debajo de la barra de estado. -->
+<com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/appBar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize" />
+</com.google.android.material.appbar.AppBarLayout>
