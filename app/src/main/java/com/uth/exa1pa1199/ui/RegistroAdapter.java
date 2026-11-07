@@ -16,9 +16,7 @@ import com.uth.exa1pa1199.util.FechaUtils;
 
 import java.util.Objects;
 
-/** Adaptador del RecyclerView del listado. Solo muestra datos y avisa del clic. */
 public class RegistroAdapter extends ListAdapter<RegistroResumenDto, RegistroAdapter.ViewHolder> {
-
     public interface OnRegistroClick {
         void onClick(RegistroResumenDto registro);
     }

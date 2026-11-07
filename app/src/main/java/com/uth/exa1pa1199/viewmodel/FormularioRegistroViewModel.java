@@ -23,12 +23,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/**
- * Lógica del formulario de crear/editar: valida con los mismos límites que la API,
- * prepara la foto (1024 px, JPEG 70, Base64) y llama al repositorio.
- */
 public class FormularioRegistroViewModel extends AndroidViewModel {
-
     public static final String CAMPO_TITULO = "titulo";
     public static final String CAMPO_DESCRIPCION = "descripcion";
     public static final String CAMPO_FOTO = "fotobase64";
@@ -41,17 +36,16 @@ public class FormularioRegistroViewModel extends AndroidViewModel {
     private final RegistroRepository repositorio;
     private final ExecutorService ejecutor = Executors.newSingleThreadExecutor();
 
-    /** Carga del registro a editar (GET /{id}). */
     private final MutableLiveData<UiState<RegistroDetalleDto>> estadoCarga = new MutableLiveData<>();
-    /** Resultado de guardar (POST o PUT). */
+
     private final MutableLiveData<UiState<Void>> estadoGuardar = new MutableLiveData<>();
-    /** Errores de la validación local, por campo. */
+
     private final MutableLiveData<Map<String, String>> erroresValidacion = new MutableLiveData<>();
     private final MutableLiveData<Bitmap> fotoPreview = new MutableLiveData<>();
     private final MutableLiveData<Boolean> procesandoFoto = new MutableLiveData<>(false);
     private final MutableLiveData<String> errorFoto = new MutableLiveData<>();
 
-    private String id; // null = crear
+    private String id;
     private String fotoBase64;
     private boolean datosAplicados;
     private RegistroRequestDto ultimaSolicitud;
@@ -72,14 +66,12 @@ public class FormularioRegistroViewModel extends AndroidViewModel {
 
     public boolean esEdicion() { return id != null; }
 
-    /** Se llama una sola vez con el id recibido por el Intent (null al crear). */
     public void iniciar(String id) {
-        if (this.id != null || estadoCarga.getValue() != null) return; // ya iniciado (rotación)
+        if (this.id != null || estadoCarga.getValue() != null) return;
         this.id = id;
         if (id != null) cargarRegistro();
     }
 
-    /** True la primera vez que la Activity copia los datos cargados a los campos (evita pisar cambios al rotar). */
     public boolean consumirDatosParaCampos() {
         if (datosAplicados) return false;
         datosAplicados = true;
@@ -109,7 +101,6 @@ public class FormularioRegistroViewModel extends AndroidViewModel {
         });
     }
 
-    /** Procesa la foto tomada con la cámara en segundo plano: máx. 1024 px, JPEG 70, Base64. */
     public void procesarFoto(Uri uri) {
         procesandoFoto.setValue(true);
         ejecutor.execute(() -> {
@@ -130,7 +121,6 @@ public class FormularioRegistroViewModel extends AndroidViewModel {
         errorFoto.setValue(null);
     }
 
-    /** Validación local con los mismos límites de la API. Devuelve un mapa vacío si todo es válido. */
     public static Map<String, String> validar(String titulo, String descripcion) {
         Map<String, String> errores = new HashMap<>();
         int lt = titulo == null ? 0 : titulo.trim().length();
@@ -152,7 +142,6 @@ public class FormularioRegistroViewModel extends AndroidViewModel {
         return errores;
     }
 
-    /** Valida y envía POST (crear) o PUT (editar). */
     public void guardar(String titulo, String descripcion) {
         Map<String, String> errores = validar(titulo, descripcion);
         erroresValidacion.setValue(errores);
@@ -162,7 +151,6 @@ public class FormularioRegistroViewModel extends AndroidViewModel {
         enviar();
     }
 
-    /** Reintenta el último envío tras un error de red o de tiempo de espera. */
     public void reintentarGuardar() {
         if (ultimaSolicitud != null) enviar();
     }

@@ -5,8 +5,6 @@ using Microsoft.Data.Sqlite;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// La ruta del archivo SQLite se resuelve respecto a la carpeta del proyecto Api,
-// así "dotnet run" y "dotnet ef database update" usan siempre el mismo bitacora.db.
 var csb = new SqliteConnectionStringBuilder(
     builder.Configuration.GetConnectionString("Bitacora") ?? "Data Source=bitacora.db");
 if (!Path.IsPathRooted(csb.DataSource))
@@ -17,7 +15,6 @@ builder.Services.AddScoped<IRegistroService, RegistroService>();
 
 builder.Services.AddControllers(o =>
 {
-    // Si el cliente pide un formato distinto de JSON (Accept: application/xml) responde 406.
     o.ReturnHttpNotAcceptable = true;
 });
 builder.Services.AddProblemDetails();
@@ -30,10 +27,8 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// Primero en el pipeline para capturar errores de todo lo que sigue.
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-// Swagger habilitado en todos los entornos (proyecto académico).
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
