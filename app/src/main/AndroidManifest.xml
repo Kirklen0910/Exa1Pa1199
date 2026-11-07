@@ -3,9 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Android 17 (API 37+): Local Network Protection bloquea por defecto las conexiones a la red local
-         (10.0.2.2, 192.168.x.x, localhost vía adb reverse...). Es un permiso de tiempo de ejecución que se
-         solicita en ListaRegistrosActivity antes de la primera carga. -->
     <uses-permission android:name="android.permission.ACCESS_LOCAL_NETWORK" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -25,7 +22,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Exa1Pa1199">
 
-        <!-- FileProvider del primer parcial, reutilizado para la foto de la cámara -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

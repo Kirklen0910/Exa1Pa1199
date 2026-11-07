@@ -5,7 +5,6 @@ using Bitacora.Domain.Entities;
 
 namespace Bitacora.Application.Services;
 
-/// <summary>Casos de uso de la bitácora: crear, listar, consultar, actualizar y eliminar.</summary>
 public class RegistroService : IRegistroService
 {
     private readonly IRegistroRepository _repositorio;
@@ -26,7 +25,6 @@ public class RegistroService : IRegistroService
 
     public async Task<RegistroDetalleDto> CrearAsync(RegistroInputDto input, CancellationToken ct = default)
     {
-        // La fecha la asigna el servidor; el DTO de entrada no la incluye.
         var registro = new Registro { FechaCreacion = DateTime.UtcNow };
         Aplicar(input, registro);
         await _repositorio.AgregarAsync(registro, ct);
@@ -38,7 +36,6 @@ public class RegistroService : IRegistroService
         var registro = await _repositorio.ObtenerPorIdAsync(id, ct);
         if (registro is null) return false;
 
-        // FechaCreacion se conserva.
         Aplicar(input, registro);
         await _repositorio.ActualizarAsync(registro, ct);
         return true;
@@ -57,7 +54,7 @@ public class RegistroService : IRegistroService
     {
         registro.Titulo = input.Titulo;
         registro.Descripcion = input.Descripcion;
-        // El DTO ya fue validado con [Base64Imagen]; si llegara inválido es un error de programación (500).
+
         registro.FotoBase64 = input.FotoBase64 is null
             ? null
             : Base64Util.Normalizar(input.FotoBase64)

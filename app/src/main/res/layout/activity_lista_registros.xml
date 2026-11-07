@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Raíz vertical: barra de título arriba y el contenido debajo, así nada queda tapado por ella.
-     UiHelper.configurarPantalla aplica los WindowInsets (barra de estado, navegación y teclado). -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
@@ -29,7 +27,6 @@
                 android:paddingBottom="88dp" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        <!-- Estado: lista vacía -->
         <TextView
             android:id="@+id/textVacio"
             android:layout_width="wrap_content"
@@ -41,7 +38,6 @@
             android:textAppearance="?attr/textAppearanceBodyLarge"
             android:visibility="gone" />
 
-        <!-- Estado: error (servidor / sin conexión / tiempo agotado) -->
         <include
             android:id="@+id/layoutError"
             layout="@layout/view_estado_error"
@@ -50,7 +46,6 @@
             android:layout_gravity="center"
             android:visibility="gone" />
 
-        <!-- Estado: falta el permiso de red local (Android 17+). Reutiliza la vista de error. -->
         <include
             android:id="@+id/layoutPermiso"
             layout="@layout/view_estado_error"
@@ -59,7 +54,6 @@
             android:layout_gravity="center"
             android:visibility="gone" />
 
-        <!-- Estado: cargando -->
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"

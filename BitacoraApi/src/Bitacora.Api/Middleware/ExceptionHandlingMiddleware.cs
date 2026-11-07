@@ -3,10 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Bitacora.Api.Middleware;
 
-/// <summary>
-/// Captura cualquier excepción no controlada, la registra en el log y responde
-/// un ProblemDetails 500 genérico (sin mensaje ni stack trace de la excepción).
-/// </summary>
 public class ExceptionHandlingMiddleware
 {
     private readonly RequestDelegate _next;
@@ -26,7 +22,6 @@ public class ExceptionHandlingMiddleware
         }
         catch (OperationCanceledException) when (context.RequestAborted.IsCancellationRequested)
         {
-            // El cliente cerró la conexión; no hay a quién responder.
         }
         catch (Exception ex)
         {

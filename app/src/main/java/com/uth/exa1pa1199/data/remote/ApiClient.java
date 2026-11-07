@@ -9,9 +9,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/** Configuración única de OkHttp + Retrofit. Solo la usa RegistroRepository. */
 public final class ApiClient {
-
     private static final long CONNECT_TIMEOUT_SEGUNDOS = 10;
     private static final long READ_TIMEOUT_SEGUNDOS = 20;
     private static final long WRITE_TIMEOUT_SEGUNDOS = 20;
@@ -42,7 +40,6 @@ public final class ApiClient {
                 .readTimeout(READ_TIMEOUT_SEGUNDOS, TimeUnit.SECONDS)
                 .writeTimeout(WRITE_TIMEOUT_SEGUNDOS, TimeUnit.SECONDS);
 
-        // El registro de peticiones/respuestas solo se activa en compilaciones de depuración.
         if (BuildConfig.DEBUG) {
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);

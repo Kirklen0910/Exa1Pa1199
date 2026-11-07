@@ -1,11 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    Por defecto se prohíbe el tráfico HTTP sin cifrar.
-    Solo se permite hacia la máquina de desarrollo:
-      - 10.0.2.2  : alias del localhost del PC visto desde el emulador de Android.
-      - localhost : por si se usa `adb reverse tcp:5080 tcp:5080` en un dispositivo físico.
-    Cualquier otro dominio debe usar HTTPS.
--->
 <network-security-config>
     <base-config cleartextTrafficPermitted="false" />
     <domain-config cleartextTrafficPermitted="true">

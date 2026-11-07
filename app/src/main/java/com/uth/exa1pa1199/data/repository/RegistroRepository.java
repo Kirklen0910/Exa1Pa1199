@@ -23,12 +23,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Única clase que llama a la API. Traduce respuestas HTTP y excepciones de red
- * a {@link ApiError} para que los ViewModel no conozcan Retrofit.
- */
 public class RegistroRepository {
-
     private final RegistroApi api;
     private final Gson gson = new Gson();
 
@@ -60,8 +55,6 @@ public class RegistroRepository {
         return ejecutar(api.eliminar(id), callback);
     }
 
-    // ---------------------------------------------------------------------------------------
-
     private <T> Cancelable ejecutar(Call<T> call, RepositorioCallback<T> callback) {
         call.enqueue(new Callback<T>() {
             @Override
@@ -75,14 +68,13 @@ public class RegistroRepository {
 
             @Override
             public void onFailure(@NonNull Call<T> c, @NonNull Throwable t) {
-                if (c.isCanceled()) return; // el ViewModel ya no espera la respuesta
+                if (c.isCanceled()) return;
                 callback.onError(errorDesdeExcepcion(t));
             }
         });
         return call::cancel;
     }
 
-    /** Respuestas 4xx / 5xx. */
     private ApiError errorDesdeRespuesta(Response<?> response) {
         int codigo = response.code();
         ProblemDetailsDto problema = leerProblema(response.errorBody());
@@ -97,10 +89,6 @@ public class RegistroRepository {
         return new ApiError(ApiError.Tipo.SERVIDOR, codigo, mensajePorCodigo(codigo, problema), erroresCampo);
     }
 
-    /**
-     * Fallos sin respuesta HTTP. SocketTimeoutException hereda de IOException,
-     * por eso se evalúa primero.
-     */
     private ApiError errorDesdeExcepcion(Throwable t) {
         if (t instanceof SocketTimeoutException) {
             return new ApiError(ApiError.Tipo.TIEMPO_AGOTADO, 0,
@@ -127,11 +115,10 @@ public class RegistroRepository {
             if (json.trim().isEmpty()) return null;
             return gson.fromJson(json, ProblemDetailsDto.class);
         } catch (IOException | RuntimeException e) {
-            return null; // cuerpo vacío o que no es ProblemDetails
+            return null;
         }
     }
 
-    /** "Titulo", "titulo" o "$.titulo" -> "titulo". */
     private static String normalizarCampo(String clave) {
         if (clave == null) return "";
         String c = clave.startsWith("$.") ? clave.substring(2) : clave;

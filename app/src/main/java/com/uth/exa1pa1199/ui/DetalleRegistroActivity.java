@@ -20,9 +20,7 @@ import com.uth.exa1pa1199.util.FechaUtils;
 import com.uth.exa1pa1199.viewmodel.DetalleRegistroViewModel;
 import com.uth.exa1pa1199.viewmodel.UiState;
 
-/** Detalle: foto (Base64), título, descripción y fecha; editar y eliminar con confirmación. */
 public class DetalleRegistroActivity extends AppCompatActivity {
-
     public static final String EXTRA_ID = "registro_id";
 
     private DetalleRegistroViewModel viewModel;
@@ -81,7 +79,7 @@ public class DetalleRegistroActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (viewModel != null) viewModel.cargar(); // también refresca al volver de editar
+        if (viewModel != null) viewModel.cargar();
     }
 
     @Override
@@ -146,7 +144,6 @@ public class DetalleRegistroActivity extends AppCompatActivity {
         }
     }
 
-    /** Botones deshabilitados mientras haya cualquier petición en curso. */
     private void actualizarBotones() {
         UiState<?> d = viewModel.getEstado().getValue();
         UiState<?> e = viewModel.getEstadoEliminar().getValue();

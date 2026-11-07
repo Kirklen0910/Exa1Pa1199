@@ -3,10 +3,6 @@ package com.uth.exa1pa1199.data.remote.dto;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Cuerpo de error de ASP.NET Core (ProblemDetails / ValidationProblemDetails).
- * En un 400, "errors" trae los mensajes por campo, p. ej. {"Titulo": ["..."]}.
- */
 public class ProblemDetailsDto {
     private String title;
     private String detail;

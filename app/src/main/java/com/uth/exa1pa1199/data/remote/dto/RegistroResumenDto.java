@@ -1,9 +1,5 @@
 package com.uth.exa1pa1199.data.remote.dto;
 
-/**
- * Elemento devuelto por GET /api/registros.
- * El id se declara como String para aceptar tanto un entero como un GUID (Gson convierte números a String).
- */
 public class RegistroResumenDto {
     private String id;
     private String titulo;
