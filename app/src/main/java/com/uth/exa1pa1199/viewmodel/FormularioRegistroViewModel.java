@@ -24,7 +24,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class FormularioRegistroViewModel extends AndroidViewModel {
-
     public static final String CAMPO_TITULO = "titulo";
     public static final String CAMPO_DESCRIPCION = "descripcion";
     public static final String CAMPO_FOTO = "fotobase64";
@@ -38,13 +37,15 @@ public class FormularioRegistroViewModel extends AndroidViewModel {
     private final ExecutorService ejecutor = Executors.newSingleThreadExecutor();
 
     private final MutableLiveData<UiState<RegistroDetalleDto>> estadoCarga = new MutableLiveData<>();
+
     private final MutableLiveData<UiState<Void>> estadoGuardar = new MutableLiveData<>();
+
     private final MutableLiveData<Map<String, String>> erroresValidacion = new MutableLiveData<>();
     private final MutableLiveData<Bitmap> fotoPreview = new MutableLiveData<>();
     private final MutableLiveData<Boolean> procesandoFoto = new MutableLiveData<>(false);
     private final MutableLiveData<String> errorFoto = new MutableLiveData<>();
 
-    private String id; // null = crear
+    private String id;
     private String fotoBase64;
     private boolean datosAplicados;
     private RegistroRequestDto ultimaSolicitud;
@@ -66,7 +67,7 @@ public class FormularioRegistroViewModel extends AndroidViewModel {
     public boolean esEdicion() { return id != null; }
 
     public void iniciar(String id) {
-        if (this.id != null || estadoCarga.getValue() != null) return; // ya iniciado (rotación)
+        if (this.id != null || estadoCarga.getValue() != null) return;
         this.id = id;
         if (id != null) cargarRegistro();
     }

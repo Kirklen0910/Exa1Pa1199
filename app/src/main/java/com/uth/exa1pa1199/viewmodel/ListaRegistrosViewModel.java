@@ -13,7 +13,6 @@ import com.uth.exa1pa1199.data.repository.RepositorioCallback;
 import java.util.List;
 
 public class ListaRegistrosViewModel extends ViewModel {
-
     private final RegistroRepository repositorio;
     private final MutableLiveData<UiState<List<RegistroResumenDto>>> estado = new MutableLiveData<>();
     private Cancelable peticion;

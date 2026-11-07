@@ -54,6 +54,7 @@ public class RegistroService : IRegistroService
     {
         registro.Titulo = input.Titulo;
         registro.Descripcion = input.Descripcion;
+
         registro.FotoBase64 = input.FotoBase64 is null
             ? null
             : Base64Util.Normalizar(input.FotoBase64)

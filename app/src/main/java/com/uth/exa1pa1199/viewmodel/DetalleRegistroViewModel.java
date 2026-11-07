@@ -17,7 +17,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class DetalleRegistroViewModel extends ViewModel {
-
     private final RegistroRepository repositorio;
     private final ExecutorService ejecutor = Executors.newSingleThreadExecutor();
 
@@ -39,6 +38,7 @@ public class DetalleRegistroViewModel extends ViewModel {
 
     public LiveData<UiState<RegistroDetalleDto>> getEstado() { return estado; }
     public LiveData<UiState<Void>> getEstadoEliminar() { return estadoEliminar; }
+
     public LiveData<Bitmap> getFoto() { return foto; }
 
     public void setId(String id) { this.id = id; }
@@ -56,6 +56,7 @@ public class DetalleRegistroViewModel extends ViewModel {
                     return;
                 }
                 estado.setValue(UiState.exito(datos));
+
                 String base64 = datos.getFotoBase64();
                 ejecutor.execute(() -> foto.postValue(ImagenUtils.decodificarBase64(base64)));
             }

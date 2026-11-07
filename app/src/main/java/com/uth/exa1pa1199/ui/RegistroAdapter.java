@@ -17,7 +17,6 @@ import com.uth.exa1pa1199.util.FechaUtils;
 import java.util.Objects;
 
 public class RegistroAdapter extends ListAdapter<RegistroResumenDto, RegistroAdapter.ViewHolder> {
-
     public interface OnRegistroClick {
         void onClick(RegistroResumenDto registro);
     }

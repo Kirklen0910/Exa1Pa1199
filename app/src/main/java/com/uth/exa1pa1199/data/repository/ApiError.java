@@ -4,16 +4,18 @@ import java.util.Collections;
 import java.util.Map;
 
 public class ApiError {
-
     public enum Tipo {
         SERVIDOR,
+
         SIN_CONEXION,
+
         TIEMPO_AGOTADO
     }
 
     private final Tipo tipo;
     private final int codigoHttp;
     private final String mensaje;
+
     private final Map<String, String> erroresCampo;
 
     public ApiError(Tipo tipo, int codigoHttp, String mensaje, Map<String, String> erroresCampo) {

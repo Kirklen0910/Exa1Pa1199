@@ -7,7 +7,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public final class FechaUtils {
-
     private FechaUtils() { }
 
     public static String formatear(String iso) {
@@ -25,6 +24,7 @@ public final class FechaUtils {
             if (tieneZona) {
                 return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.US).parse(s);
             }
+
             SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
             f.setTimeZone(TimeZone.getTimeZone("UTC"));
             return f.parse(s);

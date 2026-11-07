@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class FormularioRegistroActivity extends AppCompatActivity {
-
     public static final String EXTRA_ID = "registro_id";
     private static final String IDIOMA_VOZ = "es-ES";
 
@@ -122,7 +121,7 @@ public class FormularioRegistroActivity extends AppCompatActivity {
     private void registrarLaunchers() {
         camaraLauncher = registerForActivityResult(new ActivityResultContracts.TakePicture(), ok -> {
             if (Boolean.TRUE.equals(ok) && uriFotoTemp != null) {
-                viewModel.procesarFoto(uriFotoTemp); // reduce a 1024 px, JPEG 70 y Base64
+                viewModel.procesarFoto(uriFotoTemp);
             }
         });
 
@@ -229,6 +228,7 @@ public class FormularioRegistroActivity extends AppCompatActivity {
             case ERROR_SERVIDOR:
             case SIN_CONEXION:
             case TIEMPO_AGOTADO:
+
                 Map<String, String> noAsignados = mostrarErroresCampo(estado.getErroresCampo());
                 mostrarErrorGeneral(estado, () -> viewModel.reintentarGuardar());
                 if (!noAsignados.isEmpty()) {
@@ -278,6 +278,7 @@ public class FormularioRegistroActivity extends AppCompatActivity {
         UiState<?> g = viewModel.getEstadoGuardar().getValue();
         boolean procesando = Boolean.TRUE.equals(viewModel.getProcesandoFoto().getValue());
         boolean cargando = (c != null && c.esCargando()) || (g != null && g.esCargando()) || procesando;
+
         boolean edicionSinDatos = viewModel.esEdicion() && (c == null || c.getEstado() != UiState.Estado.EXITO);
 
         progressBar.setVisibility(cargando ? View.VISIBLE : View.GONE);
