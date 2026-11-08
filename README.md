@@ -5,6 +5,7 @@ Proyecto grupal de Programación Móvil I.
 - **Primer parcial:** aplicación Android con fotografía (SQLite).
 - **Tarea 2.2:** API REST en C# con ASP.NET Core y arquitectura limpia → carpeta `BitacoraApi/`.
 - **Tarea 2.3:** aplicación Android con MVVM, Retrofit y OkHttp que consume la API → carpeta `app/`.
+-   **Enlace Video Explicando como la APP consume la API** https://drive.google.com/file/d/12ksSMyVUCVZAQfG_djKlr1rZZes7mq7P/view?usp=sharing
 
 ## Integrantes
 
