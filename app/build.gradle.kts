@@ -53,6 +53,8 @@ dependencies {
     implementation(libs.recyclerview)
     implementation(libs.swiperefreshlayout)
 
+    implementation(libs.security.crypto)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.ext.junit)
