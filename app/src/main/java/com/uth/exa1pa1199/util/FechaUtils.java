@@ -17,6 +17,12 @@ public final class FechaUtils {
         return salida.format(fecha);
     }
 
+    public static long aMilisegundos(String iso) {
+        if (iso == null || iso.isEmpty()) return -1;
+        Date fecha = parsear(iso);
+        return fecha == null ? -1 : fecha.getTime();
+    }
+
     private static Date parsear(String iso) {
         String s = iso.replaceFirst("\\.\\d+", "");
         boolean tieneZona = s.endsWith("Z") || s.matches(".*[+-]\\d{2}:\\d{2}$");
