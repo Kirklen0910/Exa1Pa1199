@@ -9,7 +9,11 @@ public class ApiError {
 
         SIN_CONEXION,
 
-        TIEMPO_AGOTADO
+        TIEMPO_AGOTADO,
+
+        NO_AUTENTICADO,
+
+        PROHIBIDO
     }
 
     private final Tipo tipo;

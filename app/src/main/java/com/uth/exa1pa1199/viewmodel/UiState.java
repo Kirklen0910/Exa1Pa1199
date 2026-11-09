@@ -17,7 +17,11 @@ public final class UiState<T> {
 
         SIN_CONEXION,
 
-        TIEMPO_AGOTADO
+        TIEMPO_AGOTADO,
+
+        NO_AUTENTICADO,
+
+        SIN_PERMISO
     }
 
     private final Estado estado;
@@ -51,6 +55,8 @@ public final class UiState<T> {
         switch (error.getTipo()) {
             case SIN_CONEXION: e = Estado.SIN_CONEXION; break;
             case TIEMPO_AGOTADO: e = Estado.TIEMPO_AGOTADO; break;
+            case NO_AUTENTICADO: e = Estado.NO_AUTENTICADO; break;
+            case PROHIBIDO: e = Estado.SIN_PERMISO; break;
             default: e = Estado.ERROR_SERVIDOR; break;
         }
         return new UiState<>(e, null, error.getMensaje(), error.getCodigoHttp(), error.getErroresCampo());
@@ -65,7 +71,12 @@ public final class UiState<T> {
     public boolean esCargando() { return estado == Estado.CARGANDO; }
 
     public boolean esError() {
-        return estado == Estado.ERROR_SERVIDOR || estado == Estado.SIN_CONEXION || estado == Estado.TIEMPO_AGOTADO;
+        return estado == Estado.ERROR_SERVIDOR || estado == Estado.SIN_CONEXION || estado == Estado.TIEMPO_AGOTADO
+                || estado == Estado.NO_AUTENTICADO || estado == Estado.SIN_PERMISO;
+    }
+
+    public boolean esSesionExpirada() {
+        return estado == Estado.NO_AUTENTICADO;
     }
 
     public boolean permiteReintentar() {
