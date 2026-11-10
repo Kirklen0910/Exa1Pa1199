@@ -26,7 +26,6 @@ public class ExceptionHandlingMiddleware
         }
         catch (OperationCanceledException) when (context.RequestAborted.IsCancellationRequested)
         {
-            // El cliente cerró la conexión; no hay a quién responder.
         }
         catch (Exception ex)
         {
