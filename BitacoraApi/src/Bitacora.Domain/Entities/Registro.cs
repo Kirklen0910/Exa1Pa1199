@@ -14,4 +14,7 @@ public class Registro
     public string? FotoBase64 { get; set; }
 
     public DateTime FechaCreacion { get; set; }
+
+    public int UsuarioId { get; set; }
+    public Usuario? Usuario { get; set; }
 }

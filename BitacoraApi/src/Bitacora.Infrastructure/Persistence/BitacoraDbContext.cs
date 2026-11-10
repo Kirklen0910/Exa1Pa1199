@@ -10,9 +10,20 @@ public class BitacoraDbContext : DbContext
     }
 
     public DbSet<Registro> Registros => Set<Registro>();
+    public DbSet<Usuario> Usuarios => Set<Usuario>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Usuario>(e =>
+        {
+            e.ToTable("Usuarios");
+            e.HasKey(u => u.Id);
+            e.Property(u => u.Correo).IsRequired().HasMaxLength(Usuario.CorreoLongitudMaxima);
+            e.HasIndex(u => u.Correo).IsUnique();
+            e.Property(u => u.PasswordHash).IsRequired();
+            e.Property(u => u.Rol).IsRequired().HasMaxLength(Usuario.RolLongitudMaxima);
+        });
+
         modelBuilder.Entity<Registro>(e =>
         {
             e.ToTable("Registros");
@@ -25,6 +36,12 @@ public class BitacoraDbContext : DbContext
                 v => v.ToUniversalTime(),
                 v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
             e.HasIndex(r => r.FechaCreacion);
+
+            e.HasOne(r => r.Usuario)
+                .WithMany(u => u.Registros)
+                .HasForeignKey(r => r.UsuarioId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
         });
     }
 }
