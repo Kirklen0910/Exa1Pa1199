@@ -1,25 +1,21 @@
 <resources>
     <string name="app_name">Bitácora de campo</string>
 
-    <!-- Lista -->
     <string name="titulo_lista">Bitácora de campo</string>
     <string name="nuevo_registro">Nuevo registro</string>
     <string name="lista_vacia">Aún no hay registros.\nToca + para crear el primero.</string>
     <string name="con_foto">📷 Con foto</string>
     <string name="sin_foto">Sin foto</string>
 
-    <!-- Estados -->
     <string name="reintentar">Reintentar</string>
     <string name="cargando">Cargando…</string>
 
-    <!-- Permiso de red local (Android 17+) -->
     <string name="permiso_red_local_titulo">Se necesita acceso a la red local</string>
     <string name="permiso_red_local_mensaje">La app se conecta a la API que corre en la red local (tu PC, http://10.0.2.2:5080). Desde Android 17 el sistema bloquea esas conexiones si no concedes el permiso de acceso a la red local, y sin él no se pueden cargar ni guardar registros.</string>
     <string name="permiso_red_local_mensaje_ajustes">El permiso de acceso a la red local fue denegado de forma permanente. Actívalo en Ajustes › Permisos (Dispositivos cercanos / Red local) para que la app pueda conectarse a la API.</string>
     <string name="conceder_permiso">Conceder permiso</string>
     <string name="abrir_ajustes">Abrir ajustes</string>
 
-    <!-- Detalle -->
     <string name="titulo_detalle">Detalle del registro</string>
     <string name="editar">Editar</string>
     <string name="eliminar">Eliminar</string>
@@ -30,7 +26,6 @@
     <string name="fecha_creacion">Creado: %1$s</string>
     <string name="foto_del_registro">Foto del registro</string>
 
-    <!-- Formulario -->
     <string name="titulo_crear">Nuevo registro</string>
     <string name="titulo_editar">Editar registro</string>
     <string name="hint_titulo">Título</string>

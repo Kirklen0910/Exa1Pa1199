@@ -16,7 +16,6 @@ public class RegistrosController : ControllerBase
         _servicio = servicio;
     }
 
-    /// <summary>Lista todos los registros (sin la foto).</summary>
     [HttpGet]
     [ProducesResponseType(typeof(IReadOnlyList<RegistroResumenDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
@@ -25,7 +24,6 @@ public class RegistrosController : ControllerBase
         return Ok(await _servicio.ListarAsync(ct));
     }
 
-    /// <summary>Obtiene un registro con su foto en Base64.</summary>
     [HttpGet("{id:int}")]
     [ProducesResponseType(typeof(RegistroDetalleDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -35,7 +33,6 @@ public class RegistrosController : ControllerBase
         return registro is null ? NotFound() : Ok(registro);
     }
 
-    /// <summary>Crea un registro (la fecha la asigna el servidor). Devuelve 201 con cabecera Location.</summary>
     [HttpPost]
     [Consumes("application/json")]
     [ProducesResponseType(typeof(RegistroDetalleDto), StatusCodes.Status201Created)]
@@ -46,7 +43,6 @@ public class RegistrosController : ControllerBase
         return CreatedAtAction(nameof(ObtenerPorId), new { id = creado.Id }, creado);
     }
 
-    /// <summary>Reemplaza título, descripción y foto de un registro existente (la fecha se conserva).</summary>
     [HttpPut("{id:int}")]
     [Consumes("application/json")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -57,7 +53,6 @@ public class RegistrosController : ControllerBase
         return await _servicio.ActualizarAsync(id, input, ct) ? NoContent() : NotFound();
     }
 
-    /// <summary>Elimina un registro.</summary>
     [HttpDelete("{id:int}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]

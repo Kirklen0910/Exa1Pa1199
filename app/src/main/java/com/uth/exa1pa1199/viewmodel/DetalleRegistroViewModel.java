@@ -17,7 +17,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class DetalleRegistroViewModel extends ViewModel {
-
     private final RegistroRepository repositorio;
     private final ExecutorService ejecutor = Executors.newSingleThreadExecutor();
 
@@ -39,12 +38,11 @@ public class DetalleRegistroViewModel extends ViewModel {
 
     public LiveData<UiState<RegistroDetalleDto>> getEstado() { return estado; }
     public LiveData<UiState<Void>> getEstadoEliminar() { return estadoEliminar; }
-    /** Foto decodificada desde Base64 (null si el registro no tiene foto). */
+
     public LiveData<Bitmap> getFoto() { return foto; }
 
     public void setId(String id) { this.id = id; }
 
-    /** GET /api/registros/{id}. */
     public void cargar() {
         if (peticionDetalle != null) peticionDetalle.cancelar();
         UiState<RegistroDetalleDto> actual = estado.getValue();
@@ -58,7 +56,7 @@ public class DetalleRegistroViewModel extends ViewModel {
                     return;
                 }
                 estado.setValue(UiState.exito(datos));
-                // Decodificar la foto fuera del hilo principal.
+
                 String base64 = datos.getFotoBase64();
                 ejecutor.execute(() -> foto.postValue(ImagenUtils.decodificarBase64(base64)));
             }
@@ -70,7 +68,6 @@ public class DetalleRegistroViewModel extends ViewModel {
         });
     }
 
-    /** DELETE /api/registros/{id}. */
     public void eliminar() {
         if (peticionEliminar != null) peticionEliminar.cancelar();
         estadoEliminar.setValue(UiState.cargando(null));

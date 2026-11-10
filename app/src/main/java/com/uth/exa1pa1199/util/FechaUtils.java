@@ -6,9 +6,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-/** Convierte la fechaCreacion ISO-8601 de la API a un texto legible en la zona horaria del teléfono. */
 public final class FechaUtils {
-
     private FechaUtils() { }
 
     public static String formatear(String iso) {
@@ -19,15 +17,20 @@ public final class FechaUtils {
         return salida.format(fecha);
     }
 
+    public static long aMilisegundos(String iso) {
+        if (iso == null || iso.isEmpty()) return -1;
+        Date fecha = parsear(iso);
+        return fecha == null ? -1 : fecha.getTime();
+    }
+
     private static Date parsear(String iso) {
-        // Quitar fracciones de segundo (.1234567) que SimpleDateFormat no interpreta bien.
         String s = iso.replaceFirst("\\.\\d+", "");
         boolean tieneZona = s.endsWith("Z") || s.matches(".*[+-]\\d{2}:\\d{2}$");
         try {
             if (tieneZona) {
                 return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.US).parse(s);
             }
-            // Sin zona: se asume UTC (DateTime.UtcNow en la API).
+
             SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
             f.setTimeZone(TimeZone.getTimeZone("UTC"));
             return f.parse(s);

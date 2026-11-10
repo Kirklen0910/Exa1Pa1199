@@ -17,7 +17,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // URL base de la API (tarea 2.2). En el emulador, 10.0.2.2 es la máquina local.
         buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:5080/\"")
     }
 
@@ -44,18 +43,17 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.material)
 
-    // Red
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
     implementation(libs.okhttp.logging.interceptor)
 
-    // MVVM
     implementation(libs.lifecycle.viewmodel)
     implementation(libs.lifecycle.livedata)
 
-    // UI
     implementation(libs.recyclerview)
     implementation(libs.swiperefreshlayout)
+
+    implementation(libs.security.crypto)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.espresso.core)

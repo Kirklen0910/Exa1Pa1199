@@ -5,7 +5,6 @@ using Microsoft.Data.Sqlite;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 var csb = new SqliteConnectionStringBuilder(
     builder.Configuration.GetConnectionString("Bitacora") ?? "Data Source=bitacora.db");
 if (!Path.IsPathRooted(csb.DataSource))

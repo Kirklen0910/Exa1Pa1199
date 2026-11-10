@@ -17,7 +17,6 @@ public class RegistroRepository : IRegistroRepository
 
     public async Task<IReadOnlyList<RegistroResumenDto>> ListarResumenAsync(CancellationToken ct = default)
     {
-        // Proyección: el contenido de FotoBase64 no se lee de la base de datos (solo si es NULL o no).
         return await _db.Registros
             .AsNoTracking()
             .OrderByDescending(r => r.FechaCreacion)

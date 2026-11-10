@@ -33,12 +33,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
 
-/**
- * Formulario para crear y editar. Foto con la cámara (FileProvider del primer parcial)
- * y descripción por voz con RecognizerIntent en español.
- */
 public class FormularioRegistroActivity extends AppCompatActivity {
-
     public static final String EXTRA_ID = "registro_id";
     private static final String IDIOMA_VOZ = "es-ES";
 
@@ -123,12 +118,10 @@ public class FormularioRegistroActivity extends AppCompatActivity {
         return true;
     }
 
-    // ------------------------------------------------------------------ Cámara y voz
-
     private void registrarLaunchers() {
         camaraLauncher = registerForActivityResult(new ActivityResultContracts.TakePicture(), ok -> {
             if (Boolean.TRUE.equals(ok) && uriFotoTemp != null) {
-                viewModel.procesarFoto(uriFotoTemp); // reduce a 1024 px, JPEG 70 y Base64
+                viewModel.procesarFoto(uriFotoTemp);
             }
         });
 
@@ -160,7 +153,6 @@ public class FormularioRegistroActivity extends AppCompatActivity {
 
     private void abrirCamara() {
         try {
-            // Mismo FileProvider (cache-path) que el primer parcial.
             File archivo = new File(getCacheDir(), "foto_temp.jpg");
             uriFotoTemp = FileProvider.getUriForFile(this, getPackageName() + ".provider", archivo);
             camaraLauncher.launch(uriFotoTemp);
@@ -190,7 +182,6 @@ public class FormularioRegistroActivity extends AppCompatActivity {
         }
     }
 
-    /** Añade el texto dictado al final de la descripción. */
     private void agregarTextoDictado(String dictado) {
         Editable actual = editDescripcion.getText();
         String previo = actual == null ? "" : actual.toString().trim();
@@ -199,8 +190,6 @@ public class FormularioRegistroActivity extends AppCompatActivity {
         editDescripcion.setSelection(nuevo.length());
         layoutDescripcion.setError(null);
     }
-
-    // ------------------------------------------------------------------ Guardar y estados
 
     private void guardar() {
         limpiarErrores();
@@ -239,7 +228,7 @@ public class FormularioRegistroActivity extends AppCompatActivity {
             case ERROR_SERVIDOR:
             case SIN_CONEXION:
             case TIEMPO_AGOTADO:
-                // Errores 400 del servidor en los campos correspondientes.
+
                 Map<String, String> noAsignados = mostrarErroresCampo(estado.getErroresCampo());
                 mostrarErrorGeneral(estado, () -> viewModel.reintentarGuardar());
                 if (!noAsignados.isEmpty()) {
@@ -251,10 +240,6 @@ public class FormularioRegistroActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Pone cada mensaje en su TextInputLayout. Devuelve los errores que no corresponden
-     * a un campo visible (p. ej. fotoBase64) para mostrarlos en el mensaje general.
-     */
     private Map<String, String> mostrarErroresCampo(Map<String, String> errores) {
         Map<String, String> resto = new java.util.HashMap<>();
         if (errores == null) return resto;
@@ -288,13 +273,12 @@ public class FormularioRegistroActivity extends AppCompatActivity {
         ocultarErrorGeneral();
     }
 
-    /** Cargando: ProgressBar visible y todos los botones deshabilitados. */
     private void actualizarHabilitados() {
         UiState<?> c = viewModel.getEstadoCarga().getValue();
         UiState<?> g = viewModel.getEstadoGuardar().getValue();
         boolean procesando = Boolean.TRUE.equals(viewModel.getProcesandoFoto().getValue());
         boolean cargando = (c != null && c.esCargando()) || (g != null && g.esCargando()) || procesando;
-        // En edición no se permite guardar si no se pudo cargar el registro original.
+
         boolean edicionSinDatos = viewModel.esEdicion() && (c == null || c.getEstado() != UiState.Estado.EXITO);
 
         progressBar.setVisibility(cargando ? View.VISIBLE : View.GONE);

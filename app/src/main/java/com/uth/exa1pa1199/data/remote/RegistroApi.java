@@ -15,7 +15,6 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface RegistroApi {
-
     @GET("api/registros")
     Call<List<RegistroResumenDto>> listar();
 

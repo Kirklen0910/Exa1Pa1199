@@ -3,11 +3,6 @@ using Bitacora.Domain.Entities;
 
 namespace Bitacora.Application.Validation;
 
-/// <summary>
-/// Para un campo opcional: si es null se acepta. Si se envía, debe ser Base64 válido, no vacío y,
-/// una vez decodificado, no superar el tamaño máximo (2 MB por defecto).
-/// Acepta opcionalmente el prefijo "data:image/...;base64,".
-/// </summary>
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
 public sealed class Base64ImagenAttribute : ValidationAttribute
 {
@@ -21,7 +16,7 @@ public sealed class Base64ImagenAttribute : ValidationAttribute
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
         if (value is null)
-            return ValidationResult.Success; // la foto es opcional
+            return ValidationResult.Success;
 
         var miembro = validationContext.MemberName is null ? null : new[] { validationContext.MemberName };
 
@@ -47,7 +42,6 @@ public sealed class Base64ImagenAttribute : ValidationAttribute
 
 public static class Base64Util
 {
-    /// <summary>Devuelve los bytes decodificados o null si el texto no es Base64 válido.</summary>
     public static byte[]? Decodificar(string texto)
     {
         var limpio = texto.Trim();
@@ -61,10 +55,6 @@ public static class Base64Util
             : null;
     }
 
-    /// <summary>
-    /// Devuelve el Base64 en forma canónica (sin prefijo data:, espacios ni saltos de línea)
-    /// o null si el texto no es Base64 válido.
-    /// </summary>
     public static string? Normalizar(string texto)
     {
         var bytes = Decodificar(texto);

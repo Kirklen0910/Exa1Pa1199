@@ -29,14 +29,7 @@ import com.uth.exa1pa1199.viewmodel.UiState;
 import java.util.Collections;
 import java.util.List;
 
-/** Pantalla de listado: RecyclerView + deslizar para actualizar + botón nuevo. */
 public class ListaRegistrosActivity extends AppCompatActivity {
-
-    /**
-     * Android 17 (API 37) introduce Local Network Protection: sin este permiso de tiempo de ejecución las
-     * conexiones a la red local (p. ej. http://10.0.2.2:5080) se bloquean y terminan en timeout.
-     * Se usa el literal para no depender de la constante de Manifest.permission.
-     */
     static final String PERMISO_RED_LOCAL = "android.permission.ACCESS_LOCAL_NETWORK";
     private static final int API_RED_LOCAL = 37;
     private static final String KEY_SOLICITUD_EN_CURSO = "solicitudPermisoEnCurso";
@@ -52,9 +45,8 @@ public class ListaRegistrosActivity extends AppCompatActivity {
     private FloatingActionButton fabNuevo;
     private View layoutPermiso;
 
-    /** Evita lanzar el diálogo dos veces (p. ej. onStart tras rotar mientras el diálogo está abierto). */
     private boolean solicitudEnCurso;
-    /** El usuario ya respondió "No permitir": no se vuelve a pedir solo, se espera a que pulse el botón. */
+
     private boolean permisoDenegado;
 
     private final ActivityResultLauncher<String> solicitarPermisoRedLocal =
@@ -105,7 +97,7 @@ public class ListaRegistrosActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // Recarga al abrir y al volver de crear / editar / eliminar (o de Ajustes tras conceder el permiso).
+
         cargarSiHayPermiso();
     }
 
@@ -115,18 +107,12 @@ public class ListaRegistrosActivity extends AppCompatActivity {
         outState.putBoolean(KEY_SOLICITUD_EN_CURSO, solicitudEnCurso);
     }
 
-    // ---------------------------------------------------------------------------------------------
-    // Permiso de red local (Android 17+)
-    // ---------------------------------------------------------------------------------------------
-
-    /** Antes de Android 17 no existe la restricción; desde API 37 hay que tener el permiso concedido. */
     private boolean tienePermisoRedLocal() {
         return Build.VERSION.SDK_INT < API_RED_LOCAL
                 || ContextCompat.checkSelfPermission(this, PERMISO_RED_LOCAL)
                 == PackageManager.PERMISSION_GRANTED;
     }
 
-    /** Carga la lista si hay permiso; si no, lo solicita (solo la primera vez) o muestra el aviso. */
     private void cargarSiHayPermiso() {
         if (tienePermisoRedLocal()) {
             permisoDenegado = false;
@@ -148,10 +134,6 @@ public class ListaRegistrosActivity extends AppCompatActivity {
         solicitarPermisoRedLocal.launch(PERMISO_RED_LOCAL);
     }
 
-    /**
-     * Explica por qué se necesita el permiso, con botón para volver a pedirlo. Si el sistema ya no muestra
-     * el diálogo (denegado dos veces / "no volver a preguntar"), el botón abre los ajustes de la app.
-     */
     private void mostrarPermisoDenegado() {
         adapter.submitList(Collections.emptyList());
         textVacio.setVisibility(View.GONE);
@@ -176,7 +158,6 @@ public class ListaRegistrosActivity extends AppCompatActivity {
             if (puedePedirDeNuevo) {
                 pedirPermisoRedLocal();
             } else {
-                // Al volver de Ajustes, onStart() comprueba de nuevo el permiso y carga la lista.
                 startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                         Uri.fromParts("package", getPackageName(), null)));
             }
@@ -193,7 +174,6 @@ public class ListaRegistrosActivity extends AppCompatActivity {
     private void render(UiState<List<RegistroResumenDto>> estado) {
         boolean cargando = estado.esCargando();
 
-        // Cargando: ProgressBar visible y botones deshabilitados.
         progressBar.setVisibility(cargando ? View.VISIBLE : View.GONE);
         swipeRefresh.setRefreshing(false);
         swipeRefresh.setEnabled(!cargando);

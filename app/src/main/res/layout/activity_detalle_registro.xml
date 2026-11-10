@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Raíz vertical: barra de título arriba y el contenido debajo, así nada queda tapado por ella.
-     UiHelper.configurarPantalla aplica los WindowInsets (barra de estado, navegación y teclado). -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
