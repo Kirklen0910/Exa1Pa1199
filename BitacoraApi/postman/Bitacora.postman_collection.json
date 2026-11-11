@@ -1,19 +1,437 @@
 {
   "info": {
     "name": "Bitácora API",
-    "description": "Pruebas de la Bitácora API. Selecciona el entorno \"Bitácora - Local\" (archivo Bitacora.postman_environment.json), que define la variable baseUrl.\n\nEjecutar en orden con el Collection Runner: el POST exitoso guarda {{registroId}} para las siguientes peticiones.\n\nCampos del registro: titulo (obligatorio, 3-100), descripcion (obligatoria, máx. 500), fotoBase64 (opcional; Base64 válido, máx. 2 MB). fechaCreacion la asigna el servidor.",
+    "description": "Pruebas de la Bitácora API con JWT. Selecciona el entorno \"Bitácora - Local\" (archivo Bitacora.postman_environment.json) y escribe en el valor actual (Current value) de adminCorreo y adminPassword las credenciales del Admin semilla que configuraste con dotnet user-secrets.\n\nEjecutar en orden con el Collection Runner: la carpeta 0. Auth inicia sesión como Admin, registra dos usuarios (A y B) y guarda tokenAdmin, tokenUsuario y tokenUsuarioB. Por defecto todas las peticiones usan Bearer {{tokenUsuario}} (heredado de la colección); las que necesitan otro rol definen su propio token.\n\nLa carpeta 5 contiene las seis pruebas obligatorias. La 5b (token vencido) se omite hasta que el token guardado en tokenVencido haya vencido (10 minutos).",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{tokenUsuario}}",
+        "type": "string"
+      }
+    ]
+  },
   "variable": [
-    { "key": "registroId", "value": "" },
-    { "key": "fotoBase64", "value": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" }
+    {
+      "key": "usuarioPassword",
+      "value": "Clave1234"
+    },
+    {
+      "key": "usuarioACorreo",
+      "value": ""
+    },
+    {
+      "key": "usuarioBCorreo",
+      "value": ""
+    },
+    {
+      "key": "tokenAdmin",
+      "value": ""
+    },
+    {
+      "key": "tokenUsuario",
+      "value": ""
+    },
+    {
+      "key": "tokenUsuarioB",
+      "value": ""
+    },
+    {
+      "key": "tokenAlterado",
+      "value": ""
+    },
+    {
+      "key": "registroId",
+      "value": ""
+    },
+    {
+      "key": "registroSinFotoId",
+      "value": ""
+    },
+    {
+      "key": "cuerpoLoginFallido",
+      "value": ""
+    },
+    {
+      "key": "fotoBase64",
+      "value": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+    }
   ],
   "item": [
     {
-      "name": "POST /api/registros",
+      "name": "0. Auth",
       "item": [
         {
-          "name": "Crear registro - 201 Created",
+          "name": "Login Admin - 200 OK (guarda tokenAdmin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+                  "const b = pm.response.json();",
+                  "pm.test('Devuelve token, expiracion y rol', () => {",
+                  "  pm.expect(b.token).to.be.a('string').and.not.empty;",
+                  "  pm.expect(b.expiracion).to.be.a('string');",
+                  "  pm.expect(b.rol).to.be.oneOf(['Admin', 'Usuario']);",
+                  "});",
+                  "pm.test('El token vence en 10 minutos o menos', () => {",
+                  "  const exp = JSON.parse(atob(b.token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))).exp;",
+                  "  pm.expect(exp * 1000 - Date.now()).to.be.at.most(10 * 60 * 1000 + 5000);",
+                  "});",
+                  "pm.collectionVariables.set('tokenAdmin', b.token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"{{adminCorreo}}\",\n  \"password\": \"{{adminPassword}}\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Registrar usuario A - 201 Created",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('usuarioACorreo', 'usuarioa' + Date.now() + '@test.com');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201 Created', () => pm.response.to.have.status(201));",
+                  "pm.test('Se crea con rol Usuario y sin exponer la contraseña', () => {",
+                  "  const b = pm.response.json();",
+                  "  pm.expect(b.rol).to.eql('Usuario');",
+                  "  pm.expect(b).to.not.have.property('password');",
+                  "  pm.expect(b).to.not.have.property('passwordHash');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/registro",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "registro"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"{{usuarioACorreo}}\",\n  \"password\": \"{{usuarioPassword}}\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Login usuario A - 200 OK (guarda tokenUsuario)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+                  "const b = pm.response.json();",
+                  "pm.test('Devuelve token, expiracion y rol', () => {",
+                  "  pm.expect(b.token).to.be.a('string').and.not.empty;",
+                  "  pm.expect(b.expiracion).to.be.a('string');",
+                  "  pm.expect(b.rol).to.be.oneOf(['Admin', 'Usuario']);",
+                  "});",
+                  "pm.test('El token vence en 10 minutos o menos', () => {",
+                  "  const exp = JSON.parse(atob(b.token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))).exp;",
+                  "  pm.expect(exp * 1000 - Date.now()).to.be.at.most(10 * 60 * 1000 + 5000);",
+                  "});",
+                  "pm.collectionVariables.set('tokenUsuario', b.token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"{{usuarioACorreo}}\",\n  \"password\": \"{{usuarioPassword}}\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Registrar usuario B - 201 Created",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('usuarioBCorreo', 'usuariob' + Date.now() + '@test.com');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201 Created', () => pm.response.to.have.status(201));",
+                  "pm.test('Se crea con rol Usuario y sin exponer la contraseña', () => {",
+                  "  const b = pm.response.json();",
+                  "  pm.expect(b.rol).to.eql('Usuario');",
+                  "  pm.expect(b).to.not.have.property('password');",
+                  "  pm.expect(b).to.not.have.property('passwordHash');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/registro",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "registro"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"{{usuarioBCorreo}}\",\n  \"password\": \"{{usuarioPassword}}\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Login usuario B - 200 OK (guarda tokenUsuarioB)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+                  "const b = pm.response.json();",
+                  "pm.test('Devuelve token, expiracion y rol', () => {",
+                  "  pm.expect(b.token).to.be.a('string').and.not.empty;",
+                  "  pm.expect(b.expiracion).to.be.a('string');",
+                  "  pm.expect(b.rol).to.be.oneOf(['Admin', 'Usuario']);",
+                  "});",
+                  "pm.test('El token vence en 10 minutos o menos', () => {",
+                  "  const exp = JSON.parse(atob(b.token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))).exp;",
+                  "  pm.expect(exp * 1000 - Date.now()).to.be.at.most(10 * 60 * 1000 + 5000);",
+                  "});",
+                  "pm.collectionVariables.set('tokenUsuarioB', b.token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"{{usuarioBCorreo}}\",\n  \"password\": \"{{usuarioPassword}}\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Registrar correo duplicado - 409 Conflict",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 409 Conflict', () => pm.response.to.have.status(409));",
+                  "pm.test('Respuesta ProblemDetails en JSON', () => {",
+                  "  pm.expect(pm.response.headers.get('Content-Type')).to.include('json');",
+                  "  const b = pm.response.json();",
+                  "  pm.expect(b).to.have.property('title');",
+                  "  pm.expect(b).to.have.property('status', pm.response.code);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/registro",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "registro"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"{{usuarioACorreo}}\",\n  \"password\": \"{{usuarioPassword}}\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Registrar con datos inválidos - 400 Bad Request",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 400 Bad Request', () => pm.response.to.have.status(400));",
+                  "pm.test('Valida correo y contraseña mínima', () => {",
+                  "  const b = pm.response.json();",
+                  "  pm.expect(b.errors).to.have.property('Correo');",
+                  "  pm.expect(b.errors).to.have.property('Password');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/registro",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "registro"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"esto-no-es-correo\",\n  \"password\": \"123\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "1. POST /api/registros",
+      "item": [
+        {
+          "name": "Crear registro (usuario A) - 201 Created",
           "event": [
             {
               "listen": "test",
@@ -23,12 +441,11 @@
                   "pm.test('Status 201 Created', () => pm.response.to.have.status(201));",
                   "pm.test('Incluye cabecera Location', () => pm.response.to.have.header('Location'));",
                   "const body = pm.response.json();",
-                  "pm.test('Devuelve id, fotoBase64 y fechaCreacion del servidor', () => {",
+                  "pm.test('Devuelve id, fotoBase64, fechaCreacion y usuarioId', () => {",
                   "  pm.expect(body.id).to.be.a('number');",
                   "  pm.expect(body.fotoBase64).to.be.a('string');",
                   "  pm.expect(body.fechaCreacion).to.be.a('string');",
-                  "  pm.expect(body).to.not.have.property('latitud');",
-                  "  pm.expect(body).to.not.have.property('longitud');",
+                  "  pm.expect(body.usuarioId).to.be.a('number');",
                   "});",
                   "pm.collectionVariables.set('registroId', body.id);"
                 ]
@@ -37,16 +454,30 @@
           ],
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/registros",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "registros"
+              ]
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"titulo\": \"Visita de campo\",\n  \"descripcion\": \"Registro creado desde Postman\",\n  \"fotoBase64\": \"{{fotoBase64}}\"\n}"
-            },
-            "url": { "raw": "{{baseUrl}}/api/registros", "host": ["{{baseUrl}}"], "path": ["api", "registros"] }
+            }
           }
         },
         {
-          "name": "Crear registro sin foto - 201 Created",
+          "name": "Crear registro sin foto (usuario A) - 201 Created",
           "event": [
             {
               "listen": "test",
@@ -63,12 +494,26 @@
           ],
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/registros",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "registros"
+              ]
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"titulo\": \"Registro sin foto\",\n  \"descripcion\": \"La foto es opcional\"\n}"
-            },
-            "url": { "raw": "{{baseUrl}}/api/registros", "host": ["{{baseUrl}}"], "path": ["api", "registros"] }
+            }
           }
         },
         {
@@ -92,18 +537,32 @@
           ],
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/registros",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "registros"
+              ]
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"titulo\": \"\",\n  \"fotoBase64\": \"esto no es base64!!\"\n}"
-            },
-            "url": { "raw": "{{baseUrl}}/api/registros", "host": ["{{baseUrl}}"], "path": ["api", "registros"] }
+            }
           }
         }
       ]
     },
     {
-      "name": "GET /api/registros",
+      "name": "2. GET /api/registros",
       "item": [
         {
           "name": "Listar registros - 200 OK",
@@ -129,7 +588,16 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": { "raw": "{{baseUrl}}/api/registros", "host": ["{{baseUrl}}"], "path": ["api", "registros"] }
+            "url": {
+              "raw": "{{baseUrl}}/api/registros",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "registros"
+              ]
+            }
           }
         },
         {
@@ -147,14 +615,28 @@
           ],
           "request": {
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/xml" }],
-            "url": { "raw": "{{baseUrl}}/api/registros", "host": ["{{baseUrl}}"], "path": ["api", "registros"] }
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/xml"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/registros",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "registros"
+              ]
+            }
           }
         }
       ]
     },
     {
-      "name": "GET /api/registros/{id}",
+      "name": "3. GET /api/registros/{id}",
       "item": [
         {
           "name": "Obtener registro - 200 OK",
@@ -177,7 +659,17 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": { "raw": "{{baseUrl}}/api/registros/{{registroId}}", "host": ["{{baseUrl}}"], "path": ["api", "registros", "{{registroId}}"] }
+            "url": {
+              "raw": "{{baseUrl}}/api/registros/{{registroId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "registros",
+                "{{registroId}}"
+              ]
+            }
           }
         },
         {
@@ -196,16 +688,26 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": { "raw": "{{baseUrl}}/api/registros/999999", "host": ["{{baseUrl}}"], "path": ["api", "registros", "999999"] }
+            "url": {
+              "raw": "{{baseUrl}}/api/registros/999999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "registros",
+                "999999"
+              ]
+            }
           }
         }
       ]
     },
     {
-      "name": "PUT /api/registros/{id}",
+      "name": "4. PUT /api/registros/{id}",
       "item": [
         {
-          "name": "Actualizar registro - 204 No Content",
+          "name": "Actualizar registro propio (usuario A) - 204 No Content",
           "event": [
             {
               "listen": "test",
@@ -219,12 +721,75 @@
           ],
           "request": {
             "method": "PUT",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/registros/{{registroId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "registros",
+                "{{registroId}}"
+              ]
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"titulo\": \"Visita de campo (editada)\",\n  \"descripcion\": \"Actualizado desde Postman\",\n  \"fotoBase64\": \"{{fotoBase64}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Admin actualiza registro ajeno - 204 No Content",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 204 No Content', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/registros/{{registroSinFotoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "registros",
+                "{{registroSinFotoId}}"
+              ]
             },
-            "url": { "raw": "{{baseUrl}}/api/registros/{{registroId}}", "host": ["{{baseUrl}}"], "path": ["api", "registros", "{{registroId}}"] }
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Editado por el Admin\",\n  \"descripcion\": \"El Admin puede modificar cualquier registro\"\n}"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenAdmin}}",
+                  "type": "string"
+                }
+              ]
+            }
           }
         },
         {
@@ -248,12 +813,27 @@
           ],
           "request": {
             "method": "PUT",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/registros/{{registroId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "registros",
+                "{{registroId}}"
+              ]
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"titulo\": \"Ti\",\n  \"descripcion\": \"\",\n  \"fotoBase64\": \"@@@\"\n}"
-            },
-            "url": { "raw": "{{baseUrl}}/api/registros/{{registroId}}", "host": ["{{baseUrl}}"], "path": ["api", "registros", "{{registroId}}"] }
+            }
           }
         },
         {
@@ -271,21 +851,120 @@
           ],
           "request": {
             "method": "PUT",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/registros/999999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "registros",
+                "999999"
+              ]
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"titulo\": \"No existe\",\n  \"descripcion\": \"Registro inexistente\"\n}"
-            },
-            "url": { "raw": "{{baseUrl}}/api/registros/999999", "host": ["{{baseUrl}}"], "path": ["api", "registros", "999999"] }
+            }
           }
         }
       ]
     },
     {
-      "name": "DELETE /api/registros/{id}",
+      "name": "5. Pruebas de seguridad (obligatorias)",
+      "description": "Las seis pruebas obligatorias de la tarea 2.4. Requieren haber ejecutado antes la carpeta 0. Auth y 1. POST.",
       "item": [
         {
-          "name": "Eliminar registro - 204 No Content",
+          "name": "1. Petición sin token - 401 Unauthorized",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 401 Unauthorized', () => pm.response.to.have.status(401));",
+                  "pm.test('Respuesta ProblemDetails en JSON', () => {",
+                  "  pm.expect(pm.response.headers.get('Content-Type')).to.include('json');",
+                  "  const b = pm.response.json();",
+                  "  pm.expect(b).to.have.property('title');",
+                  "  pm.expect(b).to.have.property('status', pm.response.code);",
+                  "});",
+                  "pm.test('Incluye WWW-Authenticate: Bearer', () => pm.expect(pm.response.headers.get('WWW-Authenticate')).to.include('Bearer'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/registros",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "registros"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "2. Token de Usuario intentando DELETE - 403 Forbidden",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 403 Forbidden', () => pm.response.to.have.status(403));",
+                  "pm.test('Respuesta ProblemDetails en JSON', () => {",
+                  "  pm.expect(pm.response.headers.get('Content-Type')).to.include('json');",
+                  "  const b = pm.response.json();",
+                  "  pm.expect(b).to.have.property('title');",
+                  "  pm.expect(b).to.have.property('status', pm.response.code);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/registros/{{registroId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "registros",
+                "{{registroId}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenUsuario}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "3. Token de Admin haciendo DELETE - 204 No Content",
           "event": [
             {
               "listen": "test",
@@ -300,11 +979,312 @@
           "request": {
             "method": "DELETE",
             "header": [],
-            "url": { "raw": "{{baseUrl}}/api/registros/{{registroId}}", "host": ["{{baseUrl}}"], "path": ["api", "registros", "{{registroId}}"] }
+            "url": {
+              "raw": "{{baseUrl}}/api/registros/{{registroSinFotoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "registros",
+                "{{registroSinFotoId}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenAdmin}}",
+                  "type": "string"
+                }
+              ]
+            }
           }
         },
         {
-          "name": "Eliminar registro sin foto - 204 No Content",
+          "name": "4. Usuario B modificando registro de A - 403 Forbidden",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 403 Forbidden', () => pm.response.to.have.status(403));",
+                  "pm.test('Respuesta ProblemDetails en JSON', () => {",
+                  "  pm.expect(pm.response.headers.get('Content-Type')).to.include('json');",
+                  "  const b = pm.response.json();",
+                  "  pm.expect(b).to.have.property('title');",
+                  "  pm.expect(b).to.have.property('status', pm.response.code);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/registros/{{registroId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "registros",
+                "{{registroId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Intento ajeno\",\n  \"descripcion\": \"Usuario B no es el creador\"\n}"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenUsuarioB}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "5a. Token alterado - 401 Unauthorized",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const t = pm.collectionVariables.get('tokenUsuario');",
+                  "const partes = t.split('.');",
+                  "const payload = JSON.parse(atob(partes[1].replace(/-/g, '+').replace(/_/g, '/')));",
+                  "payload.role = 'Admin';",
+                  "const nuevo = btoa(JSON.stringify(payload)).replace(/=+$/, '').replace(/\\+/g, '-').replace(/\\//g, '_');",
+                  "pm.collectionVariables.set('tokenAlterado', partes[0] + '.' + nuevo + '.' + partes[2]);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 401 Unauthorized', () => pm.response.to.have.status(401));",
+                  "pm.test('Respuesta ProblemDetails en JSON', () => {",
+                  "  pm.expect(pm.response.headers.get('Content-Type')).to.include('json');",
+                  "  const b = pm.response.json();",
+                  "  pm.expect(b).to.have.property('title');",
+                  "  pm.expect(b).to.have.property('status', pm.response.code);",
+                  "});",
+                  "pm.test('WWW-Authenticate indica invalid_token', () => pm.expect(pm.response.headers.get('WWW-Authenticate')).to.include('invalid_token'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/registros",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "registros"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenAlterado}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "5b. Token vencido - 401 Unauthorized (se omite si aún no vence)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const t = pm.environment.get('tokenVencido');",
+                  "const exp = t ? JSON.parse(atob(t.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))).exp : 0;",
+                  "if (!t || exp * 1000 > Date.now()) {",
+                  "  if (!t) pm.environment.set('tokenVencido', pm.collectionVariables.get('tokenUsuario'));",
+                  "  console.log('tokenVencido aún no vence: vuelva a ejecutar esta petición dentro de 10 minutos.');",
+                  "  pm.execution.skipRequest();",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 401 Unauthorized', () => pm.response.to.have.status(401));",
+                  "pm.test('Respuesta ProblemDetails en JSON', () => {",
+                  "  pm.expect(pm.response.headers.get('Content-Type')).to.include('json');",
+                  "  const b = pm.response.json();",
+                  "  pm.expect(b).to.have.property('title');",
+                  "  pm.expect(b).to.have.property('status', pm.response.code);",
+                  "});",
+                  "pm.test('WWW-Authenticate indica que el token expiró', () => pm.expect(pm.response.headers.get('WWW-Authenticate')).to.include('expired'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/registros",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "registros"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenVencido}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "6a. Login con contraseña incorrecta - 401 Unauthorized",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 401 Unauthorized', () => pm.response.to.have.status(401));",
+                  "pm.test('Respuesta ProblemDetails en JSON', () => {",
+                  "  pm.expect(pm.response.headers.get('Content-Type')).to.include('json');",
+                  "  const b = pm.response.json();",
+                  "  pm.expect(b).to.have.property('title');",
+                  "  pm.expect(b).to.have.property('status', pm.response.code);",
+                  "});",
+                  "const b = pm.response.json();",
+                  "pm.test('Mensaje genérico (no dice qué campo falló)', () => {",
+                  "  pm.expect(b.detail).to.eql('El correo o la contraseña no son correctos.');",
+                  "});",
+                  "pm.collectionVariables.set('cuerpoLoginFallido', JSON.stringify({ title: b.title, detail: b.detail }));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"{{adminCorreo}}\",\n  \"password\": \"incorrecta\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "6b. Login con correo inexistente - 401 Unauthorized (mismo mensaje)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 401 Unauthorized', () => pm.response.to.have.status(401));",
+                  "pm.test('Respuesta ProblemDetails en JSON', () => {",
+                  "  pm.expect(pm.response.headers.get('Content-Type')).to.include('json');",
+                  "  const b = pm.response.json();",
+                  "  pm.expect(b).to.have.property('title');",
+                  "  pm.expect(b).to.have.property('status', pm.response.code);",
+                  "});",
+                  "const b = pm.response.json();",
+                  "pm.test('Misma respuesta que con contraseña incorrecta', () => {",
+                  "  pm.expect(JSON.stringify({ title: b.title, detail: b.detail })).to.eql(pm.collectionVariables.get('cuerpoLoginFallido'));",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"noexiste{{$timestamp}}@test.com\",\n  \"password\": \"incorrecta\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. DELETE /api/registros/{id} (Admin)",
+      "item": [
+        {
+          "name": "Eliminar registro (Admin) - 204 No Content",
           "event": [
             {
               "listen": "test",
@@ -319,11 +1299,31 @@
           "request": {
             "method": "DELETE",
             "header": [],
-            "url": { "raw": "{{baseUrl}}/api/registros/{{registroSinFotoId}}", "host": ["{{baseUrl}}"], "path": ["api", "registros", "{{registroSinFotoId}}"] }
+            "url": {
+              "raw": "{{baseUrl}}/api/registros/{{registroId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "registros",
+                "{{registroId}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenAdmin}}",
+                  "type": "string"
+                }
+              ]
+            }
           }
         },
         {
-          "name": "Eliminar registro ya eliminado - 404 Not Found",
+          "name": "Eliminar registro ya eliminado (Admin) - 404 Not Found",
           "event": [
             {
               "listen": "test",
@@ -338,7 +1338,27 @@
           "request": {
             "method": "DELETE",
             "header": [],
-            "url": { "raw": "{{baseUrl}}/api/registros/{{registroId}}", "host": ["{{baseUrl}}"], "path": ["api", "registros", "{{registroId}}"] }
+            "url": {
+              "raw": "{{baseUrl}}/api/registros/{{registroId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "registros",
+                "{{registroId}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenAdmin}}",
+                  "type": "string"
+                }
+              ]
+            }
           }
         }
       ]
