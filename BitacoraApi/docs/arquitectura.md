@@ -8,26 +8,35 @@ La solución `Bitacora.sln` sigue una arquitectura por capas (estilo *Clean Arch
 ```mermaid
 flowchart TB
     subgraph Api["Bitacora.Api (presentación)"]
-        C[RegistrosController]
+        C[RegistrosController<br/>Authorize + Roles Admin en DELETE]
+        AC[AuthController<br/>registro y login AllowAnonymous]
         M[ExceptionHandlingMiddleware]
-        P["Program.cs<br/>DI, Swagger, Kestrel 0.0.0.0:5080"]
+        SEG[RespuestasSeguridad<br/>401/403 ProblemDetails]
+        P["Program.cs<br/>DI, JwtBearer, Swagger Bearer,<br/>HTTPS 7080 + HTTP 5080"]
     end
 
     subgraph Infra["Bitacora.Infrastructure (persistencia)"]
         DB[BitacoraDbContext<br/>EF Core + SQLite]
         R[RegistroRepository]
+        UR[UsuarioRepository]
+        HC[HashContrasena<br/>PasswordHasher]
+        GT[GeneradorTokenJwt<br/>JwtOpciones]
         MG[Migrations]
     end
 
     subgraph App["Bitacora.Application (casos de uso)"]
         S[RegistroService / IRegistroService]
+        AS[AuthService / IAuthService]
         IR[IRegistroRepository]
+        IU[IUsuarioRepository]
+        IS[IHashContrasena, IGeneradorToken]
         D[DTOs: RegistroInputDto,<br/>RegistroResumenDto, RegistroDetalleDto]
         V[Base64ImagenAttribute<br/>opcional, Base64 válido, máx. 2 MB]
     end
 
     subgraph Dom["Bitacora.Domain (núcleo)"]
-        E["Entidad Registro<br/>Id, Titulo, Descripcion,<br/>FotoBase64?, FechaCreacion<br/>+ constantes de las reglas"]
+        E["Entidad Registro<br/>Id, Titulo, Descripcion,<br/>FotoBase64?, FechaCreacion, UsuarioId<br/>+ constantes de las reglas"]
+        EU["Entidad Usuario<br/>Id, Correo, PasswordHash, Rol<br/>Roles: Admin, Usuario"]
     end
 
     Api --> App
@@ -38,14 +47,19 @@ flowchart TB
 
     R -. implementa .-> IR
     S -. usa .-> IR
+    UR -. implementa .-> IU
+    HC -. implementa .-> IS
+    GT -. implementa .-> IS
+    AS -. usa .-> IU
+    AS -. usa .-> IS
 ```
 
 | Proyecto                  | Referencia a                       | Contiene |
 |---------------------------|------------------------------------|----------|
-| `Bitacora.Domain`         | (ninguno)                          | Entidad `Registro` y las reglas del negocio (longitudes de título y descripción, tamaño máximo de la foto) como constantes. Sin interfaces ni dependencias |
-| `Bitacora.Application`    | Domain                             | DTOs, interfaz `IRegistroRepository`, validación (Data Annotations + `Base64Imagen`), `RegistroService` |
-| `Bitacora.Infrastructure` | Application, Domain                | `BitacoraDbContext`, `RegistroRepository`, migraciones, `AddInfraestructura()` |
-| `Bitacora.Api`            | Application, Infrastructure        | Controlador, middleware de errores, Swagger, composición de dependencias |
+| `Bitacora.Domain`         | (ninguno)                          | Entidades `Registro` y `Usuario`, constantes `Roles` y las reglas del negocio (longitudes, tamaño máximo de la foto, contraseña mínima). Sin interfaces ni dependencias |
+| `Bitacora.Application`    | Domain                             | DTOs, interfaces `IRegistroRepository`, `IUsuarioRepository`, `IHashContrasena`, `IGeneradorToken`, validación, `RegistroService` (regla del dueño) y `AuthService` (registro, login, Admin semilla) |
+| `Bitacora.Infrastructure` | Application, Domain                | `BitacoraDbContext`, repositorios, `HashContrasena` (`PasswordHasher`), `GeneradorTokenJwt`, `JwtOpciones`, migraciones, `AddInfraestructura()` |
+| `Bitacora.Api`            | Application, Infrastructure        | Controladores, `JwtBearer`, respuestas 401/403, middleware de errores, Swagger con Bearer, HTTPS, composición de dependencias |
 
 `Bitacora.Api` referencia a Infrastructure solo para registrar las implementaciones en el contenedor de DI
 (*composition root*). El controlador trabaja únicamente con `IRegistroService`.
@@ -85,3 +99,8 @@ sequenceDiagram
   `tieneFoto`, así la lista es liviana para el `RecyclerView` de Android. La foto se pide con `GET /api/registros/{id}`.
 - **Errores en formato ProblemDetails (RFC 9110):** 400 con `errors` por campo, 404 y 500 sin detalles internos.
 - **`FechaCreacion` en UTC** asignada por el servidor. No está en el DTO de entrada y PUT no la modifica.
+- **Seguridad detrás de interfaces (tarea 2.4).** Application solo conoce `IHashContrasena` e `IGeneradorToken`;
+  las implementaciones con `PasswordHasher` y `System.IdentityModel.Tokens.Jwt` están en Infrastructure. La regla
+  "un Usuario solo modifica sus registros" vive en `RegistroService`, no en el controlador.
+- **El usuario actual sale del token.** El controlador lee `sub` y `role` (`ClaimsPrincipalExtensions`) y los pasa al
+  servicio como `UsuarioActual`. Detalle completo en [../../docs/seguridad-jwt.md](../../docs/seguridad-jwt.md).
