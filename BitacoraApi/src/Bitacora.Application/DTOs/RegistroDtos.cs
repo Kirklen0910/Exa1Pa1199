@@ -25,11 +25,13 @@ public record RegistroResumenDto(
     string Titulo,
     string Descripcion,
     DateTime FechaCreacion,
-    bool TieneFoto);
+    bool TieneFoto,
+    int UsuarioId);
 
 public record RegistroDetalleDto(
     int Id,
     string Titulo,
     string Descripcion,
     string? FotoBase64,
-    DateTime FechaCreacion);
+    DateTime FechaCreacion,
+    int UsuarioId);

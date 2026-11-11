@@ -1,5 +1,6 @@
 using Bitacora.Application.DTOs;
 using Bitacora.Application.Interfaces;
+using Bitacora.Application.Seguridad;
 using Bitacora.Application.Validation;
 using Bitacora.Domain.Entities;
 
@@ -23,22 +24,25 @@ public class RegistroService : IRegistroService
         return registro is null ? null : ADetalle(registro);
     }
 
-    public async Task<RegistroDetalleDto> CrearAsync(RegistroInputDto input, CancellationToken ct = default)
+    public async Task<RegistroDetalleDto> CrearAsync(RegistroInputDto input, UsuarioActual usuario,
+        CancellationToken ct = default)
     {
-        var registro = new Registro { FechaCreacion = DateTime.UtcNow };
+        var registro = new Registro { FechaCreacion = DateTime.UtcNow, UsuarioId = usuario.Id };
         Aplicar(input, registro);
         await _repositorio.AgregarAsync(registro, ct);
         return ADetalle(registro);
     }
 
-    public async Task<bool> ActualizarAsync(int id, RegistroInputDto input, CancellationToken ct = default)
+    public async Task<ResultadoOperacion> ActualizarAsync(int id, RegistroInputDto input, UsuarioActual usuario,
+        CancellationToken ct = default)
     {
         var registro = await _repositorio.ObtenerPorIdAsync(id, ct);
-        if (registro is null) return false;
+        if (registro is null) return ResultadoOperacion.NoEncontrado;
+        if (!usuario.EsAdmin && registro.UsuarioId != usuario.Id) return ResultadoOperacion.Prohibido;
 
         Aplicar(input, registro);
         await _repositorio.ActualizarAsync(registro, ct);
-        return true;
+        return ResultadoOperacion.Exito;
     }
 
     public async Task<bool> EliminarAsync(int id, CancellationToken ct = default)
@@ -62,5 +66,5 @@ public class RegistroService : IRegistroService
     }
 
     private static RegistroDetalleDto ADetalle(Registro r) =>
-        new(r.Id, r.Titulo, r.Descripcion, r.FotoBase64, r.FechaCreacion);
+        new(r.Id, r.Titulo, r.Descripcion, r.FotoBase64, r.FechaCreacion, r.UsuarioId);
 }
