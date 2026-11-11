@@ -25,7 +25,8 @@ public class RegistroRepository : IRegistroRepository
                 r.Titulo,
                 r.Descripcion,
                 r.FechaCreacion,
-                r.FotoBase64 != null))
+                r.FotoBase64 != null,
+                r.UsuarioId))
             .ToListAsync(ct);
     }
 
