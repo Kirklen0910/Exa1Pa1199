@@ -60,5 +60,9 @@
             android:name=".ui.FormularioRegistroActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ui.ComparativaActivity"
+            android:exported="false" />
     </application>
 </manifest>

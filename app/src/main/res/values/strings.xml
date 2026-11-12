@@ -57,4 +57,20 @@
     <string name="sesion_cerrada">Sesión cerrada.</string>
     <string name="sesion_expirada">Tu sesión expiró. Inicia sesión de nuevo.</string>
     <string name="subtitulo_sesion">%1$s (%2$s)</string>
+
+    <string name="titulo_comparativa">Comparativa de librerías</string>
+    <string name="escenario">Endpoint a consultar</string>
+    <string name="ruta_registros">GET /api/registros (normal)</string>
+    <string name="ruta_demora">GET /api/pruebas/demora (tiempo de espera)</string>
+    <string name="ruta_error">GET /api/pruebas/error (error 500)</string>
+    <string name="repetir_cinco">Repetir 5 veces y calcular el promedio</string>
+    <string name="volley">Volley</string>
+    <string name="okhttp">OkHttp</string>
+    <string name="retrofit">Retrofit</string>
+    <string name="alterar_token">Alterar token (prueba 401)</string>
+    <string name="token_alterado">Se alteró la firma del token. La siguiente consulta debe responder 401.</string>
+    <string name="sin_sesion">No hay una sesión activa. Inicia sesión de nuevo.</string>
+    <string name="sin_resultados">Sin ejecutar</string>
+    <string name="bitacora_ejecucion">Bitácora de ejecución</string>
+    <string name="limpiar">Limpiar</string>
 </resources>
