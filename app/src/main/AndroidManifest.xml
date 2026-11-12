@@ -12,6 +12,7 @@
         android:required="false" />
 
     <application
+        android:name=".BitacoraApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -33,13 +34,23 @@
         </provider>
 
         <activity
-            android:name=".ui.ListaRegistrosActivity"
-            android:exported="true">
+            android:name=".ui.LoginActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.RegistroUsuarioActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ui.ListaRegistrosActivity"
+            android:exported="false" />
 
         <activity
             android:name=".ui.DetalleRegistroActivity"

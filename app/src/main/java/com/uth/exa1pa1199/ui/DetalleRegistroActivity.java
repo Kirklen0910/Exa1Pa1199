@@ -9,7 +9,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -20,7 +19,7 @@ import com.uth.exa1pa1199.util.FechaUtils;
 import com.uth.exa1pa1199.viewmodel.DetalleRegistroViewModel;
 import com.uth.exa1pa1199.viewmodel.UiState;
 
-public class DetalleRegistroActivity extends AppCompatActivity {
+public class DetalleRegistroActivity extends SesionActivity {
     public static final String EXTRA_ID = "registro_id";
 
     private DetalleRegistroViewModel viewModel;
@@ -60,6 +59,7 @@ public class DetalleRegistroActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(DetalleRegistroViewModel.class);
         viewModel.setId(id);
+        buttonEliminar.setVisibility(viewModel.puedeEliminar() ? View.VISIBLE : View.GONE);
         viewModel.getEstado().observe(this, this::renderDetalle);
         viewModel.getEstadoEliminar().observe(this, this::renderEliminar);
         viewModel.getFoto().observe(this, bitmap -> {
@@ -79,7 +79,7 @@ public class DetalleRegistroActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (viewModel != null) viewModel.cargar();
+        if (viewModel != null && sesionActiva()) viewModel.cargar();
     }
 
     @Override
@@ -99,6 +99,7 @@ public class DetalleRegistroActivity extends AppCompatActivity {
     }
 
     private void renderDetalle(UiState<RegistroDetalleDto> estado) {
+        if (manejarSesionExpirada(estado)) return;
         boolean cargando = estado.esCargando();
         progressBar.setVisibility(cargando ? View.VISIBLE : View.GONE);
         actualizarBotones();
@@ -121,6 +122,7 @@ public class DetalleRegistroActivity extends AppCompatActivity {
     }
 
     private void renderEliminar(UiState<Void> estado) {
+        if (manejarSesionExpirada(estado)) return;
         progressBar.setVisibility(estado.esCargando() ? View.VISIBLE : View.GONE);
         actualizarBotones();
 
@@ -132,6 +134,7 @@ public class DetalleRegistroActivity extends AppCompatActivity {
             case ERROR_SERVIDOR:
             case SIN_CONEXION:
             case TIEMPO_AGOTADO:
+            case SIN_PERMISO:
                 Snackbar s = Snackbar.make(root,
                         UiHelper.tituloError(estado) + ": " + estado.getMensaje(), Snackbar.LENGTH_LONG);
                 if (estado.permiteReintentar()) {

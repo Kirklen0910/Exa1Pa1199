@@ -11,6 +11,7 @@ import com.uth.exa1pa1199.data.repository.ApiError;
 import com.uth.exa1pa1199.data.repository.Cancelable;
 import com.uth.exa1pa1199.data.repository.RegistroRepository;
 import com.uth.exa1pa1199.data.repository.RepositorioCallback;
+import com.uth.exa1pa1199.data.session.SessionManager;
 import com.uth.exa1pa1199.util.ImagenUtils;
 
 import java.util.concurrent.ExecutorService;
@@ -18,6 +19,7 @@ import java.util.concurrent.Executors;
 
 public class DetalleRegistroViewModel extends ViewModel {
     private final RegistroRepository repositorio;
+    private final SessionManager sesion;
     private final ExecutorService ejecutor = Executors.newSingleThreadExecutor();
 
     private final MutableLiveData<UiState<RegistroDetalleDto>> estado = new MutableLiveData<>();
@@ -29,12 +31,15 @@ public class DetalleRegistroViewModel extends ViewModel {
     private String id;
 
     public DetalleRegistroViewModel() {
-        this(new RegistroRepository());
+        this(new RegistroRepository(), SessionManager.get());
     }
 
-    public DetalleRegistroViewModel(RegistroRepository repositorio) {
+    public DetalleRegistroViewModel(RegistroRepository repositorio, SessionManager sesion) {
         this.repositorio = repositorio;
+        this.sesion = sesion;
     }
+
+    public boolean puedeEliminar() { return sesion.esAdmin(); }
 
     public LiveData<UiState<RegistroDetalleDto>> getEstado() { return estado; }
     public LiveData<UiState<Void>> getEstadoEliminar() { return estadoEliminar; }

@@ -49,7 +49,10 @@ final class UiHelper {
         switch (estado.getEstado()) {
             case SIN_CONEXION: return "Sin conexión";
             case TIEMPO_AGOTADO: return "Tiempo de espera agotado";
+            case NO_AUTENTICADO: return "Sesión expirada";
+            case SIN_PERMISO: return "Sin permiso";
             default:
+                if (estado.getCodigoHttp() == 401) return "No se pudo iniciar sesión";
                 return estado.getCodigoHttp() > 0
                         ? "Error del servidor (" + estado.getCodigoHttp() + ")"
                         : "Error del servidor";
