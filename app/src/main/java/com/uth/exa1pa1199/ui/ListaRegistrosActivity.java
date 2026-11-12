@@ -1,25 +1,25 @@
 package com.uth.exa1pa1199.ui;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.uth.exa1pa1199.R;
 import com.uth.exa1pa1199.data.remote.dto.RegistroResumenDto;
@@ -29,9 +29,7 @@ import com.uth.exa1pa1199.viewmodel.UiState;
 import java.util.Collections;
 import java.util.List;
 
-public class ListaRegistrosActivity extends AppCompatActivity {
-    static final String PERMISO_RED_LOCAL = "android.permission.ACCESS_LOCAL_NETWORK";
-    private static final int API_RED_LOCAL = 37;
+public class ListaRegistrosActivity extends SesionActivity {
     private static final String KEY_SOLICITUD_EN_CURSO = "solicitudPermisoEnCurso";
 
     private ListaRegistrosViewModel viewModel;
@@ -88,6 +86,7 @@ public class ListaRegistrosActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(ListaRegistrosViewModel.class);
         viewModel.getEstado().observe(this, this::render);
+        mostrarUsuario();
 
         swipeRefresh.setOnRefreshListener(this::cargarSiHayPermiso);
         fabNuevo.setOnClickListener(v ->
@@ -97,8 +96,42 @@ public class ListaRegistrosActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
+        if (!sesionActiva()) return;
         cargarSiHayPermiso();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_lista, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.accionCerrarSesion) {
+            confirmarCerrarSesion();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void mostrarUsuario() {
+        if (getSupportActionBar() == null || viewModel.getCorreo() == null) return;
+        getSupportActionBar().setSubtitle(
+                getString(R.string.subtitulo_sesion, viewModel.getCorreo(), viewModel.getRol()));
+    }
+
+    private void confirmarCerrarSesion() {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.cerrar_sesion)
+                .setMessage(R.string.confirmar_cerrar_sesion)
+                .setNegativeButton(R.string.cancelar, null)
+                .setPositiveButton(R.string.cerrar_sesion, (d, w) -> {
+                    viewModel.cerrarSesion();
+                    Toast.makeText(this, R.string.sesion_cerrada, Toast.LENGTH_SHORT).show();
+                    irALogin(null);
+                })
+                .show();
     }
 
     @Override
@@ -108,9 +141,7 @@ public class ListaRegistrosActivity extends AppCompatActivity {
     }
 
     private boolean tienePermisoRedLocal() {
-        return Build.VERSION.SDK_INT < API_RED_LOCAL
-                || ContextCompat.checkSelfPermission(this, PERMISO_RED_LOCAL)
-                == PackageManager.PERMISSION_GRANTED;
+        return PermisoRedLocal.concedido(this);
     }
 
     private void cargarSiHayPermiso() {
@@ -131,7 +162,7 @@ public class ListaRegistrosActivity extends AppCompatActivity {
     private void pedirPermisoRedLocal() {
         if (solicitudEnCurso) return;
         solicitudEnCurso = true;
-        solicitarPermisoRedLocal.launch(PERMISO_RED_LOCAL);
+        solicitarPermisoRedLocal.launch(PermisoRedLocal.PERMISO);
     }
 
     private void mostrarPermisoDenegado() {
@@ -141,7 +172,7 @@ public class ListaRegistrosActivity extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
         fabNuevo.setEnabled(false);
 
-        boolean puedePedirDeNuevo = shouldShowRequestPermissionRationale(PERMISO_RED_LOCAL);
+        boolean puedePedirDeNuevo = shouldShowRequestPermissionRationale(PermisoRedLocal.PERMISO);
 
         TextView titulo = layoutPermiso.findViewById(R.id.textErrorTitulo);
         TextView mensaje = layoutPermiso.findViewById(R.id.textErrorMensaje);
@@ -172,6 +203,7 @@ public class ListaRegistrosActivity extends AppCompatActivity {
     }
 
     private void render(UiState<List<RegistroResumenDto>> estado) {
+        if (manejarSesionExpirada(estado)) return;
         boolean cargando = estado.esCargando();
 
         progressBar.setVisibility(cargando ? View.VISIBLE : View.GONE);
@@ -197,6 +229,7 @@ public class ListaRegistrosActivity extends AppCompatActivity {
             case ERROR_SERVIDOR:
             case SIN_CONEXION:
             case TIEMPO_AGOTADO:
+            case SIN_PERMISO:
                 adapter.submitList(Collections.emptyList());
                 UiHelper.mostrarError(layoutError, estado, () -> viewModel.cargar());
                 break;
