@@ -6,27 +6,42 @@ import androidx.lifecycle.ViewModel;
 
 import com.uth.exa1pa1199.data.remote.dto.RegistroResumenDto;
 import com.uth.exa1pa1199.data.repository.ApiError;
+import com.uth.exa1pa1199.data.repository.AuthRepository;
 import com.uth.exa1pa1199.data.repository.Cancelable;
 import com.uth.exa1pa1199.data.repository.RegistroRepository;
 import com.uth.exa1pa1199.data.repository.RepositorioCallback;
+import com.uth.exa1pa1199.data.session.SessionManager;
 
 import java.util.List;
 
 public class ListaRegistrosViewModel extends ViewModel {
     private final RegistroRepository repositorio;
+    private final AuthRepository authRepositorio;
+    private final SessionManager sesion;
     private final MutableLiveData<UiState<List<RegistroResumenDto>>> estado = new MutableLiveData<>();
     private Cancelable peticion;
 
     public ListaRegistrosViewModel() {
-        this(new RegistroRepository());
+        this(new RegistroRepository(), new AuthRepository(), SessionManager.get());
     }
 
-    public ListaRegistrosViewModel(RegistroRepository repositorio) {
+    public ListaRegistrosViewModel(RegistroRepository repositorio, AuthRepository authRepositorio,
+                                   SessionManager sesion) {
         this.repositorio = repositorio;
+        this.authRepositorio = authRepositorio;
+        this.sesion = sesion;
     }
 
     public LiveData<UiState<List<RegistroResumenDto>>> getEstado() {
         return estado;
+    }
+
+    public String getCorreo() { return sesion.getCorreo(); }
+    public String getRol() { return sesion.getRol(); }
+
+    public void cerrarSesion() {
+        if (peticion != null) peticion.cancelar();
+        authRepositorio.cerrarSesion();
     }
 
     public void cargar() {
