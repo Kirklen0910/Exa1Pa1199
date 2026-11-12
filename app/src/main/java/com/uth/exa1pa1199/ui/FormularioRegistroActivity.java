@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProvider;
@@ -33,7 +32,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class FormularioRegistroActivity extends AppCompatActivity {
+public class FormularioRegistroActivity extends SesionActivity {
     public static final String EXTRA_ID = "registro_id";
     private static final String IDIOMA_VOZ = "es-ES";
 
@@ -197,6 +196,7 @@ public class FormularioRegistroActivity extends AppCompatActivity {
     }
 
     private void renderCarga(UiState<RegistroDetalleDto> estado) {
+        if (manejarSesionExpirada(estado)) return;
         actualizarHabilitados();
         switch (estado.getEstado()) {
             case EXITO:
@@ -210,6 +210,7 @@ public class FormularioRegistroActivity extends AppCompatActivity {
             case ERROR_SERVIDOR:
             case SIN_CONEXION:
             case TIEMPO_AGOTADO:
+            case SIN_PERMISO:
                 mostrarErrorGeneral(estado, () -> viewModel.cargarRegistro());
                 break;
             default:
@@ -218,6 +219,7 @@ public class FormularioRegistroActivity extends AppCompatActivity {
     }
 
     private void renderGuardar(UiState<Void> estado) {
+        if (manejarSesionExpirada(estado)) return;
         actualizarHabilitados();
         switch (estado.getEstado()) {
             case EXITO:
@@ -228,7 +230,7 @@ public class FormularioRegistroActivity extends AppCompatActivity {
             case ERROR_SERVIDOR:
             case SIN_CONEXION:
             case TIEMPO_AGOTADO:
-
+            case SIN_PERMISO:
                 Map<String, String> noAsignados = mostrarErroresCampo(estado.getErroresCampo());
                 mostrarErrorGeneral(estado, () -> viewModel.reintentarGuardar());
                 if (!noAsignados.isEmpty()) {
