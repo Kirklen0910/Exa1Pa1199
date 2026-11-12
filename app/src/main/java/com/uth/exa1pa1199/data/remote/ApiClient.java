@@ -18,6 +18,7 @@ public final class ApiClient {
     private static volatile Retrofit retrofit;
     private static volatile RegistroApi api;
     private static volatile AuthApi authApi;
+    private static volatile PruebasApi pruebasApi;
 
     private ApiClient() { }
 
@@ -52,6 +53,15 @@ public final class ApiClient {
             }
         }
         return authApi;
+    }
+
+    public static PruebasApi getPruebasApi() {
+        if (pruebasApi == null) {
+            synchronized (ApiClient.class) {
+                if (pruebasApi == null) pruebasApi = getRetrofit().create(PruebasApi.class);
+            }
+        }
+        return pruebasApi;
     }
 
     private static OkHttpClient crearOkHttpClient() {

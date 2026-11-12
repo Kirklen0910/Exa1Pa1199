@@ -30,6 +30,10 @@ public class RegistroRepository {
         return ejecutar(api.listar(), callback);
     }
 
+    public Cancelable obtenerRegistrosDesde(String ruta, RepositorioCallback<List<RegistroResumenDto>> callback) {
+        return ejecutar(ApiClient.getPruebasApi().consultar(ruta), callback);
+    }
+
     public Cancelable obtenerRegistro(String id, RepositorioCallback<RegistroDetalleDto> callback) {
         return ejecutar(api.obtener(id), callback);
     }
