@@ -25,26 +25,24 @@
 - [x] Guía de ejecución y capturas: `docs/mediciones-fernando.md`.
 - [x] Guion del video: `docs/guion-video-fernando.md`.
 - [x] Generador del PDF: `docs/generar_informe.py`.
-- [x] Borrador del PDF: `Informe_Tarea_2.5_Fernando_Orellana.pdf`.
-- [ ] Completar la tabla de 5 ejecuciones con los tiempos definitivos.
-- [ ] Insertar las capturas en el anexo del PDF.
-- [ ] Revisar que el PDF final tenga todas las evidencias.
+- [x] Tabla de 5 ejecuciones completada con los tiempos definitivos.
+- [x] Capturas insertadas en el anexo del PDF.
+- [x] PDF final revisado: `Informe_Tarea_2.5_Fernando_Orellana.pdf`.
 
-## Evidencias pendientes
+## Evidencias
 
-- [ ] `01-menu.png`
-- [ ] `02-normal-volley.png`
-- [ ] `03-normal-okhttp.png`
-- [ ] `04-normal-retrofit.png`
-- [ ] `06` a `08`: API detenida.
-- [ ] `09` a `11`: modo avión.
-- [ ] `12` a `14`: timeout.
-- [ ] `15` a `17`: token inválido (401).
-- [ ] `18` a `20`: token ausente (401).
-- [ ] `21` a `23`: error 500.
-- [ ] `logcat.txt` sin `FATAL EXCEPTION`.
+- [x] `00-menu-fernando.png`: menú con la opción Comparativa Fernando.
+- [x] `01-normal-fernando.png`: medición normal de las tres librerías.
+- [x] `02-500-fernando.png`: error 500.
+- [x] `03-timeout-fernando.png`: timeout.
+- [x] `04-401-invalido-fernando.png`: token inválido (401).
+- [x] `05-401-sin-token-fernando.png`: token ausente (401).
+- [x] `06-api-detenida-fernando.png`: API detenida.
+- [x] `07-modo-avion-fernando.png`: modo avión.
+- [x] `logcat.txt` sin `FATAL EXCEPTION`.
 
-Guardar todo en `docs/capturas/fernando/`.
+Guardar todo en `docs/capturas/fernando/`. Las capturas de la pantalla
+“Comparativa de librerías” no se usan porque pertenecen a otra implementación.
 
 ## Video
 

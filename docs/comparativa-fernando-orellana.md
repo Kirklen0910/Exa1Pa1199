@@ -6,7 +6,8 @@
 **Repositorio:** `Kirklen0910/Exa1Pa1199`  
 **Rama:** `feature/comparativa-fernando-orellana`  
 **Pantalla:** `ComparativaFernandoActivity`  
-**Endpoint principal:** `GET /api/registros`
+**Endpoint principal:** `GET /api/registros`  
+**Fecha de medición:** 13/11/2026
 
 ---
 
@@ -59,9 +60,10 @@ falta de conexión.
 | Elemento | Detalle |
 |---|---|
 | Aplicación | Android, Java 11, `minSdk 24`, `targetSdk 37` |
-| Emulador | Pixel 8, Android 15 (API 35), resolución 1080 × 1920 |
+| Emulador | Pixel 8 (AVD `Pixel_8`), Android 17 (API 37), resolución 1080 × 2400 |
 | API | ASP.NET Core 8, `http://10.0.2.2:5080` desde el emulador |
 | Autenticación | JWT emitido por `POST /api/auth/login`, con expiración de 10 minutos |
+| Fecha de medición | 13/11/2026 |
 | Cliente Volley | `com.android.volley:volley:1.2.1` |
 | Cliente OkHttp | `com.squareup.okhttp3:okhttp:4.12.0` |
 | Cliente Retrofit | `com.squareup.retrofit2:retrofit:2.11.0` + `converter-gson` |
@@ -73,8 +75,11 @@ Para que la comparación fuera justa, los tres clientes usaron:
 - el mismo endpoint y el mismo token;
 - un tiempo de espera de **10 segundos**;
 - **sin caché** (`setShouldCache(false)` en Volley y sin caché en OkHttp/Retrofit);
-- la misma cantidad de registros en la base de datos;
-- el mismo emulador y la misma sesión.
+- la misma cantidad de registros en la base de datos (2 registros: `Prueba 2` y `Prueba 1`);
+- el mismo emulador y la misma sesión;
+- una **ejecución de calentamiento** por librería antes de las 5 mediciones, para que
+  la inicialización de OkHttp, Retrofit y Gson no distorsionara el promedio. Sin ese
+  calentamiento, la primera llamada de OkHttp y Retrofit tardó 550 ms y 584 ms.
 
 La única diferencia deliberada es que **Volley se configuró con 1 reintento**, porque su
 `DefaultRetryPolicy` está pensado para reintentar timeouts y errores de red. OkHttp y
@@ -312,11 +317,15 @@ error clásico `CalledFromWrongThreadException` y mantiene el código uniforme.
 | Conversión de JSON | `JsonArrayRequest` entrega un `JSONArray`; se convierte con Gson | Manual: `ResponseBody.string()` + `Gson.fromJson()` | Automática: `GsonConverterFactory` convierte al DTO |
 | Hilo en que llega la respuesta | Hilo principal | Hilo de fondo; hay que publicar con `Handler` | Hilo principal en Android |
 | Manejo de errores | Clases `TimeoutError`, `NoConnectionError`, `AuthFailureError`, `ServerError`, `ParseError` | `IOException`, `SocketTimeoutException`, `ConnectException`, código HTTP | `ApiError` del repositorio + `Throwable` en `onFailure` |
-| Reintentos y tiempos de espera | 10 s por intento + 1 reintento (hasta ~20 s) | 10 s de conexión/lectura/escritura; sin reintentos | 10 s; sin reintentos |
+| Reintentos y tiempos de espera | 10 s por intento + 1 reintento; en la prueba de demora el corte observado fue 30.5 s | 10 s de conexión/lectura/escritura; sin reintentos | 10 s; sin reintentos |
 | Cancelación | `RequestQueue.cancelAll(tag)` | `Call.cancel()` | `Call.cancel()` a través del repositorio |
 | Facilidad de prueba | Alta para peticiones simples; el listener se prueba con poca infraestructura | Media; hay que probar el parseo y el cambio de hilo | Alta; la interfaz se puede mockear y el repositorio ya existe |
 | Mantenimiento | Medio; el código de red se mezcla con la actividad si no se encapsula | Medio-alto; da control total pero exige más código | Alto; declarativo, tipado y centraliza configuración |
-| Promedio de 5 ejecuciones | Pendiente de la medición definitiva | Pendiente de la medición definitiva | Pendiente de la medición definitiva |
+| Promedio de 5 ejecuciones | **15 ms** (16, 16, 16, 16, 15) | **4 ms** (3, 4, 4, 7, 3) | **15 ms** (17, 16, 14, 16, 15) |
+
+> En la prueba de demora, Volley reportó `TimeoutError` a los 30 503 ms, mientras que
+> OkHttp y Retrofit cortaron a los 10 002 ms. La política de Volley está configurada
+> con 10 s por intento y un reintento; el valor medido se registra tal cual.
 
 ### Lectura del cuadro
 
@@ -333,56 +342,82 @@ error clásico `CalledFromWrongThreadException` y mantiene el código uniforme.
   propia para igualar los timeouts y no borrar la sesión al probar el 401; en un
   proyecto normal, reutilizando `ApiClient`, el código de la consulta es de pocas
   líneas.
+- **En la medición final**, OkHttp fue el más rápido (4 ms de promedio), seguido de
+  Volley y Retrofit (15 ms). La diferencia de ~11 ms es pequeña frente a la latencia
+  real de una red móvil, pero confirma el sobrecoste de las capas de abstracción.
+  Para que la comparación fuera justa se descartó el primer intento en frío de
+  OkHttp y Retrofit (550 ms y 584 ms), que incluye la inicialización de sus clientes.
 
 ---
 
-## 6. Escenarios de falla
+## 6. Escenarios de falla: resultados obtenidos
 
-La tabla resume el comportamiento esperado de los tres clientes en cada escenario. La
-columna “Detalle técnico” es lo que registra el código; la columna “Mensaje al usuario”
-es lo que ve la persona. Las capturas y los tiempos definitivos se adjuntan en
+La tabla resume los resultados medidos en el emulador. La columna “Detalle técnico”
+es lo que registra el código; la columna “Tiempo” es el valor que muestra la tarjeta.
+Las capturas y los textos completos de los mensajes están en
 `docs/capturas/fernando/` y en `docs/mediciones-fernando.md`.
 
 | Escenario | Volley | OkHttp | Retrofit |
 |---|---|---|---|
-| **API detenida** | `NoConnectionError`; mensaje “No se pudo conectar con el servidor…” | `ConnectException`; mensaje “No se pudo conectar…” | `ApiError.SIN_CONEXION`; mensaje “No se pudo conectar…” |
-| **Modo avión** | `NoConnectionError`; mensaje “No se pudo conectar…” | `UnknownHostException`/`ConnectException`; mensaje “No se pudo conectar…” | `ApiError.SIN_CONEXION`; mensaje “No se pudo conectar…” |
-| **Timeout (`/api/pruebas/demora`, 30 s)** | `TimeoutError`; ~20 s por el reintento | `SocketTimeoutException`; ~10 s | `ApiError.TIEMPO_AGOTADO`; ~10 s |
-| **Token inválido (401)** | `AuthFailureError · HTTP 401`; mensaje “Tu sesión expiró…” | `HTTP 401 Unauthorized`; mensaje “Tu sesión expiró…” | `ApiError.NO_AUTENTICADO · HTTP 401`; mensaje “Tu sesión expiró…” |
-| **Token ausente (401)** | `AuthFailureError · HTTP 401`; mensaje “Tu sesión expiró…” | `HTTP 401 Unauthorized`; mensaje “Tu sesión expiró…” | `ApiError.NO_AUTENTICADO · HTTP 401`; mensaje “Tu sesión expiró…” |
-| **Error 500** | `ServerError · HTTP 500`; mensaje “El servidor tuvo un problema…” | `HTTP 500 Internal Server Error`; mensaje “El servidor tuvo un problema…” | `ApiError.SERVIDOR · HTTP 500`; mensaje “El servidor tuvo un problema…” |
+| **API detenida** | `NoConnectionError · causa=ConnectException`; 121 ms | `ConnectException: Failed to connect to /10.0.2.2:5080`; 485 ms | `ApiError.SIN_CONEXION`; 16 ms |
+| **Modo avión** | `NoConnectionError · causa=ConnectException`; 16 ms | `ConnectException: Failed to connect to /10.0.2.2:5080`; 2 ms | `ApiError.SIN_CONEXION`; 18 ms |
+| **Timeout (`/api/pruebas/demora`, 30 s)** | `TimeoutError`; 30 503 ms | `SocketTimeoutException: timeout`; 10 002 ms | `SocketTimeoutException: timeout`; 10 002 ms |
+| **Token inválido (401)** | `AuthFailureError · HTTP 401`; 653 ms | `HTTP 401 Unauthorized`; 634 ms | `ApiError.NO_AUTENTICADO · HTTP 401`; 616 ms |
+| **Token ausente (401)** | `AuthFailureError · HTTP 401`; 16 ms | `HTTP 401 Unauthorized`; 2 ms | `ApiError.NO_AUTENTICADO · HTTP 401`; 15 ms |
+| **Error 500** | `ServerError · HTTP 500`; 16 ms | `HTTP 500 Internal Server Error`; 4 ms | `HTTP 500 Internal Server Error`; 15 ms |
 
-### Comportamiento esperado y estabilidad
+Todos los errores mostraron un mensaje comprensible en la tarjeta y en un `Snackbar`;
+la app siguió abierta y los botones volvieron a quedar habilitados. Los textos exactos
+de los mensajes están en `docs/mediciones-fernando.md`.
 
-- El manejo de errores captura las excepciones de red, timeout, 401 y 500; ninguna
-  llamada se propaga sin control.
+> **Timeout de Volley:** la política configurada es `DefaultRetryPolicy(10_000, 1,
+> 1.0f)`, pero en la prueba el corte observado fue a los 30 503 ms, coincidiendo con
+> la demora del endpoint. Se registra el valor medido tal cual; OkHttp y Retrofit
+> cortaron a los 10 002 ms.
+>
+> **Timeout y 500 de Retrofit:** para los endpoints de prueba se usa `PruebasApi`
+> directamente, no el repositorio de la tarea 2.3. Por eso el detalle es
+> `SocketTimeoutException` y `HTTP 500 Internal Server Error`; en la ruta normal, el
+> repositorio los traduce a `ApiError.TIEMPO_AGOTADO` y `ApiError.SERVIDOR`.
+
+### Comportamiento observado y estabilidad
+
+- El manejo de errores capturó las excepciones de red, timeout, 401 y 500; ninguna
+  llamada se propagó sin control.
 - Los errores se muestran en la tarjeta correspondiente y en un `Snackbar`, además de
-  registrarse en Logcat con la etiqueta `ComparativaFernando`.
+  registrarse en Logcat con las etiquetas `ComparativaVolley`, `ComparativaOkHttp` y
+  `ComparativaRetrofit`.
 - Las llamadas en curso se cancelan en `onDestroy()`, por lo que salir de la pantalla
   durante un timeout no produce un `WindowLeaked` ni un crash.
 - Después de las pruebas de 401, el botón **Restaurar** devuelve el token original.
-- La verificación de que no aparece `FATAL EXCEPTION` se realiza con el Logcat adjunto
-  en el anexo de capturas.
+- La verificación de que no aparece `FATAL EXCEPTION` se realizó con el Logcat adjunto
+  en el anexo de capturas; el archivo no contiene esa excepción.
+- En la primera ejecución de OkHttp con la API detenida se reutilizó una conexión del
+  pool y apareció `IOException: unexpected end of stream`; en la segunda apareció
+  `ConnectException`. La app manejó ambos casos sin cerrarse.
 
 ---
 
 ## 7. Evidencia
 
 Las capturas se guardan en `docs/capturas/fernando/` con los nombres indicados en la
-guía `docs/mediciones-fernando.md`. El informe PDF las inserta en esta sección.
+guía `docs/mediciones-fernando.md`. El informe PDF las inserta en el anexo final.
 
 | Evidencia | Archivo |
 |---|---|
-| Menú con la opción Comparativa Fernando | `01-menu.png` |
-| Medición normal con Volley | `02-normal-volley.png` |
-| Medición normal con OkHttp | `03-normal-okhttp.png` |
-| Medición normal con Retrofit | `04-normal-retrofit.png` |
-| API detenida | `06` a `08` |
-| Modo avión | `09` a `11` |
-| Timeout | `12` a `14` |
-| Token inválido / ausente | `15` a `20` |
-| Error 500 | `21` a `23` |
+| Menú con la opción Comparativa Fernando | `00-menu-fernando.png` |
+| Medición normal de las tres librerías | `01-normal-fernando.png` |
+| Error 500 | `02-500-fernando.png` |
+| Timeout | `03-timeout-fernando.png` |
+| Token inválido (401) | `04-401-invalido-fernando.png` |
+| Token ausente (401) | `05-401-sin-token-fernando.png` |
+| API detenida | `06-api-detenida-fernando.png` |
+| Modo avión | `07-modo-avion-fernando.png` |
 | Logcat filtrado | `logcat.txt` |
+
+Todas las capturas pertenecen a la pantalla **Comparativa · Fernando Orellana**. Las
+imágenes de la pantalla “Comparativa de librerías” no se incluyen porque corresponden a
+otra implementación.
 
 ---
 
@@ -406,9 +441,10 @@ Razones:
    un `ApiError` uniforme.
 5. **Ya está integrado.** La tarea 2.3 y el resto de la app usan Retrofit; mantener el
    mismo stack evita duplicar clientes y facilita que el equipo revise el código.
-6. **Rendimiento suficiente.** En la medición preliminar, OkHttp fue el más rápido por
-   unos pocos milisegundos, pero la diferencia es despreciable frente a la latencia real
-   de una red móvil. La ganancia en mantenibilidad de Retrofit pesa más.
+6. **Rendimiento suficiente.** En la medición final, OkHttp fue el más rápido (4 ms de
+   promedio) frente a Volley y Retrofit (15 ms). La diferencia de ~11 ms es despreciable
+   frente a la latencia real de una red móvil. La ganancia en mantenibilidad de Retrofit
+   pesa más.
 
 **Cuándo usar cada uno:**
 
@@ -435,7 +471,7 @@ Razones:
 | 0:50–1:40 | Explicar el código de Volley: `JsonArrayRequest`, `getHeaders()` con el token, `DefaultRetryPolicy` y el hecho de que la respuesta llega en el hilo principal. |
 | 1:40–2:30 | Explicar el código de OkHttp: `Request.Builder`, `enqueue()`, Gson y el `Handler` que publica en el hilo principal. |
 | 2:30–3:10 | Mostrar dos escenarios de falla: API detenida y token inválido (401) o error 500. Leer el detalle técnico y el mensaje al usuario. |
-| 3:10–3:40 | Mostrar los promedios de las 5 ejecuciones y explicar la recomendación: Retrofit para el proyecto final. |
+| 3:10–3:40 | Mostrar los promedios (Volley 15 ms, OkHttp 4 ms, Retrofit 15 ms) y explicar la recomendación: Retrofit para el proyecto final. |
 | 3:40–4:00 | Cierre: rama, pull request y conclusión. |
 
 ---
@@ -444,6 +480,9 @@ Razones:
 
 - Las tres librerías pueden consumir el mismo endpoint protegido y enviar el token,
   pero con niveles de abstracción distintos.
+- En la medición final, OkHttp fue el más rápido (4 ms), seguido de Volley y Retrofit
+  (15 ms). La diferencia es pequeña frente a la latencia de una red real, pero confirma
+  que las capas de abstracción tienen un costo medible.
 - Volley simplifica la entrega en el hilo principal; OkHttp da control y rendimiento;
   Retrofit equilibra claridad, tipado y mantenimiento.
 - El manejo implementado para los cinco escenarios de falla captura las excepciones y
