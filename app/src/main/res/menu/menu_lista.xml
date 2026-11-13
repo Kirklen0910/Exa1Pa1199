@@ -18,6 +18,10 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/accionComparativaRomel"
+        android:title="Comparativa Romel"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/accionCerrarSesion"
         android:title="@string/cerrar_sesion"
         app:showAsAction="never" />
