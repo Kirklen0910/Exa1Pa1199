@@ -112,10 +112,17 @@ public class ListaRegistrosActivity extends SesionActivity {
             startActivity(new Intent(this, ComparativaActivity.class));
             return true;
         }
+
+        if (item.getItemId() == R.id.accionComparativaJennifer) {
+            startActivity(new Intent(this, ComparativaJenniferActivity.class));
+            return true;
+        }
+
         if (item.getItemId() == R.id.accionCerrarSesion) {
             confirmarCerrarSesion();
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
