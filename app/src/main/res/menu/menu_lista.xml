@@ -7,6 +7,11 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/accionComparativaFernando"
+        android:title="@string/comparativa_fernando"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/accionCerrarSesion"
         android:title="@string/cerrar_sesion"
         app:showAsAction="never" />

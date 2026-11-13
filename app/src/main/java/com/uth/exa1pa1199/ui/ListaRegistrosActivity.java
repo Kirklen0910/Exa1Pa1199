@@ -112,6 +112,13 @@ public class ListaRegistrosActivity extends SesionActivity {
             startActivity(new Intent(this, ComparativaActivity.class));
             return true;
         }
+
+        // Comparativa individual de Fernando
+        if (item.getItemId() == R.id.accionComparativaFernando) {
+            startActivity(new Intent(this, ComparativaFernandoActivity.class));
+            return true;
+        }
+
         if (item.getItemId() == R.id.accionCerrarSesion) {
             confirmarCerrarSesion();
             return true;

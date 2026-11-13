@@ -73,4 +73,24 @@
     <string name="sin_resultados">Sin ejecutar</string>
     <string name="bitacora_ejecucion">Bitácora de ejecución</string>
     <string name="limpiar">Limpiar</string>
+
+    <!-- Comparativa individual de Fernando Orellana -->
+    <string name="titulo_comparativa_fernando">Comparativa individual · Fernando Orellana</string>
+    <string name="escenario_fernando">Endpoint a consultar</string>
+    <string name="ruta_registros_fernando">GET /api/registros (normal)</string>
+    <string name="ruta_demora_fernando">GET /api/pruebas/demora (30 s)</string>
+    <string name="ruta_error_fernando">GET /api/pruebas/error (500)</string>
+    <string name="repetir_cinco_fernando">Repetir 5 veces y calcular el promedio</string>
+    <string name="token_invalido_fernando">Token inválido</string>
+    <string name="sin_token_fernando">Sin token</string>
+    <string name="restaurar_token_fernando">Restaurar</string>
+    <string name="token_alterado_fernando">Se alteró la firma del token. La siguiente consulta debe responder 401.</string>
+    <string name="token_retirado_fernando">Se retiró el token. La siguiente consulta debe responder 401.</string>
+    <string name="token_restaurado_fernando">Token original restaurado.</string>
+    <string name="token_sin_cambios_fernando">No hay cambios de token que restaurar.</string>
+    <string name="token_no_alterable_fernando">El token guardado no tiene el formato esperado.</string>
+    <string name="sin_sesion_fernando">No hay una sesión activa. Inicia sesión de nuevo.</string>
+    <string name="bitacora_ejecucion_fernando">Bitácora de ejecución</string>
+    <string name="limpiar_fernando">Limpiar</string>
+    <string name="comparativa_fernando">Comparativa Fernando</string>
 </resources>
