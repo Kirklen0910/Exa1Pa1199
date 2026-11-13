@@ -118,6 +118,11 @@ public class ListaRegistrosActivity extends SesionActivity {
             return true;
         }
 
+        if (item.getItemId() == R.id.accionComparativaRomel) {
+            startActivity(new Intent(this, ComparativaRomelActivity.class));
+            return true;
+        }
+
         if (item.getItemId() == R.id.accionCerrarSesion) {
             confirmarCerrarSesion();
             return true;
