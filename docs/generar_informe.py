@@ -107,6 +107,7 @@ def agregar_portada(doc: Document) -> None:
         ("Rama", "feature/comparativa-fernando-orellana"),
         ("Pantalla", "ComparativaFernandoActivity"),
         ("Endpoint principal", "GET /api/registros"),
+        ("Fecha de medición", "13/11/2026"),
     ]
     tabla = doc.add_table(rows=0, cols=2)
     tabla.alignment = WD_TABLE_ALIGNMENT.CENTER
@@ -126,7 +127,7 @@ def agregar_portada(doc: Document) -> None:
     nota.alignment = WD_ALIGN_PARAGRAPH.CENTER
     run = nota.add_run(
         "Informe generado a partir de la implementación y de las mediciones\n"
-        "realizadas en el emulador Pixel 8 (Android 15)."
+        "realizadas en el emulador Pixel 8 (Android 17, API 37, 1080 × 2400)."
     )
     run.font.size = Pt(9)
     run.font.color.rgb = GRIS
@@ -320,10 +321,11 @@ def procesar_markdown(doc: Document, texto: str) -> None:
             parrafo = doc.add_paragraph()
             parrafo.paragraph_format.left_indent = Cm(0.8)
             parrafo.paragraph_format.right_indent = Cm(0.8)
-            run = parrafo.add_run(" ".join(texto_cita))
-            run.italic = True
-            run.font.size = Pt(9)
-            run.font.color.rgb = GRIS
+            agregar_runs(parrafo, " ".join(texto_cita))
+            for run in parrafo.runs:
+                run.italic = True
+                run.font.size = Pt(9)
+                run.font.color.rgb = GRIS
             continue
 
         if desnuda.startswith("- "):
@@ -382,9 +384,11 @@ def procesar_markdown(doc: Document, texto: str) -> None:
 
 
 def agregar_anexo_capturas(doc: Document) -> None:
+    # Solo se incluyen las capturas de la pantalla Comparativa Fernando. Las
+    # imágenes de otras pantallas que puedan existir en la carpeta se ignoran.
     imagenes = sorted(
-        p for p in CAPTURAS.glob("*")
-        if p.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp"}
+        p for p in CAPTURAS.glob("*.png")
+        if re.fullmatch(r"\d{2}-.*\.png", p.name)
     )
     if not imagenes:
         return
@@ -399,6 +403,25 @@ def agregar_anexo_capturas(doc: Document) -> None:
     for ruta in imagenes:
         doc.add_paragraph()
         agregar_imagen(doc, ruta)
+
+    logcat = CAPTURAS / "logcat.txt"
+    if logcat.exists():
+        doc.add_page_break()
+        doc.add_heading("Logcat filtrado", level=1)
+        lineas = logcat.read_text(encoding="utf-8", errors="replace").splitlines()
+        relevantes = [
+            linea for linea in lineas
+            if re.search(r"Comparativa(Volley|OkHttp|Retrofit)|FATAL EXCEPTION|AndroidRuntime", linea)
+        ]
+        if not relevantes:
+            relevantes = lineas[-30:]
+        resumen = doc.add_paragraph(
+            "Archivo completo: docs/capturas/fernando/logcat.txt. Se revisó el Logcat "
+            "de los escenarios de falla y no se encontró 'FATAL EXCEPTION' ni un cierre "
+            "de la app. Se muestra un extracto de las etiquetas de los tres clientes."
+        )
+        resumen.runs[0].font.size = Pt(9)
+        agregar_codigo(doc, relevantes[-30:])
 
 
 def main() -> None:

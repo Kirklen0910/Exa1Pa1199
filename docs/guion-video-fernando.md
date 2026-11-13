@@ -9,7 +9,7 @@
 
 ## Antes de grabar
 
-1. API encendida y con al menos 3 registros.
+1. API encendida y con al menos 2 registros.
 2. App instalada y sesión iniciada como Admin.
 3. Pantalla **Comparativa Fernando** abierta.
 4. Token válido (si hiciste pruebas de 401, toca **Restaurar**).
@@ -18,7 +18,7 @@
    - `ClienteVolleyFernando.java`
    - `ClienteOkHttpFernando.java`
    - `ComparativaFernandoActivity.java`
-7. Logcat abierto y filtrado por `ComparativaFernando`.
+7. Logcat abierto y filtrado por `ComparativaVolley|ComparativaOkHttp|ComparativaRetrofit`.
 8. Graba con la cámara en un recuadro y la pantalla completa; prueba 10 segundos
    antes para verificar audio y que se lea el código.
 
@@ -64,8 +64,9 @@
 > un Handler. El token se envía sobrescribiendo getHeaders: armo un Map, agrego Accept
 > y, si hay token en SessionManager, agrego Authorization con el esquema Bearer. El
 > tiempo de espera se configura con DefaultRetryPolicy: diez segundos por intento y un
-> reintento, por eso en el escenario de demora Volley tarda alrededor de veinte
-> segundos. La respuesta JSON se convierte con Gson a una lista de RegistroResumenDto.”
+> reintento. En la prueba de demora, Volley reportó TimeoutError a los 30.5 segundos,
+> mientras OkHttp y Retrofit cortaron a los 10 segundos; ese es el resultado que se
+> documenta. La respuesta JSON se convierte con Gson a una lista de RegistroResumenDto.”
 
 **En pantalla:** muestra la línea del `DefaultRetryPolicy` y el callback.
 
@@ -129,13 +130,13 @@
 
 **En pantalla:** muestra la pantalla con los promedios de las 5 ejecuciones.
 
-> “En las cinco ejecuciones, los promedios fueron: Volley ____ milisegundos, OkHttp
-> ____ milisegundos y Retrofit ____ milisegundos. La diferencia es de pocos
-> milisegundos y en una red real es despreciable. Por mantenibilidad, conversión
-> automática de JSON, token centralizado en un interceptor y reutilización del
-> repositorio de la tarea 2.3, recomiendo Retrofit para el proyecto final. OkHttp es
-> la mejor opción cuando se necesita control total del protocolo, y Volley sirve para
-> peticiones simples que se benefician del hilo principal.”
+> “En las cinco ejecuciones, los promedios fueron: Volley 15 milisegundos, OkHttp 4
+> milisegundos y Retrofit 15 milisegundos. La diferencia es de pocos milisegundos y en
+> una red real es despreciable. Por mantenibilidad, conversión automática de JSON,
+> token centralizado en un interceptor y reutilización del repositorio de la tarea 2.3,
+> recomiendo Retrofit para el proyecto final. OkHttp es la mejor opción cuando se
+> necesita control total del protocolo, y Volley sirve para peticiones simples que se
+> benefician del hilo principal.”
 
 ---
 
