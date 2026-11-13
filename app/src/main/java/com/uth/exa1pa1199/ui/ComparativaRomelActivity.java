@@ -50,7 +50,7 @@ public class ComparativaRomelActivity extends AppCompatActivity {
 
     private static final String RUTA_NORMAL = "api/registros";
     // TODO: cambia estas dos rutas por las reales de tu API de pruebas
-    private static final String RUTA_LENTA = "api/pruebas/lento";
+    private static final String RUTA_LENTA = "api/pruebas/demora";
     private static final String RUTA_ERROR = "api/pruebas/error";
 
     private TextView txtResultado;
