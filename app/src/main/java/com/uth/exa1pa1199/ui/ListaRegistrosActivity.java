@@ -113,14 +113,14 @@ public class ListaRegistrosActivity extends SesionActivity {
             return true;
         }
 
-        // Comparativa individual de Fernando
-        if (item.getItemId() == R.id.accionComparativaFernando) {
-            startActivity(new Intent(this, ComparativaFernandoActivity.class));
+        if (item.getItemId() == R.id.accionCerrarSesion) {
+            confirmarCerrarSesion();
             return true;
         }
 
-        if (item.getItemId() == R.id.accionCerrarSesion) {
-            confirmarCerrarSesion();
+        // Comparativa individual de Fernando
+        if (item.getItemId() == R.id.accionComparativaFernando) {
+            startActivity(new Intent(this, ComparativaFernandoActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
