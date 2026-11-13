@@ -73,6 +73,11 @@
             android:name=".ui.ComparativaJenniferActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".ui.ComparativaRomelActivity"
+            android:exported="false" />
+
+
     </application>
 
 </manifest>
