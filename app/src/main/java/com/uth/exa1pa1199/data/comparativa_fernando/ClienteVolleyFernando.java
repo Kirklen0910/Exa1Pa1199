@@ -92,7 +92,7 @@ public class ClienteVolleyFernando {
         solicitud.setRetryPolicy(new DefaultRetryPolicy(
                 TIEMPO_ESPERA_MS,
                 REINTENTOS,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                0f));
         solicitud.setShouldCache(false);
         solicitud.setTag(ETIQUETA);
         cola.add(solicitud);

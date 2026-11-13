@@ -79,7 +79,8 @@ Para que la comparación fuera justa, los tres clientes usaron:
 - el mismo emulador y la misma sesión;
 - una **ejecución de calentamiento** por librería antes de las 5 mediciones, para que
   la inicialización de OkHttp, Retrofit y Gson no distorsionara el promedio. Sin ese
-  calentamiento, la primera llamada de OkHttp y Retrofit tardó 550 ms y 584 ms.
+  calentamiento, la primera llamada tras instalar la app tardó 517 ms (Volley), 994 ms
+  (OkHttp) y 976 ms (Retrofit).
 
 La única diferencia deliberada es que **Volley se configuró con 1 reintento**, porque su
 `DefaultRetryPolicy` está pensado para reintentar timeouts y errores de red. OkHttp y
@@ -143,7 +144,7 @@ JsonArrayRequest solicitud = new JsonArrayRequest(
 };
 
 solicitud.setRetryPolicy(new DefaultRetryPolicy(
-        10_000, 1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        10_000, 1, 0f));
 solicitud.setShouldCache(false);
 cola.add(solicitud);
 ```
@@ -151,7 +152,9 @@ cola.add(solicitud);
 Puntos importantes:
 
 - `getHeaders()` es el lugar correcto para el token; no se concatena en la URL.
-- `DefaultRetryPolicy(10_000, 1, 1.0f)` define 10 s por intento y un reintento.
+- `DefaultRetryPolicy(10_000, 1, 0f)` define 10 s por intento y un reintento. El
+  multiplicador debe ser 0: con `DEFAULT_BACKOFF_MULT` (1.0), Volley duplica el timeout
+  del reintento y el tiempo total llega a ~30 s (ver sección 6).
 - La respuesta llega en el hilo principal, por lo que Volley puede actualizar la
   interfaz directamente.
 - El JSON se convierte con Gson a `List<RegistroResumenDto>` para comparar la misma
@@ -317,15 +320,14 @@ error clásico `CalledFromWrongThreadException` y mantiene el código uniforme.
 | Conversión de JSON | `JsonArrayRequest` entrega un `JSONArray`; se convierte con Gson | Manual: `ResponseBody.string()` + `Gson.fromJson()` | Automática: `GsonConverterFactory` convierte al DTO |
 | Hilo en que llega la respuesta | Hilo principal | Hilo de fondo; hay que publicar con `Handler` | Hilo principal en Android |
 | Manejo de errores | Clases `TimeoutError`, `NoConnectionError`, `AuthFailureError`, `ServerError`, `ParseError` | `IOException`, `SocketTimeoutException`, `ConnectException`, código HTTP | `ApiError` del repositorio + `Throwable` en `onFailure` |
-| Reintentos y tiempos de espera | 10 s por intento + 1 reintento; en la prueba de demora el corte observado fue 30.5 s | 10 s de conexión/lectura/escritura; sin reintentos | 10 s; sin reintentos |
+| Reintentos y tiempos de espera | 10 s por intento + 1 reintento (corte observado en la prueba de demora: 20.5 s) | 10 s de conexión/lectura/escritura; sin reintentos | 10 s; sin reintentos |
 | Cancelación | `RequestQueue.cancelAll(tag)` | `Call.cancel()` | `Call.cancel()` a través del repositorio |
 | Facilidad de prueba | Alta para peticiones simples; el listener se prueba con poca infraestructura | Media; hay que probar el parseo y el cambio de hilo | Alta; la interfaz se puede mockear y el repositorio ya existe |
 | Mantenimiento | Medio; el código de red se mezcla con la actividad si no se encapsula | Medio-alto; da control total pero exige más código | Alto; declarativo, tipado y centraliza configuración |
-| Promedio de 5 ejecuciones | **15 ms** (16, 16, 16, 16, 15) | **4 ms** (3, 4, 4, 7, 3) | **15 ms** (17, 16, 14, 16, 15) |
+| Promedio de 5 ejecuciones | **15 ms** (17, 15, 15, 16, 15) | **4 ms** (10, 4, 3, 3, 3) | **13 ms** (19, 12, 14, 11, 12) |
 
-> En la prueba de demora, Volley reportó `TimeoutError` a los 30 503 ms, mientras que
-> OkHttp y Retrofit cortaron a los 10 002 ms. La política de Volley está configurada
-> con 10 s por intento y un reintento; el valor medido se registra tal cual.
+> En la prueba de demora, Volley reportó `TimeoutError` a los 20 502 ms (10 s por
+> intento + 1 reintento), mientras que OkHttp y Retrofit cortaron a los 10 002 ms.
 
 ### Lectura del cuadro
 
@@ -343,10 +345,11 @@ error clásico `CalledFromWrongThreadException` y mantiene el código uniforme.
   proyecto normal, reutilizando `ApiClient`, el código de la consulta es de pocas
   líneas.
 - **En la medición final**, OkHttp fue el más rápido (4 ms de promedio), seguido de
-  Volley y Retrofit (15 ms). La diferencia de ~11 ms es pequeña frente a la latencia
-  real de una red móvil, pero confirma el sobrecoste de las capas de abstracción.
-  Para que la comparación fuera justa se descartó el primer intento en frío de
-  OkHttp y Retrofit (550 ms y 584 ms), que incluye la inicialización de sus clientes.
+  Retrofit (13 ms) y Volley (15 ms). La diferencia de ~11 ms es pequeña frente a la
+  latencia real de una red móvil, pero confirma el sobrecoste de las capas de
+  abstracción. Para que la comparación fuera justa se hizo una ejecución de
+  calentamiento por librería, porque la primera llamada tras instalar la app tardó
+  517 ms (Volley), 994 ms (OkHttp) y 976 ms (Retrofit).
 
 ---
 
@@ -359,21 +362,23 @@ Las capturas y los textos completos de los mensajes están en
 
 | Escenario | Volley | OkHttp | Retrofit |
 |---|---|---|---|
-| **API detenida** | `NoConnectionError · causa=ConnectException`; 121 ms | `ConnectException: Failed to connect to /10.0.2.2:5080`; 485 ms | `ApiError.SIN_CONEXION`; 16 ms |
-| **Modo avión** | `NoConnectionError · causa=ConnectException`; 16 ms | `ConnectException: Failed to connect to /10.0.2.2:5080`; 2 ms | `ApiError.SIN_CONEXION`; 18 ms |
-| **Timeout (`/api/pruebas/demora`, 30 s)** | `TimeoutError`; 30 503 ms | `SocketTimeoutException: timeout`; 10 002 ms | `SocketTimeoutException: timeout`; 10 002 ms |
-| **Token inválido (401)** | `AuthFailureError · HTTP 401`; 653 ms | `HTTP 401 Unauthorized`; 634 ms | `ApiError.NO_AUTENTICADO · HTTP 401`; 616 ms |
-| **Token ausente (401)** | `AuthFailureError · HTTP 401`; 16 ms | `HTTP 401 Unauthorized`; 2 ms | `ApiError.NO_AUTENTICADO · HTTP 401`; 15 ms |
-| **Error 500** | `ServerError · HTTP 500`; 16 ms | `HTTP 500 Internal Server Error`; 4 ms | `HTTP 500 Internal Server Error`; 15 ms |
+| **API detenida** | `NoConnectionError · causa=ConnectException`; 433 ms | `ConnectException: Failed to connect to /10.0.2.2:5080`; 409 ms | `ApiError.SIN_CONEXION`; 373 ms |
+| **Modo avión** | `NoConnectionError · causa=ConnectException`; 19 ms | `SocketException: Software caused connection abort`; 2 ms | `ApiError.SIN_CONEXION`; 18 ms |
+| **Timeout (`/api/pruebas/demora`, 30 s)** | `TimeoutError`; 20 502 ms | `SocketTimeoutException: timeout`; 10 002 ms | `SocketTimeoutException: timeout`; 10 002 ms |
+| **Token inválido (401)** | `AuthFailureError · HTTP 401`; 543 ms | `HTTP 401 Unauthorized`; 524 ms | `ApiError.NO_AUTENTICADO · HTTP 401`; 506 ms |
+| **Token ausente (401)** | `AuthFailureError · HTTP 401`; 17 ms | `HTTP 401 Unauthorized`; 2 ms | `ApiError.NO_AUTENTICADO · HTTP 401`; 18 ms |
+| **Error 500** | `ServerError · HTTP 500`; 17 ms | `HTTP 500 Internal Server Error`; 3 ms | `HTTP 500 Internal Server Error`; 17 ms |
 
 Todos los errores mostraron un mensaje comprensible en la tarjeta y en un `Snackbar`;
 la app siguió abierta y los botones volvieron a quedar habilitados. Los textos exactos
 de los mensajes están en `docs/mediciones-fernando.md`.
 
-> **Timeout de Volley:** la política configurada es `DefaultRetryPolicy(10_000, 1,
-> 1.0f)`, pero en la prueba el corte observado fue a los 30 503 ms, coincidiendo con
-> la demora del endpoint. Se registra el valor medido tal cual; OkHttp y Retrofit
-> cortaron a los 10 002 ms.
+> **Timeout de Volley:** en la primera prueba Volley tardó ~30 s, no los ~20 s de su
+> configuración. La causa estaba en el código: se usaba `DEFAULT_BACKOFF_MULT` (1.0),
+> y Volley multiplica el timeout del reintento por ese valor. El log lo muestra con
+> `socket-retry [timeout=10000]` seguido de `socket-timeout-giveup [timeout=20000]`.
+> Se cambió el multiplicador a 0; con esa corrección cada intento dura 10 s y el corte
+> ocurre a los 20 502 ms, que es lo que se documenta en la tabla.
 >
 > **Timeout y 500 de Retrofit:** para los endpoints de prueba se usa `PruebasApi`
 > directamente, no el repositorio de la tarea 2.3. Por eso el detalle es
@@ -392,9 +397,11 @@ de los mensajes están en `docs/mediciones-fernando.md`.
 - Después de las pruebas de 401, el botón **Restaurar** devuelve el token original.
 - La verificación de que no aparece `FATAL EXCEPTION` se realizó con el Logcat adjunto
   en el anexo de capturas; el archivo no contiene esa excepción.
-- En la primera ejecución de OkHttp con la API detenida se reutilizó una conexión del
-  pool y apareció `IOException: unexpected end of stream`; en la segunda apareció
-  `ConnectException`. La app manejó ambos casos sin cerrarse.
+- En una ejecución anterior, la primera llamada de OkHttp con la API detenida reutilizó
+  una conexión del pool y apareció `IOException: unexpected end of stream`; la
+  siguiente mostró `ConnectException`. En modo avión, OkHttp reportó
+  `SocketException: Software caused connection abort`. En todos los casos la app
+  mostró el mensaje para el usuario y no se cerró.
 
 ---
 
@@ -442,7 +449,7 @@ Razones:
 5. **Ya está integrado.** La tarea 2.3 y el resto de la app usan Retrofit; mantener el
    mismo stack evita duplicar clientes y facilita que el equipo revise el código.
 6. **Rendimiento suficiente.** En la medición final, OkHttp fue el más rápido (4 ms de
-   promedio) frente a Volley y Retrofit (15 ms). La diferencia de ~11 ms es despreciable
+   promedio) frente a Volley (15 ms) y Retrofit (13 ms). La diferencia de ~11 ms es despreciable
    frente a la latencia real de una red móvil. La ganancia en mantenibilidad de Retrofit
    pesa más.
 
@@ -471,7 +478,7 @@ Razones:
 | 0:50–1:40 | Explicar el código de Volley: `JsonArrayRequest`, `getHeaders()` con el token, `DefaultRetryPolicy` y el hecho de que la respuesta llega en el hilo principal. |
 | 1:40–2:30 | Explicar el código de OkHttp: `Request.Builder`, `enqueue()`, Gson y el `Handler` que publica en el hilo principal. |
 | 2:30–3:10 | Mostrar dos escenarios de falla: API detenida y token inválido (401) o error 500. Leer el detalle técnico y el mensaje al usuario. |
-| 3:10–3:40 | Mostrar los promedios (Volley 15 ms, OkHttp 4 ms, Retrofit 15 ms) y explicar la recomendación: Retrofit para el proyecto final. |
+| 3:10–3:40 | Mostrar los promedios (Volley 15 ms, OkHttp 4 ms, Retrofit 13 ms) y explicar la recomendación: Retrofit para el proyecto final. |
 | 3:40–4:00 | Cierre: rama, pull request y conclusión. |
 
 ---
@@ -480,8 +487,8 @@ Razones:
 
 - Las tres librerías pueden consumir el mismo endpoint protegido y enviar el token,
   pero con niveles de abstracción distintos.
-- En la medición final, OkHttp fue el más rápido (4 ms), seguido de Volley y Retrofit
-  (15 ms). La diferencia es pequeña frente a la latencia de una red real, pero confirma
+- En la medición final, OkHttp fue el más rápido (4 ms), seguido de Retrofit (13 ms) y
+  Volley (15 ms). La diferencia es pequeña frente a la latencia de una red real, pero confirma
   que las capas de abstracción tienen un costo medible.
 - Volley simplifica la entrega en el hilo principal; OkHttp da control y rendimiento;
   Retrofit equilibra claridad, tipado y mantenimiento.

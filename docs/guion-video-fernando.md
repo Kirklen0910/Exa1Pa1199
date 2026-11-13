@@ -64,9 +64,10 @@
 > un Handler. El token se envía sobrescribiendo getHeaders: armo un Map, agrego Accept
 > y, si hay token en SessionManager, agrego Authorization con el esquema Bearer. El
 > tiempo de espera se configura con DefaultRetryPolicy: diez segundos por intento y un
-> reintento. En la prueba de demora, Volley reportó TimeoutError a los 30.5 segundos,
-> mientras OkHttp y Retrofit cortaron a los 10 segundos; ese es el resultado que se
-> documenta. La respuesta JSON se convierte con Gson a una lista de RegistroResumenDto.”
+> reintento; el multiplicador es 0 para que cada intento dure 10 segundos. En la prueba
+> de demora, Volley reportó TimeoutError a los 20.5 segundos, mientras OkHttp y Retrofit
+> cortaron a los 10. Antes tenía 1.0 y tardaba 30 segundos, y eso lo corregí. La
+> respuesta JSON se convierte con Gson a una lista de RegistroResumenDto.”
 
 **En pantalla:** muestra la línea del `DefaultRetryPolicy` y el callback.
 
@@ -131,7 +132,7 @@
 **En pantalla:** muestra la pantalla con los promedios de las 5 ejecuciones.
 
 > “En las cinco ejecuciones, los promedios fueron: Volley 15 milisegundos, OkHttp 4
-> milisegundos y Retrofit 15 milisegundos. La diferencia es de pocos milisegundos y en
+> milisegundos y Retrofit 13 milisegundos. La diferencia es de pocos milisegundos y en
 > una red real es despreciable. Por mantenibilidad, conversión automática de JSON,
 > token centralizado en un interceptor y reutilización del repositorio de la tarea 2.3,
 > recomiendo Retrofit para el proyecto final. OkHttp es la mejor opción cuando se

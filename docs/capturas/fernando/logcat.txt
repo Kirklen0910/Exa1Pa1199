@@ -1,25 +1,367 @@
-11-13 13:49:05.028 28834 28834 W ComparativaVolley: ServerError · HTTP 500
-11-13 13:49:05.028 28834 28834 W ComparativaVolley: com.android.volley.ServerError
-11-13 13:49:05.028 28834 28834 W ComparativaVolley: 	at com.android.volley.toolbox.NetworkUtility.shouldRetryException(NetworkUtility.java:201)
-11-13 13:49:05.028 28834 28834 W ComparativaVolley: 	at com.android.volley.toolbox.BasicNetwork.performRequest(BasicNetwork.java:145)
-11-13 13:49:05.028 28834 28834 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.processRequest(NetworkDispatcher.java:132)
-11-13 13:49:05.028 28834 28834 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.processRequest(NetworkDispatcher.java:111)
-11-13 13:49:05.028 28834 28834 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.run(NetworkDispatcher.java:90)
-11-13 13:49:05.028 28834 28834 W ComparativaFernando: 13:49:05 · Volley · intento 1/1 · GET /api/pruebas/error (500) → ServerError · HTTP 500, 889 ms | El servidor tuvo un problema (código 500). Inténtalo más tarde.
-11-13 13:49:07.025 28834 29184 W ComparativaOkHttp: HTTP 500 Internal Server Error
-11-13 13:49:07.026 28834 28834 W ComparativaFernando: 13:49:07 · OkHttp · intento 1/1 · GET /api/pruebas/error (500) → HTTP 500 Internal Server Error, 871 ms | El servidor tuvo un problema (código 500). Inténtalo más tarde.
-11-13 13:49:09.036 28834 28834 W ComparativaRetrofit: HTTP 500 Internal Server Error
-11-13 13:49:09.037 28834 28834 W ComparativaFernando: 13:49:09 · Retrofit · intento 1/1 · GET /api/pruebas/error (500) → HTTP 500 Internal Server Error, 865 ms | El servidor tuvo un problema (código 500). Inténtalo más tarde.
-11-13 13:49:11.206 28834 28834 W ComparativaFernando: Token alterado para provocar un 401
-11-13 13:49:12.239 28834 28834 W ComparativaVolley: AuthFailureError · HTTP 401
-11-13 13:49:12.239 28834 28834 W ComparativaVolley: com.android.volley.AuthFailureError
-11-13 13:49:12.239 28834 28834 W ComparativaVolley: 	at com.android.volley.toolbox.NetworkUtility.shouldRetryException(NetworkUtility.java:189)
-11-13 13:49:12.239 28834 28834 W ComparativaVolley: 	at com.android.volley.toolbox.BasicNetwork.performRequest(BasicNetwork.java:145)
-11-13 13:49:12.239 28834 28834 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.processRequest(NetworkDispatcher.java:132)
-11-13 13:49:12.239 28834 28834 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.processRequest(NetworkDispatcher.java:111)
-11-13 13:49:12.239 28834 28834 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.run(NetworkDispatcher.java:90)
-11-13 13:49:12.239 28834 28834 W ComparativaFernando: 13:49:12 · Volley · intento 1/1 · GET /api/registros → AuthFailureError · HTTP 401, 18 ms | Tu sesión expiró o no es válida. Inicia sesión de nuevo.
-11-13 13:49:14.241 28834 29184 W ComparativaOkHttp: HTTP 401 Unauthorized
-11-13 13:49:14.256 28834 28834 W ComparativaFernando: 13:49:14 · OkHttp · intento 1/1 · GET /api/registros → HTTP 401 Unauthorized, 2 ms | Tu sesión expiró o no es válida. Inicia sesión de nuevo.
-11-13 13:49:16.273 28834 28834 W ComparativaRetrofit: ApiError.NO_AUTENTICADO · HTTP 401 | Tu sesión expiró o no es válida. Inicia sesión de nuevo.
-11-13 13:49:16.273 28834 28834 W ComparativaFernando: 13:49:16 · Retrofit · intento 1/1 · GET /api/registros → ApiError.NO_AUTENTICADO · HTTP 401, 18 ms | Tu sesión expiró o no es válida. Inicia sesión de nuevo.
+11-13 14:10:42.179 30739 30786 V Volley  : [59] CacheDispatcher.run: start new dispatcher
+11-13 14:10:45.604 30739 30789 D Volley  : [62] NetworkUtility.logSlowRequests: HTTP response for request=<[ ] http://10.0.2.2:5080/api/registros 0x1e7db229 NORMAL 1> [lifetime=513], [size=266], [rc=200], [retryCount=0]
+11-13 14:10:45.608 30739 30739 D Volley  : [2] MarkerLog.finish: (518  ms) [ ] http://10.0.2.2:5080/api/registros 0x1e7db229 NORMAL 1
+11-13 14:10:45.609 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [ 2] add-to-queue
+11-13 14:10:45.609 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [62] network-queue-take
+11-13 14:10:45.609 30739 30739 D Volley  : [2] MarkerLog.finish: (+515 ) [62] network-http-complete
+11-13 14:10:45.609 30739 30739 D Volley  : [2] MarkerLog.finish: (+1   ) [62] network-parse-complete
+11-13 14:10:45.609 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [62] post-response
+11-13 14:10:45.609 30739 30739 D Volley  : [2] MarkerLog.finish: (+2   ) [ 2] done
+11-13 14:11:02.390 30739 30790 D Volley  : [63] NetworkUtility.logSlowRequests: HTTP response for request=<[ ] http://10.0.2.2:5080/api/registros 0x1e7db229 NORMAL 2> [lifetime=3], [size=266], [rc=200], [retryCount=0]
+11-13 14:11:02.406 30739 30739 D Volley  : [2] MarkerLog.finish: (19   ms) [ ] http://10.0.2.2:5080/api/registros 0x1e7db229 NORMAL 2
+11-13 14:11:02.406 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [ 2] add-to-queue
+11-13 14:11:02.406 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [63] network-queue-take
+11-13 14:11:02.406 30739 30739 D Volley  : [2] MarkerLog.finish: (+3   ) [63] network-http-complete
+11-13 14:11:02.406 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [63] network-parse-complete
+11-13 14:11:02.406 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [63] post-response
+11-13 14:11:02.406 30739 30739 D Volley  : [2] MarkerLog.finish: (+16  ) [ 2] done
+11-13 14:11:02.409 30739 30788 D Volley  : [61] NetworkUtility.logSlowRequests: HTTP response for request=<[ ] http://10.0.2.2:5080/api/registros 0x1e7db229 NORMAL 3> [lifetime=3], [size=266], [rc=200], [retryCount=0]
+11-13 14:11:02.422 30739 30739 D Volley  : [2] MarkerLog.finish: (17   ms) [ ] http://10.0.2.2:5080/api/registros 0x1e7db229 NORMAL 3
+11-13 14:11:02.422 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [ 2] add-to-queue
+11-13 14:11:02.422 30739 30739 D Volley  : [2] MarkerLog.finish: (+1   ) [61] network-queue-take
+11-13 14:11:02.422 30739 30739 D Volley  : [2] MarkerLog.finish: (+3   ) [61] network-http-complete
+11-13 14:11:02.422 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [61] network-parse-complete
+11-13 14:11:02.422 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [61] post-response
+11-13 14:11:02.422 30739 30739 D Volley  : [2] MarkerLog.finish: (+13  ) [ 2] done
+11-13 14:11:02.425 30739 30787 D Volley  : [60] NetworkUtility.logSlowRequests: HTTP response for request=<[ ] http://10.0.2.2:5080/api/registros 0x1e7db229 NORMAL 4> [lifetime=3], [size=266], [rc=200], [retryCount=0]
+11-13 14:11:02.439 30739 30739 D Volley  : [2] MarkerLog.finish: (17   ms) [ ] http://10.0.2.2:5080/api/registros 0x1e7db229 NORMAL 4
+11-13 14:11:02.439 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [ 2] add-to-queue
+11-13 14:11:02.439 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [60] network-queue-take
+11-13 14:11:02.439 30739 30739 D Volley  : [2] MarkerLog.finish: (+3   ) [60] network-http-complete
+11-13 14:11:02.439 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [60] network-parse-complete
+11-13 14:11:02.439 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [60] post-response
+11-13 14:11:02.439 30739 30739 D Volley  : [2] MarkerLog.finish: (+14  ) [ 2] done
+11-13 14:11:02.442 30739 30789 D Volley  : [62] NetworkUtility.logSlowRequests: HTTP response for request=<[ ] http://10.0.2.2:5080/api/registros 0x1e7db229 NORMAL 5> [lifetime=2], [size=266], [rc=200], [retryCount=0]
+11-13 14:11:02.456 30739 30739 D Volley  : [2] MarkerLog.finish: (16   ms) [ ] http://10.0.2.2:5080/api/registros 0x1e7db229 NORMAL 5
+11-13 14:11:02.456 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [ 2] add-to-queue
+11-13 14:11:02.456 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [62] network-queue-take
+11-13 14:11:02.456 30739 30739 D Volley  : [2] MarkerLog.finish: (+3   ) [62] network-http-complete
+11-13 14:11:02.456 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [62] network-parse-complete
+11-13 14:11:02.456 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [62] post-response
+11-13 14:11:02.456 30739 30739 D Volley  : [2] MarkerLog.finish: (+13  ) [ 2] done
+11-13 14:11:02.459 30739 30790 D Volley  : [63] NetworkUtility.logSlowRequests: HTTP response for request=<[ ] http://10.0.2.2:5080/api/registros 0x1e7db229 NORMAL 6> [lifetime=4], [size=266], [rc=200], [retryCount=0]
+11-13 14:11:02.475 30739 30739 D Volley  : [2] MarkerLog.finish: (19   ms) [ ] http://10.0.2.2:5080/api/registros 0x1e7db229 NORMAL 6
+11-13 14:11:02.475 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [ 2] add-to-queue
+11-13 14:11:02.475 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [63] network-queue-take
+11-13 14:11:02.475 30739 30739 D Volley  : [2] MarkerLog.finish: (+4   ) [63] network-http-complete
+11-13 14:11:02.475 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [63] network-parse-complete
+11-13 14:11:02.475 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [63] post-response
+11-13 14:11:02.475 30739 30739 D Volley  : [2] MarkerLog.finish: (+15  ) [ 2] done
+11-13 14:11:24.207 30739 30788 D Volley  : [61] NetworkUtility.logSlowRequests: HTTP response for request=<[ ] http://10.0.2.2:5080/api/pruebas/error 0x1e7db229 NORMAL 7> [lifetime=3], [size=226], [rc=500], [retryCount=0]
+11-13 14:11:24.207 30739 30788 E Volley  : [61] NetworkUtility.shouldRetryException: Unexpected response code 500 for http://10.0.2.2:5080/api/pruebas/error
+11-13 14:11:24.222 30739 30739 W ComparativaVolley: ServerError · HTTP 500
+11-13 14:11:24.222 30739 30739 W ComparativaVolley: com.android.volley.ServerError
+11-13 14:11:24.222 30739 30739 W ComparativaVolley: 	at com.android.volley.toolbox.NetworkUtility.shouldRetryException(NetworkUtility.java:201)
+11-13 14:11:24.222 30739 30739 W ComparativaVolley: 	at com.android.volley.toolbox.BasicNetwork.performRequest(BasicNetwork.java:145)
+11-13 14:11:24.222 30739 30739 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.processRequest(NetworkDispatcher.java:132)
+11-13 14:11:24.222 30739 30739 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.processRequest(NetworkDispatcher.java:111)
+11-13 14:11:24.222 30739 30739 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.run(NetworkDispatcher.java:90)
+11-13 14:11:24.231 30739 30739 D Volley  : [2] MarkerLog.finish: (27   ms) [ ] http://10.0.2.2:5080/api/pruebas/error 0x1e7db229 NORMAL 7
+11-13 14:11:24.231 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [ 2] add-to-queue
+11-13 14:11:24.231 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [61] network-queue-take
+11-13 14:11:24.231 30739 30739 D Volley  : [2] MarkerLog.finish: (+3   ) [61] post-error
+11-13 14:11:24.231 30739 30739 D Volley  : [2] MarkerLog.finish: (+24  ) [ 2] done
+11-13 14:11:26.225 30739 30815 W ComparativaOkHttp: HTTP 500 Internal Server Error
+11-13 14:11:28.254 30739 30739 W ComparativaRetrofit: HTTP 500 Internal Server Error
+11-13 14:11:55.824 30739 30739 W ComparativaVolley: TimeoutError
+11-13 14:11:55.824 30739 30739 W ComparativaVolley: com.android.volley.TimeoutError
+11-13 14:11:55.824 30739 30739 W ComparativaVolley: 	at com.android.volley.toolbox.NetworkUtility.shouldRetryException(NetworkUtility.java:162)
+11-13 14:11:55.824 30739 30739 W ComparativaVolley: 	at com.android.volley.toolbox.BasicNetwork.performRequest(BasicNetwork.java:145)
+11-13 14:11:55.824 30739 30739 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.processRequest(NetworkDispatcher.java:132)
+11-13 14:11:55.824 30739 30739 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.processRequest(NetworkDispatcher.java:111)
+11-13 14:11:55.824 30739 30739 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.run(NetworkDispatcher.java:90)
+11-13 14:11:55.830 30739 30739 D Volley  : [2] MarkerLog.finish: (20509 ms) [ ] http://10.0.2.2:5080/api/pruebas/demora 0x1e7db229 NORMAL 8
+11-13 14:11:55.830 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [ 2] add-to-queue
+11-13 14:11:55.830 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [60] network-queue-take
+11-13 14:11:55.830 30739 30739 D Volley  : [2] MarkerLog.finish: (+10002) [60] socket-retry [timeout=10000]
+11-13 14:11:55.830 30739 30739 D Volley  : [2] MarkerLog.finish: (+10500) [60] socket-timeout-giveup [timeout=10000]
+11-13 14:11:55.830 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [60] post-error
+11-13 14:11:55.830 30739 30739 D Volley  : [2] MarkerLog.finish: (+7   ) [ 2] done
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: SocketTimeoutException: timeout
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: java.net.SocketTimeoutException: timeout
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	at okio.SocketAsyncTimeout.newTimeoutException(JvmOkio.kt:146)
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	at okio.AsyncTimeout.access$newTimeoutException(AsyncTimeout.kt:161)
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	at okio.AsyncTimeout$source$1.read(AsyncTimeout.kt:339)
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	at okio.RealBufferedSource.indexOf(RealBufferedSource.kt:430)
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	at okio.RealBufferedSource.readUtf8LineStrict(RealBufferedSource.kt:323)
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http1.HeadersReader.readLine(HeadersReader.kt:29)
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http1.Http1ExchangeCodec.readResponseHeaders(Http1ExchangeCodec.kt:180)
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.Exchange.readResponseHeaders(Exchange.kt:110)
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.CallServerInterceptor.intercept(CallServerInterceptor.kt:93)
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.ConnectInterceptor.intercept(ConnectInterceptor.kt:34)
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.cache.CacheInterceptor.intercept(CacheInterceptor.kt:95)
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.BridgeInterceptor.intercept(BridgeInterceptor.kt:83)
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.RetryAndFollowUpInterceptor.intercept(RetryAndFollowUpInterceptor.kt:76)
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.RealCall.getResponseWithInterceptorChain$okhttp(RealCall.kt:201)
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:517)
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1100)
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	at java.lang.Thread.run(Thread.java:1571)
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: Caused by: java.net.SocketException: Socket closed
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	at java.net.SocketInputStream.read(SocketInputStream.java:188)
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	at java.net.SocketInputStream.read(SocketInputStream.java:143)
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	at okio.InputStreamSource.read(JvmOkio.kt:93)
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	at okio.AsyncTimeout$source$1.read(AsyncTimeout.kt:128)
+11-13 14:12:10.341 30739 30815 W ComparativaOkHttp: 	... 20 more
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: SocketTimeoutException: timeout
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: java.net.SocketTimeoutException: timeout
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at okio.SocketAsyncTimeout.newTimeoutException(JvmOkio.kt:146)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at okio.AsyncTimeout.access$newTimeoutException(AsyncTimeout.kt:161)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at okio.AsyncTimeout$source$1.read(AsyncTimeout.kt:339)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at okio.RealBufferedSource.indexOf(RealBufferedSource.kt:430)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at okio.RealBufferedSource.readUtf8LineStrict(RealBufferedSource.kt:323)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at okhttp3.internal.http1.HeadersReader.readLine(HeadersReader.kt:29)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at okhttp3.internal.http1.Http1ExchangeCodec.readResponseHeaders(Http1ExchangeCodec.kt:180)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at okhttp3.internal.connection.Exchange.readResponseHeaders(Exchange.kt:110)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at okhttp3.internal.http.CallServerInterceptor.intercept(CallServerInterceptor.kt:93)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at okhttp3.internal.connection.ConnectInterceptor.intercept(ConnectInterceptor.kt:34)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at okhttp3.internal.cache.CacheInterceptor.intercept(CacheInterceptor.kt:95)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at okhttp3.internal.http.BridgeInterceptor.intercept(BridgeInterceptor.kt:83)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at okhttp3.internal.http.RetryAndFollowUpInterceptor.intercept(RetryAndFollowUpInterceptor.kt:76)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at com.uth.exa1pa1199.data.comparativa_fernando.ClienteRetrofitFernando.lambda$new$0(ClienteRetrofitFernando.java:58)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at com.uth.exa1pa1199.data.comparativa_fernando.ClienteRetrofitFernando$$ExternalSyntheticLambda1.intercept(D8$$SyntheticClass:0)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at okhttp3.internal.connection.RealCall.getResponseWithInterceptorChain$okhttp(RealCall.kt:201)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:517)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1100)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at java.lang.Thread.run(Thread.java:1571)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: Caused by: java.net.SocketException: Socket closed
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at java.net.SocketInputStream.read(SocketInputStream.java:188)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at java.net.SocketInputStream.read(SocketInputStream.java:143)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at okio.InputStreamSource.read(JvmOkio.kt:93)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	at okio.AsyncTimeout$source$1.read(AsyncTimeout.kt:128)
+11-13 14:12:23.358 30739 30739 W ComparativaRetrofit: 	... 23 more
+11-13 14:12:38.012 30739 30789 D Volley  : [62] NetworkUtility.logSlowRequests: HTTP response for request=<[ ] http://10.0.2.2:5080/api/registros 0x1e7db229 NORMAL 9> [lifetime=541], [size=231], [rc=401], [retryCount=0]
+11-13 14:12:38.012 30739 30789 E Volley  : [62] NetworkUtility.shouldRetryException: Unexpected response code 401 for http://10.0.2.2:5080/api/registros
+11-13 14:12:38.014 30739 30789 D Volley  : [62] NetworkUtility.logSlowRequests: HTTP response for request=<[ ] http://10.0.2.2:5080/api/registros 0x1e7db229 NORMAL 9> [lifetime=543], [size=231], [rc=401], [retryCount=1]
+11-13 14:12:38.014 30739 30789 E Volley  : [62] NetworkUtility.shouldRetryException: Unexpected response code 401 for http://10.0.2.2:5080/api/registros
+11-13 14:12:38.014 30739 30739 W ComparativaVolley: AuthFailureError · HTTP 401
+11-13 14:12:38.014 30739 30739 W ComparativaVolley: com.android.volley.AuthFailureError
+11-13 14:12:38.014 30739 30739 W ComparativaVolley: 	at com.android.volley.toolbox.NetworkUtility.shouldRetryException(NetworkUtility.java:189)
+11-13 14:12:38.014 30739 30739 W ComparativaVolley: 	at com.android.volley.toolbox.BasicNetwork.performRequest(BasicNetwork.java:145)
+11-13 14:12:38.014 30739 30739 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.processRequest(NetworkDispatcher.java:132)
+11-13 14:12:38.014 30739 30739 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.processRequest(NetworkDispatcher.java:111)
+11-13 14:12:38.014 30739 30739 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.run(NetworkDispatcher.java:90)
+11-13 14:12:38.022 30739 30739 D Volley  : [2] MarkerLog.finish: (551  ms) [ ] http://10.0.2.2:5080/api/registros 0x1e7db229 NORMAL 9
+11-13 14:12:38.022 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [ 2] add-to-queue
+11-13 14:12:38.022 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [62] network-queue-take
+11-13 14:12:38.022 30739 30739 D Volley  : [2] MarkerLog.finish: (+541 ) [62] auth-retry [timeout=10000]
+11-13 14:12:38.022 30739 30739 D Volley  : [2] MarkerLog.finish: (+2   ) [62] auth-timeout-giveup [timeout=10000]
+11-13 14:12:38.022 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [62] post-error
+11-13 14:12:38.022 30739 30739 D Volley  : [2] MarkerLog.finish: (+8   ) [ 2] done
+11-13 14:12:40.012 30739 30815 W ComparativaOkHttp: HTTP 401 Unauthorized
+11-13 14:12:42.011 30739 30739 W ComparativaRetrofit: ApiError.NO_AUTENTICADO · HTTP 401 | Tu sesión expiró o no es válida. Inicia sesión de nuevo.
+11-13 14:12:51.740 30739 30790 D Volley  : [63] NetworkUtility.logSlowRequests: HTTP response for request=<[ ] http://10.0.2.2:5080/api/registros 0x1e7db229 NORMAL 10> [lifetime=2], [size=294], [rc=401], [retryCount=0]
+11-13 14:12:51.740 30739 30790 E Volley  : [63] NetworkUtility.shouldRetryException: Unexpected response code 401 for http://10.0.2.2:5080/api/registros
+11-13 14:12:51.742 30739 30790 D Volley  : [63] NetworkUtility.logSlowRequests: HTTP response for request=<[ ] http://10.0.2.2:5080/api/registros 0x1e7db229 NORMAL 10> [lifetime=3], [size=294], [rc=401], [retryCount=1]
+11-13 14:12:51.742 30739 30790 E Volley  : [63] NetworkUtility.shouldRetryException: Unexpected response code 401 for http://10.0.2.2:5080/api/registros
+11-13 14:12:51.755 30739 30739 W ComparativaVolley: AuthFailureError · HTTP 401
+11-13 14:12:51.755 30739 30739 W ComparativaVolley: com.android.volley.AuthFailureError
+11-13 14:12:51.755 30739 30739 W ComparativaVolley: 	at com.android.volley.toolbox.NetworkUtility.shouldRetryException(NetworkUtility.java:189)
+11-13 14:12:51.755 30739 30739 W ComparativaVolley: 	at com.android.volley.toolbox.BasicNetwork.performRequest(BasicNetwork.java:145)
+11-13 14:12:51.755 30739 30739 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.processRequest(NetworkDispatcher.java:132)
+11-13 14:12:51.755 30739 30739 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.processRequest(NetworkDispatcher.java:111)
+11-13 14:12:51.755 30739 30739 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.run(NetworkDispatcher.java:90)
+11-13 14:12:51.765 30739 30739 D Volley  : [2] MarkerLog.finish: (26   ms) [ ] http://10.0.2.2:5080/api/registros 0x1e7db229 NORMAL 10
+11-13 14:12:51.765 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [ 2] add-to-queue
+11-13 14:12:51.765 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [63] network-queue-take
+11-13 14:12:51.765 30739 30739 D Volley  : [2] MarkerLog.finish: (+2   ) [63] auth-retry [timeout=10000]
+11-13 14:12:51.765 30739 30739 D Volley  : [2] MarkerLog.finish: (+2   ) [63] auth-timeout-giveup [timeout=10000]
+11-13 14:12:51.765 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [63] post-error
+11-13 14:12:51.765 30739 30739 D Volley  : [2] MarkerLog.finish: (+22  ) [ 2] done
+11-13 14:12:53.756 30739 30815 W ComparativaOkHttp: HTTP 401 Unauthorized
+11-13 14:12:55.790 30739 30739 W ComparativaRetrofit: ApiError.NO_AUTENTICADO · HTTP 401 | Tu sesión expiró o no es válida. Inicia sesión de nuevo.
+11-13 14:13:13.373 30739 30739 W ComparativaVolley: NoConnectionError · causa=ConnectException
+11-13 14:13:13.373 30739 30739 W ComparativaVolley: com.android.volley.NoConnectionError: java.net.ConnectException: Failed to connect to /10.0.2.2:5080
+11-13 14:13:13.373 30739 30739 W ComparativaVolley: 	at com.android.volley.toolbox.NetworkUtility.shouldRetryException(NetworkUtility.java:173)
+11-13 14:13:13.373 30739 30739 W ComparativaVolley: 	at com.android.volley.toolbox.BasicNetwork.performRequest(BasicNetwork.java:145)
+11-13 14:13:13.373 30739 30739 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.processRequest(NetworkDispatcher.java:132)
+11-13 14:13:13.373 30739 30739 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.processRequest(NetworkDispatcher.java:111)
+11-13 14:13:13.373 30739 30739 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.run(NetworkDispatcher.java:90)
+11-13 14:13:13.373 30739 30739 W ComparativaVolley: Caused by: java.net.ConnectException: Failed to connect to /10.0.2.2:5080
+11-13 14:13:13.373 30739 30739 W ComparativaVolley: 	at com.android.okhttp.internal.io.RealConnection.connectSocket(RealConnection.java:145)
+11-13 14:13:13.373 30739 30739 W ComparativaVolley: 	at com.android.okhttp.internal.io.RealConnection.connect(RealConnection.java:114)
+11-13 14:13:13.373 30739 30739 W ComparativaVolley: 	at com.android.okhttp.internal.http.StreamAllocation.findConnection(StreamAllocation.java:186)
+11-13 14:13:13.373 30739 30739 W ComparativaVolley: 	at com.android.okhttp.internal.http.StreamAllocation.findHealthyConnection(StreamAllocation.java:128)
+11-13 14:13:13.373 30739 30739 W ComparativaVolley: 	at com.android.okhttp.internal.http.StreamAllocation.newStream(StreamAllocation.java:97)
+11-13 14:13:13.373 30739 30739 W ComparativaVolley: 	at com.android.okhttp.internal.http.HttpEngine.connect(HttpEngine.java:289)
+11-13 14:13:13.373 30739 30739 W ComparativaVolley: 	at com.android.okhttp.internal.http.HttpEngine.sendRequest(HttpEngine.java:232)
+11-13 14:13:13.373 30739 30739 W ComparativaVolley: 	at com.android.okhttp.internal.huc.HttpURLConnectionImpl.execute(HttpURLConnectionImpl.java:465)
+11-13 14:13:13.373 30739 30739 W ComparativaVolley: 	at com.android.okhttp.internal.huc.HttpURLConnectionImpl.getResponse(HttpURLConnectionImpl.java:411)
+11-13 14:13:13.373 30739 30739 W ComparativaVolley: 	at com.android.okhttp.internal.huc.HttpURLConnectionImpl.getResponseCode(HttpURLConnectionImpl.java:542)
+11-13 14:13:13.373 30739 30739 W ComparativaVolley: 	at com.android.volley.toolbox.HurlStack.executeRequest(HurlStack.java:91)
+11-13 14:13:13.373 30739 30739 W ComparativaVolley: 	at com.android.volley.toolbox.BasicNetwork.performRequest(BasicNetwork.java:104)
+11-13 14:13:13.373 30739 30739 W ComparativaVolley: 	... 3 more
+11-13 14:13:13.381 30739 30739 D Volley  : [2] MarkerLog.finish: (27   ms) [ ] http://10.0.2.2:5080/api/registros 0x1e7db229 NORMAL 11
+11-13 14:13:13.381 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [ 2] add-to-queue
+11-13 14:13:13.381 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [61] network-queue-take
+11-13 14:13:13.381 30739 30739 D Volley  : [2] MarkerLog.finish: (+2   ) [61] post-error
+11-13 14:13:13.381 30739 30739 D Volley  : [2] MarkerLog.finish: (+25  ) [ 2] done
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: SocketException: Software caused connection abort
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: java.net.SocketException: Software caused connection abort
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 	at java.net.SocketOutputStream.socketWrite0(Native Method)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 	at java.net.SocketOutputStream.socketWrite(SocketOutputStream.java:116)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 	at java.net.SocketOutputStream.write(SocketOutputStream.java:156)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 	at okio.OutputStreamSink.write(JvmOkio.kt:56)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 	at okio.AsyncTimeout$sink$1.write(AsyncTimeout.kt:102)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 	at okio.RealBufferedSink.flush(RealBufferedSink.kt:268)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http1.Http1ExchangeCodec.finishRequest(Http1ExchangeCodec.kt:155)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.Exchange.finishRequest(Exchange.kt:95)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.CallServerInterceptor.intercept(CallServerInterceptor.kt:79)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.ConnectInterceptor.intercept(ConnectInterceptor.kt:34)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.cache.CacheInterceptor.intercept(CacheInterceptor.kt:95)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.BridgeInterceptor.intercept(BridgeInterceptor.kt:83)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.RetryAndFollowUpInterceptor.intercept(RetryAndFollowUpInterceptor.kt:76)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.RealCall.getResponseWithInterceptorChain$okhttp(RealCall.kt:201)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:517)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1100)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 	at java.lang.Thread.run(Thread.java:1571)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 	Suppressed: java.io.IOException: unexpected end of stream on http://10.0.2.2:5080/...
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 		at okhttp3.internal.http1.Http1ExchangeCodec.readResponseHeaders(Http1ExchangeCodec.kt:210)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 		at okhttp3.internal.connection.Exchange.readResponseHeaders(Exchange.kt:110)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 		at okhttp3.internal.http.CallServerInterceptor.intercept(CallServerInterceptor.kt:93)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 		... 14 more
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 	Caused by: java.io.EOFException: \n not found: limit=0 content=…
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 		at okio.RealBufferedSource.readUtf8LineStrict(RealBufferedSource.kt:335)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 		at okhttp3.internal.http1.HeadersReader.readLine(HeadersReader.kt:29)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 		at okhttp3.internal.http1.Http1ExchangeCodec.readResponseHeaders(Http1ExchangeCodec.kt:180)
+11-13 14:13:17.373 30739 30815 W ComparativaOkHttp: 		... 16 more
+11-13 14:13:20.405 30739 30739 W ComparativaRetrofit: ApiError.SIN_CONEXION | No se pudo conectar con el servidor. Revisa tu conexión a internet o que la API esté encendida.
+11-13 14:13:43.004 30739 30739 W ComparativaVolley: NoConnectionError · causa=ConnectException
+11-13 14:13:43.004 30739 30739 W ComparativaVolley: com.android.volley.NoConnectionError: java.net.ConnectException: Failed to connect to /10.0.2.2:5080
+11-13 14:13:43.004 30739 30739 W ComparativaVolley: 	at com.android.volley.toolbox.NetworkUtility.shouldRetryException(NetworkUtility.java:173)
+11-13 14:13:43.004 30739 30739 W ComparativaVolley: 	at com.android.volley.toolbox.BasicNetwork.performRequest(BasicNetwork.java:145)
+11-13 14:13:43.004 30739 30739 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.processRequest(NetworkDispatcher.java:132)
+11-13 14:13:43.004 30739 30739 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.processRequest(NetworkDispatcher.java:111)
+11-13 14:13:43.004 30739 30739 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.run(NetworkDispatcher.java:90)
+11-13 14:13:43.004 30739 30739 W ComparativaVolley: Caused by: java.net.ConnectException: Failed to connect to /10.0.2.2:5080
+11-13 14:13:43.004 30739 30739 W ComparativaVolley: 	at com.android.okhttp.internal.io.RealConnection.connectSocket(RealConnection.java:145)
+11-13 14:13:43.004 30739 30739 W ComparativaVolley: 	at com.android.okhttp.internal.io.RealConnection.connect(RealConnection.java:114)
+11-13 14:13:43.004 30739 30739 W ComparativaVolley: 	at com.android.okhttp.internal.http.StreamAllocation.findConnection(StreamAllocation.java:186)
+11-13 14:13:43.004 30739 30739 W ComparativaVolley: 	at com.android.okhttp.internal.http.StreamAllocation.findHealthyConnection(StreamAllocation.java:128)
+11-13 14:13:43.004 30739 30739 W ComparativaVolley: 	at com.android.okhttp.internal.http.StreamAllocation.newStream(StreamAllocation.java:97)
+11-13 14:13:43.004 30739 30739 W ComparativaVolley: 	at com.android.okhttp.internal.http.HttpEngine.connect(HttpEngine.java:289)
+11-13 14:13:43.004 30739 30739 W ComparativaVolley: 	at com.android.okhttp.internal.http.HttpEngine.sendRequest(HttpEngine.java:232)
+11-13 14:13:43.004 30739 30739 W ComparativaVolley: 	at com.android.okhttp.internal.huc.HttpURLConnectionImpl.execute(HttpURLConnectionImpl.java:465)
+11-13 14:13:43.004 30739 30739 W ComparativaVolley: 	at com.android.okhttp.internal.huc.HttpURLConnectionImpl.getResponse(HttpURLConnectionImpl.java:411)
+11-13 14:13:43.004 30739 30739 W ComparativaVolley: 	at com.android.okhttp.internal.huc.HttpURLConnectionImpl.getResponseCode(HttpURLConnectionImpl.java:542)
+11-13 14:13:43.004 30739 30739 W ComparativaVolley: 	at com.android.volley.toolbox.HurlStack.executeRequest(HurlStack.java:91)
+11-13 14:13:43.004 30739 30739 W ComparativaVolley: 	at com.android.volley.toolbox.BasicNetwork.performRequest(BasicNetwork.java:104)
+11-13 14:13:43.004 30739 30739 W ComparativaVolley: 	... 3 more
+11-13 14:13:43.011 30739 30739 D Volley  : [2] MarkerLog.finish: (440  ms) [ ] http://10.0.2.2:5080/api/registros 0x1e7db229 NORMAL 12
+11-13 14:13:43.011 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [ 2] add-to-queue
+11-13 14:13:43.011 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [60] network-queue-take
+11-13 14:13:43.011 30739 30739 D Volley  : [2] MarkerLog.finish: (+433 ) [60] post-error
+11-13 14:13:43.012 30739 30739 D Volley  : [2] MarkerLog.finish: (+7   ) [ 2] done
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: ConnectException: Failed to connect to /10.0.2.2:5080
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: java.net.ConnectException: Failed to connect to /10.0.2.2:5080
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.RealConnection.connectSocket(RealConnection.kt:297)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.RealConnection.connect(RealConnection.kt:207)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.ExchangeFinder.findConnection(ExchangeFinder.kt:226)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.ExchangeFinder.findHealthyConnection(ExchangeFinder.kt:106)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.ExchangeFinder.find(ExchangeFinder.kt:74)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.RealCall.initExchange$okhttp(RealCall.kt:255)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.ConnectInterceptor.intercept(ConnectInterceptor.kt:32)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.cache.CacheInterceptor.intercept(CacheInterceptor.kt:95)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.BridgeInterceptor.intercept(BridgeInterceptor.kt:83)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.RetryAndFollowUpInterceptor.intercept(RetryAndFollowUpInterceptor.kt:76)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.RealCall.getResponseWithInterceptorChain$okhttp(RealCall.kt:201)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:517)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1100)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at java.lang.Thread.run(Thread.java:1571)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: Caused by: java.net.ConnectException: failed to connect to /10.0.2.2 (port 5080) from /10.0.2.16 (port 58672) after 10000ms: isConnected failed: ECONNREFUSED (Connection refused)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at libcore.io.IoBridge.isConnected(IoBridge.java:341)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at libcore.io.IoBridge.connectErrno(IoBridge.java:234)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at libcore.io.IoBridge.connect(IoBridge.java:176)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at java.net.PlainSocketImpl.socketConnect(PlainSocketImpl.java:142)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:390)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:230)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:212)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:436)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at java.net.Socket.connect(Socket.java:646)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.platform.Platform.connectSocket(Platform.kt:128)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.RealConnection.connectSocket(RealConnection.kt:295)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	... 18 more
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: Caused by: android.system.ErrnoException: isConnected failed: ECONNREFUSED (Connection refused)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	at libcore.io.IoBridge.isConnected(IoBridge.java:328)
+11-13 14:13:47.000 30739 30815 W ComparativaOkHttp: 	... 28 more
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: ConnectException: Failed to connect to /10.0.2.2:5080
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: java.net.ConnectException: Failed to connect to /10.0.2.2:5080
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.RealConnection.connectSocket(RealConnection.kt:297)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.RealConnection.connect(RealConnection.kt:207)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.ExchangeFinder.findConnection(ExchangeFinder.kt:226)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.ExchangeFinder.findHealthyConnection(ExchangeFinder.kt:106)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.ExchangeFinder.find(ExchangeFinder.kt:74)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.RealCall.initExchange$okhttp(RealCall.kt:255)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.ConnectInterceptor.intercept(ConnectInterceptor.kt:32)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.cache.CacheInterceptor.intercept(CacheInterceptor.kt:95)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.BridgeInterceptor.intercept(BridgeInterceptor.kt:83)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.RetryAndFollowUpInterceptor.intercept(RetryAndFollowUpInterceptor.kt:76)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.RealCall.getResponseWithInterceptorChain$okhttp(RealCall.kt:201)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:517)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1100)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at java.lang.Thread.run(Thread.java:1571)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: Caused by: java.net.ConnectException: failed to connect to /10.0.2.2 (port 5080) from /10.0.2.16 (port 58678) after 10000ms: isConnected failed: ECONNREFUSED (Connection refused)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at libcore.io.IoBridge.isConnected(IoBridge.java:341)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at libcore.io.IoBridge.connectErrno(IoBridge.java:234)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at libcore.io.IoBridge.connect(IoBridge.java:176)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at java.net.PlainSocketImpl.socketConnect(PlainSocketImpl.java:142)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:390)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:230)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:212)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:436)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at java.net.Socket.connect(Socket.java:646)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.platform.Platform.connectSocket(Platform.kt:128)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at okhttp3.internal.connection.RealConnection.connectSocket(RealConnection.kt:295)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	... 18 more
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: Caused by: android.system.ErrnoException: isConnected failed: ECONNREFUSED (Connection refused)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	at libcore.io.IoBridge.isConnected(IoBridge.java:328)
+11-13 14:13:49.997 30739 30815 W ComparativaOkHttp: 	... 28 more
+11-13 14:13:52.993 30739 30739 W ComparativaRetrofit: ApiError.SIN_CONEXION | No se pudo conectar con el servidor. Revisa tu conexión a internet o que la API esté encendida.
+11-13 14:14:16.652 30739 30789 D Volley  : [62] NetworkUtility.logSlowRequests: HTTP response for request=<[ ] http://10.0.2.2:5080/api/registros 0x1e7db229 NORMAL 13> [lifetime=982], [size=250], [rc=401], [retryCount=0]
+11-13 14:14:16.652 30739 30789 E Volley  : [62] NetworkUtility.shouldRetryException: Unexpected response code 401 for http://10.0.2.2:5080/api/registros
+11-13 14:14:16.659 30739 30789 D Volley  : [62] NetworkUtility.logSlowRequests: HTTP response for request=<[ ] http://10.0.2.2:5080/api/registros 0x1e7db229 NORMAL 13> [lifetime=989], [size=250], [rc=401], [retryCount=1]
+11-13 14:14:16.659 30739 30789 E Volley  : [62] NetworkUtility.shouldRetryException: Unexpected response code 401 for http://10.0.2.2:5080/api/registros
+11-13 14:14:16.659 30739 30739 W ComparativaVolley: AuthFailureError · HTTP 401
+11-13 14:14:16.659 30739 30739 W ComparativaVolley: com.android.volley.AuthFailureError
+11-13 14:14:16.659 30739 30739 W ComparativaVolley: 	at com.android.volley.toolbox.NetworkUtility.shouldRetryException(NetworkUtility.java:189)
+11-13 14:14:16.659 30739 30739 W ComparativaVolley: 	at com.android.volley.toolbox.BasicNetwork.performRequest(BasicNetwork.java:145)
+11-13 14:14:16.659 30739 30739 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.processRequest(NetworkDispatcher.java:132)
+11-13 14:14:16.659 30739 30739 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.processRequest(NetworkDispatcher.java:111)
+11-13 14:14:16.659 30739 30739 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.run(NetworkDispatcher.java:90)
+11-13 14:14:16.666 30739 30739 D Volley  : [2] MarkerLog.finish: (995  ms) [ ] http://10.0.2.2:5080/api/registros 0x1e7db229 NORMAL 13
+11-13 14:14:16.666 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [ 2] add-to-queue
+11-13 14:14:16.666 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [62] network-queue-take
+11-13 14:14:16.666 30739 30739 D Volley  : [2] MarkerLog.finish: (+982 ) [62] auth-retry [timeout=10000]
+11-13 14:14:16.666 30739 30739 D Volley  : [2] MarkerLog.finish: (+7   ) [62] auth-timeout-giveup [timeout=10000]
+11-13 14:14:16.666 30739 30739 D Volley  : [2] MarkerLog.finish: (+0   ) [62] post-error
+11-13 14:14:16.666 30739 30739 D Volley  : [2] MarkerLog.finish: (+6   ) [ 2] done
+11-13 14:14:20.655 30739 30815 W ComparativaOkHttp: HTTP 401 Unauthorized
+11-13 14:14:23.652 30739 30739 W ComparativaRetrofit: ApiError.NO_AUTENTICADO · HTTP 401 | Tu sesión expiró o no es válida. Inicia sesión de nuevo.
