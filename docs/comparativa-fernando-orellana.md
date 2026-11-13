@@ -21,10 +21,11 @@ botones para alterar o retirar el token JWT y provocar un 401.
 
 Los tres clientes envían el token en el encabezado `Authorization: Bearer <token>`,
 convierten la respuesta JSON al DTO `RegistroResumenDto` y entregan el resultado a la
-interfaz sin bloquear el hilo principal. Se probaron cinco escenarios de falla: API
-detenida, modo avión, tiempo de espera agotado, token inválido/ausente (401) y error
-interno del servidor (500). En ninguno de ellos la aplicación se cerró de forma
-inesperada.
+interfaz sin bloquear el hilo principal. La pantalla incluye controles para probar cinco
+escenarios de falla: API detenida, modo avión, tiempo de espera agotado, token
+inválido/ausente (401) y error interno del servidor (500). El manejo de errores está
+diseñado para que la aplicación no se cierre; los resultados obtenidos se documentan en
+la sección 6 y en el anexo de capturas.
 
 La comparación muestra que **Retrofit** es la opción más adecuada para el proyecto
 final por su claridad, su conversión automática de JSON y su facilidad para centralizar
@@ -337,10 +338,10 @@ error clásico `CalledFromWrongThreadException` y mantiene el código uniforme.
 
 ## 6. Escenarios de falla
 
-Se probaron los tres clientes en cada escenario. La columna “Detalle técnico” es lo que
-registra el código; la columna “Mensaje al usuario” es lo que ve la persona. Las
-capturas y los tiempos definitivos se adjuntan en `docs/capturas/fernando/` y en
-`docs/mediciones-fernando.md`.
+La tabla resume el comportamiento esperado de los tres clientes en cada escenario. La
+columna “Detalle técnico” es lo que registra el código; la columna “Mensaje al usuario”
+es lo que ve la persona. Las capturas y los tiempos definitivos se adjuntan en
+`docs/capturas/fernando/` y en `docs/mediciones-fernando.md`.
 
 | Escenario | Volley | OkHttp | Retrofit |
 |---|---|---|---|
@@ -351,15 +352,17 @@ capturas y los tiempos definitivos se adjuntan en `docs/capturas/fernando/` y en
 | **Token ausente (401)** | `AuthFailureError · HTTP 401`; mensaje “Tu sesión expiró…” | `HTTP 401 Unauthorized`; mensaje “Tu sesión expiró…” | `ApiError.NO_AUTENTICADO · HTTP 401`; mensaje “Tu sesión expiró…” |
 | **Error 500** | `ServerError · HTTP 500`; mensaje “El servidor tuvo un problema…” | `HTTP 500 Internal Server Error`; mensaje “El servidor tuvo un problema…” | `ApiError.SERVIDOR · HTTP 500`; mensaje “El servidor tuvo un problema…” |
 
-### Comportamiento observado y estabilidad
+### Comportamiento esperado y estabilidad
 
-- En los cinco escenarios la aplicación permaneció abierta.
+- El manejo de errores captura las excepciones de red, timeout, 401 y 500; ninguna
+  llamada se propaga sin control.
 - Los errores se muestran en la tarjeta correspondiente y en un `Snackbar`, además de
   registrarse en Logcat con la etiqueta `ComparativaFernando`.
 - Las llamadas en curso se cancelan en `onDestroy()`, por lo que salir de la pantalla
   durante un timeout no produce un `WindowLeaked` ni un crash.
 - Después de las pruebas de 401, el botón **Restaurar** devuelve el token original.
-- No se encontró `FATAL EXCEPTION` en Logcat.
+- La verificación de que no aparece `FATAL EXCEPTION` se realiza con el Logcat adjunto
+  en el anexo de capturas.
 
 ---
 
@@ -403,9 +406,9 @@ Razones:
    un `ApiError` uniforme.
 5. **Ya está integrado.** La tarea 2.3 y el resto de la app usan Retrofit; mantener el
    mismo stack evita duplicar clientes y facilita que el equipo revise el código.
-6. **Rendimiento suficiente.** En la medición, OkHttp fue el más rápido por unos pocos
-   milisegundos, pero la diferencia es despreciable frente a la latencia real de una
-   red móvil. La ganancia en mantenibilidad de Retrofit pesa más.
+6. **Rendimiento suficiente.** En la medición preliminar, OkHttp fue el más rápido por
+   unos pocos milisegundos, pero la diferencia es despreciable frente a la latencia real
+   de una red móvil. La ganancia en mantenibilidad de Retrofit pesa más.
 
 **Cuándo usar cada uno:**
 
@@ -422,7 +425,8 @@ Razones:
 ## 9. Guion del video individual (3–4 minutos)
 
 > El video debe grabarse con la cámara encendida. La pantalla del emulador se puede
-> compartir o mostrar con una segunda cámara.
+> compartir o mostrar con una segunda cámara. El guion detallado, con los textos y los
+> pasos de grabación, está en `docs/guion-video-fernando.md`.
 
 | Tiempo | Contenido |
 |---|---|
@@ -442,8 +446,9 @@ Razones:
   pero con niveles de abstracción distintos.
 - Volley simplifica la entrega en el hilo principal; OkHttp da control y rendimiento;
   Retrofit equilibra claridad, tipado y mantenimiento.
-- Los cinco escenarios de falla se manejan sin cerrar la app: los errores se traducen
-  a mensajes comprensibles y se registran para diagnóstico.
+- El manejo implementado para los cinco escenarios de falla captura las excepciones y
+  las traduce a mensajes comprensibles; la evidencia de que la app no se cierra se
+  adjunta en el anexo de capturas.
 - La rama personal y los commits permiten revisar el trabajo de forma aislada; el pull
   request deja el cambio listo para la revisión de otro integrante.
 - Para el proyecto final, Retrofit es la mejor elección por su integración con el
