@@ -112,7 +112,6 @@ public class ListaRegistrosActivity extends SesionActivity {
             startActivity(new Intent(this, ComparativaActivity.class));
             return true;
         }
-
         if (item.getItemId() == R.id.accionCerrarSesion) {
             confirmarCerrarSesion();
             return true;
