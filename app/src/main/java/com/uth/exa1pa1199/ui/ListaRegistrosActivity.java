@@ -247,4 +247,16 @@ public class ListaRegistrosActivity extends SesionActivity {
                 break;
         }
     }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem comparativaFernando = menu.findItem(R.id.accionComparativaFernando);
+        if (comparativaFernando != null) {
+            comparativaFernando.setOnMenuItemClickListener(item -> {
+                startActivity(new Intent(this, ComparativaFernandoActivity.class));
+                return true;
+            });
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
 }

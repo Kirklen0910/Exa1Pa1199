@@ -3,6 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/accionComparativaFernando"
+        android:title="@string/comparativa_fernando"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/accionComparativa"
         android:title="@string/titulo_comparativa"
         app:showAsAction="never" />

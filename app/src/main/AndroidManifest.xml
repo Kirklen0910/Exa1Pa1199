@@ -62,6 +62,10 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
+            android:name=".ui.ComparativaFernandoActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".ui.ComparativaActivity"
             android:exported="false" />
 
