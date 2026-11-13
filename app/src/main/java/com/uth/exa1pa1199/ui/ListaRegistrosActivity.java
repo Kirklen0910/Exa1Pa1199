@@ -108,6 +108,11 @@ public class ListaRegistrosActivity extends SesionActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.accionComparativaFernando) {
+            startActivity(new Intent(this, ComparativaFernandoActivity.class));
+            return true;
+        }
+
         if (item.getItemId() == R.id.accionComparativa) {
             startActivity(new Intent(this, ComparativaActivity.class));
             return true;
@@ -115,11 +120,6 @@ public class ListaRegistrosActivity extends SesionActivity {
 
         if (item.getItemId() == R.id.accionCerrarSesion) {
             confirmarCerrarSesion();
-            return true;
-        }
-
-        if (item.getItemId() == R.id.accionComparativaFernando) {
-            startActivity(new Intent(this, ComparativaFernandoActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
