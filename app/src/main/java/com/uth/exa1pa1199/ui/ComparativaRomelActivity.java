@@ -48,7 +48,7 @@ public class ComparativaRomelActivity extends AppCompatActivity {
     private static final int TIMEOUT_MS = 20000;
 
     private static final String RUTA_NORMAL = "api/registros";
-    private static final String RUTA_LENTA = "api/pruebas/lento";
+    private static final String RUTA_LENTA = "api/pruebas/demora";
     private static final String RUTA_ERROR = "api/pruebas/error";
 
     private TextView txtResultado;
