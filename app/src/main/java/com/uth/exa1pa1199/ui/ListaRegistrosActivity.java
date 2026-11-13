@@ -103,17 +103,18 @@ public class ListaRegistrosActivity extends SesionActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_lista, menu);
+        MenuItem comparativaFernando = menu.findItem(R.id.accionComparativaFernando);
+        if (comparativaFernando != null) {
+            comparativaFernando.setOnMenuItemClickListener(item -> {
+                startActivity(new Intent(this, ComparativaFernandoActivity.class));
+                return true;
+            });
+        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Comparativa individual de Fernando
-        if (item.getItemId() == R.id.accionComparativaFernando) {
-            startActivity(new Intent(this, ComparativaFernandoActivity.class));
-            return true;
-        }
-
         if (item.getItemId() == R.id.accionComparativa) {
             startActivity(new Intent(this, ComparativaActivity.class));
             return true;
