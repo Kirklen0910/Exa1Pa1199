@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Escenario"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/grupoEscenario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+
+            <RadioButton
+                android:id="@+id/rbNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Normal (api/registros)" />
+
+            <RadioButton
+                android:id="@+id/rbLento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Respuesta lenta (timeout)" />
+
+            <RadioButton
+                android:id="@+id/rbError"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Error 500" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/btnVolley"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Volley" />
+
+        <Button
+            android:id="@+id/btnOkHttp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="OkHttp" />
+
+        <Button
+            android:id="@+id/btnRetrofit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Retrofit" />
+
+        <TextView
+            android:id="@+id/txtResultado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Elige un escenario y presiona una librería"
+            android:textSize="18sp" />
+    </LinearLayout>
+</ScrollView>
