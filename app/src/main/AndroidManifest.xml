@@ -64,5 +64,11 @@
         <activity
             android:name=".ui.ComparativaActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".ui.ComparativaJenniferActivity"
+            android:exported="false" />
+
     </application>
+
 </manifest>
