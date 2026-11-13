@@ -77,6 +77,10 @@ public final class SessionManager {
                 .commit();
     }
 
+    public synchronized void reemplazarToken(String token) {
+        prefs.edit().putString(CLAVE_TOKEN, token).commit();
+    }
+
     public synchronized void cerrar() {
         prefs.edit().clear().commit();
     }

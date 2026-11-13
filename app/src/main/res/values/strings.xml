@@ -40,4 +40,37 @@
     <string name="permiso_audio_denegado">Se necesita el permiso de micrófono para dictar</string>
     <string name="voz_no_disponible">El reconocimiento de voz no está disponible en este dispositivo</string>
     <string name="camara_no_disponible">No se pudo abrir la cámara</string>
+
+    <string name="titulo_login">Iniciar sesión</string>
+    <string name="login_bienvenida">Bienvenido a la Bitácora de campo</string>
+    <string name="hint_correo">Correo</string>
+    <string name="hint_password">Contraseña</string>
+    <string name="hint_confirmar_password">Confirmar contraseña</string>
+    <string name="ayuda_password">Mínimo 8 caracteres</string>
+    <string name="iniciar_sesion">Iniciar sesión</string>
+    <string name="crear_cuenta">¿No tienes cuenta? Regístrate</string>
+    <string name="titulo_registro_usuario">Crear cuenta</string>
+    <string name="registrarme">Registrarme</string>
+    <string name="cuenta_creada">Cuenta creada. Sesión iniciada.</string>
+    <string name="cerrar_sesion">Cerrar sesión</string>
+    <string name="confirmar_cerrar_sesion">¿Deseas cerrar la sesión?</string>
+    <string name="sesion_cerrada">Sesión cerrada.</string>
+    <string name="sesion_expirada">Tu sesión expiró. Inicia sesión de nuevo.</string>
+    <string name="subtitulo_sesion">%1$s (%2$s)</string>
+
+    <string name="titulo_comparativa">Comparativa de librerías</string>
+    <string name="escenario">Endpoint a consultar</string>
+    <string name="ruta_registros">GET /api/registros (normal)</string>
+    <string name="ruta_demora">GET /api/pruebas/demora (tiempo de espera)</string>
+    <string name="ruta_error">GET /api/pruebas/error (error 500)</string>
+    <string name="repetir_cinco">Repetir 5 veces y calcular el promedio</string>
+    <string name="volley">Volley</string>
+    <string name="okhttp">OkHttp</string>
+    <string name="retrofit">Retrofit</string>
+    <string name="alterar_token">Alterar token (prueba 401)</string>
+    <string name="token_alterado">Se alteró la firma del token. La siguiente consulta debe responder 401.</string>
+    <string name="sin_sesion">No hay una sesión activa. Inicia sesión de nuevo.</string>
+    <string name="sin_resultados">Sin ejecutar</string>
+    <string name="bitacora_ejecucion">Bitácora de ejecución</string>
+    <string name="limpiar">Limpiar</string>
 </resources>
