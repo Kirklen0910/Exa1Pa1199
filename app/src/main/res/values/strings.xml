@@ -75,7 +75,7 @@
     <string name="limpiar">Limpiar</string>
 
     <!-- Comparativa individual de Fernando Orellana -->
-    <string name="titulo_comparativa_fernando">Comparativa individual · Fernando Orellana</string>
+    <string name="titulo_comparativa_fernando">Comparativa · Fernando Orellana</string>
     <string name="escenario_fernando">Endpoint a consultar</string>
     <string name="ruta_registros_fernando">GET /api/registros (normal)</string>
     <string name="ruta_demora_fernando">GET /api/pruebas/demora (30 s)</string>
