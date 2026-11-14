@@ -10,7 +10,7 @@ Proyecto grupal de Programación Móvil I.
 - **Enlace Video Explicando como la APP consume la API Tarea 2.2 y 2.3** https://drive.google.com/file/d/12ksSMyVUCVZAQfG_djKlr1rZZes7mq7P/view?usp=sharing
 - **Enlace Video Explicando como la APP consume la API de la Tarea 2.4** https://drive.google.com/file/d/17IP-fYvSHA_tFcfhcVSDuTilTAjb2s8P/view?usp=sharing
   
- main
+
 ## Integrantes
 
 | Nombre | Número de cuenta |
