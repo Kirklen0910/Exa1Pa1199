@@ -1,0 +1,25 @@
+11-13 13:49:05.028 28834 28834 W ComparativaVolley: ServerError · HTTP 500
+11-13 13:49:05.028 28834 28834 W ComparativaVolley: com.android.volley.ServerError
+11-13 13:49:05.028 28834 28834 W ComparativaVolley: 	at com.android.volley.toolbox.NetworkUtility.shouldRetryException(NetworkUtility.java:201)
+11-13 13:49:05.028 28834 28834 W ComparativaVolley: 	at com.android.volley.toolbox.BasicNetwork.performRequest(BasicNetwork.java:145)
+11-13 13:49:05.028 28834 28834 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.processRequest(NetworkDispatcher.java:132)
+11-13 13:49:05.028 28834 28834 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.processRequest(NetworkDispatcher.java:111)
+11-13 13:49:05.028 28834 28834 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.run(NetworkDispatcher.java:90)
+11-13 13:49:05.028 28834 28834 W ComparativaFernando: 13:49:05 · Volley · intento 1/1 · GET /api/pruebas/error (500) → ServerError · HTTP 500, 889 ms | El servidor tuvo un problema (código 500). Inténtalo más tarde.
+11-13 13:49:07.025 28834 29184 W ComparativaOkHttp: HTTP 500 Internal Server Error
+11-13 13:49:07.026 28834 28834 W ComparativaFernando: 13:49:07 · OkHttp · intento 1/1 · GET /api/pruebas/error (500) → HTTP 500 Internal Server Error, 871 ms | El servidor tuvo un problema (código 500). Inténtalo más tarde.
+11-13 13:49:09.036 28834 28834 W ComparativaRetrofit: HTTP 500 Internal Server Error
+11-13 13:49:09.037 28834 28834 W ComparativaFernando: 13:49:09 · Retrofit · intento 1/1 · GET /api/pruebas/error (500) → HTTP 500 Internal Server Error, 865 ms | El servidor tuvo un problema (código 500). Inténtalo más tarde.
+11-13 13:49:11.206 28834 28834 W ComparativaFernando: Token alterado para provocar un 401
+11-13 13:49:12.239 28834 28834 W ComparativaVolley: AuthFailureError · HTTP 401
+11-13 13:49:12.239 28834 28834 W ComparativaVolley: com.android.volley.AuthFailureError
+11-13 13:49:12.239 28834 28834 W ComparativaVolley: 	at com.android.volley.toolbox.NetworkUtility.shouldRetryException(NetworkUtility.java:189)
+11-13 13:49:12.239 28834 28834 W ComparativaVolley: 	at com.android.volley.toolbox.BasicNetwork.performRequest(BasicNetwork.java:145)
+11-13 13:49:12.239 28834 28834 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.processRequest(NetworkDispatcher.java:132)
+11-13 13:49:12.239 28834 28834 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.processRequest(NetworkDispatcher.java:111)
+11-13 13:49:12.239 28834 28834 W ComparativaVolley: 	at com.android.volley.NetworkDispatcher.run(NetworkDispatcher.java:90)
+11-13 13:49:12.239 28834 28834 W ComparativaFernando: 13:49:12 · Volley · intento 1/1 · GET /api/registros → AuthFailureError · HTTP 401, 18 ms | Tu sesión expiró o no es válida. Inicia sesión de nuevo.
+11-13 13:49:14.241 28834 29184 W ComparativaOkHttp: HTTP 401 Unauthorized
+11-13 13:49:14.256 28834 28834 W ComparativaFernando: 13:49:14 · OkHttp · intento 1/1 · GET /api/registros → HTTP 401 Unauthorized, 2 ms | Tu sesión expiró o no es válida. Inicia sesión de nuevo.
+11-13 13:49:16.273 28834 28834 W ComparativaRetrofit: ApiError.NO_AUTENTICADO · HTTP 401 | Tu sesión expiró o no es válida. Inicia sesión de nuevo.
+11-13 13:49:16.273 28834 28834 W ComparativaFernando: 13:49:16 · Retrofit · intento 1/1 · GET /api/registros → ApiError.NO_AUTENTICADO · HTTP 401, 18 ms | Tu sesión expiró o no es válida. Inicia sesión de nuevo.
