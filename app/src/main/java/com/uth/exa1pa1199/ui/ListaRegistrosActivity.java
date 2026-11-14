@@ -128,6 +128,11 @@ public class ListaRegistrosActivity extends SesionActivity {
             return true;
         }
 
+        if (item.getItemId() == R.id.accionComparativaMichael) {
+            startActivity(new Intent(this, ComparativaMichaelActivity.class));
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
