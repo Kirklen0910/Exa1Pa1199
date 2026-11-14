@@ -78,6 +78,10 @@
             android:name=".ui.ComparativaRomelActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".ui.ComparativaFernandoAbadActivity"
+            android:exported="true" />
+
 
     </application>
 
