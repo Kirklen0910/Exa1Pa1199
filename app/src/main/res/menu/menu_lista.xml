@@ -17,4 +17,10 @@
         android:title="@string/cerrar_sesion"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/accionComparativaMichael"
+        android:title="Comparativa (Michael)"
+        app:showAsAction="never" />
+
+
 </menu>
