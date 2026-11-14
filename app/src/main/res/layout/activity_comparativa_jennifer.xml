@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF4F8"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="24dp"
+            android:background="#F9D8E7">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Laboratorio de APIs"
+                android:textColor="#8F285C"
+                android:textStyle="bold"
+                android:textSize="25sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="VOLLEY  •  OKHTTP  •  RETROFIT"
+                android:textColor="#A14F75"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:text="Comparación de rendimiento y manejo de errores"
+                android:textColor="#81415F"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:text="Selecciona una librería"
+            android:textStyle="bold"
+            android:textColor="#8F285C"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btnVolleyJennifer"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Consultar con Volley"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:backgroundTint="#D85291" />
+
+        <Button
+            android:id="@+id/btnOkHttpJennifer"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="12dp"
+            android:text="Consultar con OkHttp"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:backgroundTint="#B96BB1" />
+
+        <Button
+            android:id="@+id/btnRetrofitJennifer"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="12dp"
+            android:text="Consultar con Retrofit"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:backgroundTint="#E58BAB" />
+
+        <ProgressBar
+            android:id="@+id/progressJennifer"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:indeterminate="true"
+            android:indeterminateTint="#D85291"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:elevation="3dp"
+            android:background="#FFFFFF">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Resultados de la consulta"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="#8F285C" />
+
+            <TextView
+                android:id="@+id/txtResultadoJennifer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:padding="18dp"
+                android:gravity="center"
+                android:background="#FFF0F6"
+                android:text="Selecciona una librería para consultar los registros."
+                android:textSize="15sp"
+                android:textColor="#81415F" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:text="BITÁCORA DE CAMPO  •  COMPARATIVA INDIVIDUAL"
+            android:textColor="#A14F75"
+            android:textSize="11sp" />
+
+    </LinearLayout>
+
+</ScrollView>
