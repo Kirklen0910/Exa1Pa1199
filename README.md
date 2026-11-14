@@ -8,8 +8,11 @@ Proyecto grupal de Programación Móvil I.
 - **Tarea 2.4:** seguridad con JWT, roles (`Admin`/`Usuario`), HTTPS y manejo de sesión en Android
   → ver [docs/seguridad-jwt.md](docs/seguridad-jwt.md).
 - **Enlace Video Explicando como la APP consume la API Tarea 2.2 y 2.3** https://drive.google.com/file/d/12ksSMyVUCVZAQfG_djKlr1rZZes7mq7P/view?usp=sharing
+<feature/comparativa-carlos-cardenas
+- **Enlace Video Explicando como la APP consume la API Comparativa de Librerias Tarea 2.5** https://uthhn-my.sharepoint.com/:v:/g/personal/crcardenas_uth_hn/IQBLQ2Pt_kJ7Qr3jisk35UZ5AS22WD7xzZc56T4dJuYW3zI?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=A8Znat
 - **Enlace Video Explicando como la APP consume la API de la Tarea 2.4** https://drive.google.com/file/d/17IP-fYvSHA_tFcfhcVSDuTilTAjb2s8P/view?usp=sharing
   
+ main
 ## Integrantes
 
 | Nombre | Número de cuenta |
