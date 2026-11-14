@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Laboratorio HTTP - Michael Abad"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Comparativa práctica: Volley vs OkHttp vs Retrofit (GET /api/registros)"
+            android:textSize="14sp"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Escenario de prueba:"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/rgEscenarioMichael"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp">
+
+            <RadioButton
+                android:id="@+id/rbNormalMichael"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="1. Consulta normal (GET /api/registros)" />
+
+            <RadioButton
+                android:id="@+id/rbDemoraMichael"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2. Timeout > espera (GET /api/pruebas/demora)" />
+
+            <RadioButton
+                android:id="@+id/rbTokenInvalidoMichael"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3. Token vencido o inválido (HTTP 401)" />
+
+            <RadioButton
+                android:id="@+id/rbError500Michael"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4. Error interno del servidor (HTTP 500)" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/btnVolleyMichael"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Consultar con Volley"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btnOkHttpMichael"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Consultar con OkHttp"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btnRetrofitMichael"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Consultar con Retrofit"
+            android:layout_marginBottom="12dp" />
+
+        <ProgressBar
+            android:id="@+id/progressMichael"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"
+            android:layout_marginBottom="12dp" />
+
+        <TextView
+            android:id="@+id/txtResultadoMichael"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F1F5F9"
+            android:padding="16dp"
+            android:text="Seleccione un escenario y presione un cliente HTTP para iniciar la prueba."
+            android:textSize="14sp"
+            android:fontFamily="monospace" />
+
+    </LinearLayout>
+</ScrollView>

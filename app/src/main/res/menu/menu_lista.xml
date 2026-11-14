@@ -1,13 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/accionComparativaFernando"
+        android:title="@string/comparativa_fernando"
+        app:showAsAction="never" />
+
     <item
         android:id="@+id/accionComparativa"
         android:title="@string/titulo_comparativa"
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/accionComparativaJennifer"
+        android:title="Comparativa Jennifer"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/accionComparativaRomel"
+        android:title="Comparativa Romel"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/accionCerrarSesion"
         android:title="@string/cerrar_sesion"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/accionComparativaMichael"
+        android:title="Comparativa (Michael)"
+        app:showAsAction="never" />
+
+
 </menu>
