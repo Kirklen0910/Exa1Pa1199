@@ -118,6 +118,11 @@ public class ListaRegistrosActivity extends SesionActivity {
             return true;
         }
 
+        if (item.getItemId() == R.id.accionComparativaRomel) {
+            startActivity(new Intent(this, ComparativaRomelActivity.class));
+            return true;
+        }
+
         if (item.getItemId() == R.id.accionCerrarSesion) {
             confirmarCerrarSesion();
             return true;
@@ -250,5 +255,17 @@ public class ListaRegistrosActivity extends SesionActivity {
                 UiHelper.mostrarError(layoutError, estado, () -> viewModel.cargar());
                 break;
         }
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem comparativaFernando = menu.findItem(R.id.accionComparativaFernando);
+        if (comparativaFernando != null) {
+            comparativaFernando.setOnMenuItemClickListener(item -> {
+                startActivity(new Intent(this, ComparativaFernandoActivity.class));
+                return true;
+            });
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 }
